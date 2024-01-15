@@ -27,9 +27,9 @@ r2p <- function(data, target, learner, alpha = 0.05, cv_folds = 2, gamma = 0.01,
   folds <- rsample::vfold_cv(data, v = max(cv_folds, 2))
   models <- lapply(folds$splits, function(split) {
     # Extract the training data for this fold
-    training_data <- analysis(split)
+    training_data <- rsample::analysis(split)
     # Fit the model on the training data
     learner %>%
-      fit(as.formula(paste(target, "~ .")), data = training_data)
+      parsnip::fit(as.formula(paste(target, "~ .")), data = training_data)
   })
 }
