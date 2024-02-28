@@ -1,4 +1,4 @@
-#' Helper to Retrieve Validation Set and Predictions
+#' Helper to retrieve validation set and predictions
 #'
 #' @param data (`data.frame`)\cr.
 #' @param target (`string`)\cr name of the target variable.
@@ -8,7 +8,7 @@
 #' @return Data frame with predictions and indices.
 #' @keywords internal
 #'
-get_validation_set <- function(data, target, learner, cv_folds) {
+get_valid_set <- function(data, target, learner, cv_folds) {
   # Get CV+ splits. As "1" encodes a single train-test split, we create two folds in this case.
   folds <- rsample::vfold_cv(data, v = max(cv_folds, 2))
   predictions <- lapply(folds$splits, function(split) {
@@ -24,9 +24,10 @@ get_validation_set <- function(data, target, learner, cv_folds) {
   })
   # Special case split conformal prediction if cv_fold = 1.
   if (cv_folds == 1) {
-    validation_set <- predictions[[1]]
+    valid_set <- predictions[[1]]
   } else {
-    validation_set <- do.call("rbind", predictions)
+    valid_set <- do.call("rbind", predictions)
   }
-  validation_set[order(validation_set$testing_ids), ]
+  valid_set$residual <- abs(data[[target]][valid_set$testing_ids] - valid_set$.pred)
+  valid_set[order(valid_set$testing_ids), ]
 }

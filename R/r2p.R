@@ -23,6 +23,7 @@
 #'  r2ptree(data = bikes, target = "count", learner = randforest,
 #'      alpha = 0.05, cv_folds = 1, gamma = 0.01, lambda = 0.5)
 r2ptree <- function(data, target, learner, alpha = 0.05, cv_folds = 2, gamma = 0.01, lambda = 0.5) {
-  valid_set <- get_validation_set(data = data, target = target, learner = learner, cv_folds = cv_folds)
-  valid_set
+  valid_set <- get_valid_set(data = data, target = target, learner = learner, cv_folds = cv_folds)
+  x_data <- data[, colnames(data) != target]
+  process_x_data(x_data, valid_set, alpha, lambda)
 }
