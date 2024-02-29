@@ -55,6 +55,7 @@ eval_split_cand <- function(ids_left, valid_set, alpha) {
 
 #' Helper to compute the confident criterion of a numeric split
 #'
+#' @param node_id (`count`)\cr parent node identifier.
 #' @param var_name (`string`)\cr name of the feature to be split.
 #' @param split_cand (`number`)\cr value of the split point.
 #' @param covariate (`numeric`)\cr covariate values of the observations in the parent node.
@@ -62,18 +63,19 @@ eval_split_cand <- function(ids_left, valid_set, alpha) {
 #'   See [get_valid_set()] for details.
 #' @param alpha (`proportion`)\cr miscoverage rate.
 #' @param lambda (`proportion`)\cr balance between width and deviation.
-#' @return List with elements `feature`, `feature_type`, `split_cand`, `ids_left_child`, `ids_right_child` and `conf_crit`.
+#' @return List with elements `node_id`, `feature`, `feature_type`, `split_cand`, `ids_left_child`, `ids_right_child` and `conf_crit`.
 #' @keywords internal
 #'
-process_split_config_numeric <- function(var_name, split_cand, covariate, valid_set, alpha, lambda) {
+process_split_config_numeric <- function(node_id, var_name, split_cand, covariate, valid_set, alpha, lambda) {
   ids_candidates_left <- which(covariate < split_cand)
   ids_candidates_right <- which(covariate >= split_cand)
   conf_crit <- process_split_config(ids_candidates_left, ids_candidates_right, valid_set, alpha, lambda)
-  list("feature" = var_name, "feature_type" = "numeric", "split_cand" = split_cand, "ids_left_child" = ids_candidates_left, "ids_right_child" = ids_candidates_right, "conf_crit" = conf_crit)
+  list("node_id" = node_id, "feature" = var_name, "feature_type" = "numeric", "split_cand" = split_cand, "ids_left_child" = ids_candidates_left, "ids_right_child" = ids_candidates_right, "conf_crit" = conf_crit)
 }
 
 #' Helper to compute the confident criterion of a categorical split
 #'
+#' @param node_id (`count`)\cr parent node identifier.
 #' @param var_name (`string`)\cr name of the feature to be split.
 #' @param split_cand (`character`)\cr split point, set of categories representing the left child node.
 #' @param covariate (`factor`)\cr covariate values of the observations in the parent node.
@@ -81,14 +83,14 @@ process_split_config_numeric <- function(var_name, split_cand, covariate, valid_
 #'   See [get_valid_set()] for details.
 #' @param alpha (`proportion`)\cr miscoverage rate.
 #' @param lambda (`proportion`)\cr balance between width and deviation.
-#' @return List with elements `feature`, `feature_type`, `split_cand`, `ids_left_child`, `ids_right_child` and `conf_crit`.
+#' @return List with elements `node_id`, `feature`, `feature_type`, `split_cand`, `ids_left_child`, `ids_right_child` and `conf_crit`.
 #' @keywords internal
 #'
-process_split_config_categorical <- function(var_name, split_cand, covariate, valid_set, alpha, lambda) {
+process_split_config_categorical <- function(node_id, var_name, split_cand, covariate, valid_set, alpha, lambda) {
   ids_candidates_left <- which(covariate %in% split_cand)
   ids_candidates_right <- which(!(covariate %in% split_cand))
   conf_crit <- process_split_config(ids_candidates_left, ids_candidates_right, valid_set, alpha, lambda)
-  list("feature" = var_name, "feature_type" = "categorical", "split_cand" = split_cand, "ids_left_child" = ids_candidates_left, "ids_right_child" = ids_candidates_right, "conf_crit" = conf_crit)
+  list("node_id" = node_id, "feature" = var_name, "feature_type" = "categorical", "split_cand" = split_cand, "ids_left_child" = ids_candidates_left, "ids_right_child" = ids_candidates_right, "conf_crit" = conf_crit)
 }
 
 #' Helper to compute the confident criterion of a split
@@ -112,6 +114,7 @@ process_split_config <- function(ids_left, ids_right, valid_set, alpha, lambda) 
 #'
 #' @param var_name (`string`)\cr name of the feature to be split.
 #' @param x_data (`data.frame`)\cr feature data matrix of the parent node.
+#' @param node_id (`count`)\cr parent node identifier.
 #' @param valid_set (`data.frame`)\cr validation set.
 #'   See [get_valid_set()] for details.
 #' @param alpha (`proportion`)\cr miscoverage rate.
@@ -119,7 +122,7 @@ process_split_config <- function(ids_left, ids_right, valid_set, alpha, lambda) 
 #' @return List of sensible splits in the covariate.
 #' @keywords internal
 #'
-process_covariate <- function(var_name, x_data, valid_set, alpha, lambda) {
+process_covariate <- function(var_name, x_data, node_id, valid_set, alpha, lambda) {
   covariate = x_data[, colnames(x_data) == var_name]
   ## Numeric covariates:
   if (inherits(covariate, "numeric")) {
@@ -128,7 +131,7 @@ process_covariate <- function(var_name, x_data, valid_set, alpha, lambda) {
     # Vector of split points.
     split_candidates <- (uniques[-length(uniques)] + uniques[-1]) / 2
     split_candidates <- split_candidates[sapply(split_candidates, eval_split_cand_numeric, covariate = covariate, valid_set = valid_set, alpha = alpha)]
-    lapply(X = split_candidates, FUN = process_split_config_numeric, var_name = var_name, covariate = covariate, valid_set = valid_set, alpha = alpha, lambda = lambda)
+    lapply(X = split_candidates, FUN = process_split_config_numeric, node_id = node_id, var_name = var_name, covariate = covariate, valid_set = valid_set, alpha = alpha, lambda = lambda)
   } else {
     # Sort factor levels by mean prediction.
     covariate_with_pred <- covariate[valid_set$testing_ids]
@@ -140,13 +143,14 @@ process_covariate <- function(var_name, x_data, valid_set, alpha, lambda) {
       utils::head(levels_vector, i)
     })
     split_candidates <- split_candidates[sapply(split_candidates, eval_split_cand_categorical, covariate = covariate, valid_set = valid_set, alpha = alpha)]
-    lapply(X = split_candidates, FUN = process_split_config_categorical, var_name = var_name, covariate = covariate, valid_set = valid_set, alpha = alpha, lambda = lambda)
+    lapply(X = split_candidates, FUN = process_split_config_categorical, node_id = node_id, var_name = var_name, covariate = covariate, valid_set = valid_set, alpha = alpha, lambda = lambda)
   }
 }
 
 #' Helper to find all sensible splits in a parent node
 #'
 #' @param x_data (`data.frame`)\cr feature data matrix of the parent node.
+#' @param node_id (`count`)\cr parent node identifier.
 #' @param valid_set (`data.frame`)\cr validation set.
 #'   See [get_valid_set()] for details.
 #' @param alpha (`proportion`)\cr miscoverage rate.
@@ -154,7 +158,7 @@ process_covariate <- function(var_name, x_data, valid_set, alpha, lambda) {
 #' @return List of all sensible splits in the parent node.
 #' @keywords internal
 #'
-process_x_data <- function(x_data, valid_set, alpha, lambda) {
-  result <- lapply(X = colnames(x_data), FUN = process_covariate, x_data = x_data, valid_set = valid_set, alpha = alpha, lambda = lambda)
+process_node <- function(x_data, node_id, valid_set, alpha, lambda) {
+  result <- lapply(X = colnames(x_data), FUN = process_covariate, x_data = x_data, node_id = node_id, valid_set = valid_set, alpha = alpha, lambda = lambda)
   do.call("c", result)
 }

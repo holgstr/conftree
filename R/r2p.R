@@ -25,5 +25,5 @@
 r2ptree <- function(data, target, learner, alpha = 0.05, cv_folds = 2, gamma = 0.01, lambda = 0.5) {
   valid_set <- get_valid_set(data = data, target = target, learner = learner, cv_folds = cv_folds)
   x_data <- data[, colnames(data) != target]
-  process_x_data(x_data, valid_set, alpha, lambda)
+  process_node(x_data, node_id = 1, valid_set, alpha, lambda)
 }

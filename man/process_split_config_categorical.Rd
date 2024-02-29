@@ -5,6 +5,7 @@
 \title{Helper to compute the confident criterion of a categorical split}
 \usage{
 process_split_config_categorical(
+  node_id,
   var_name,
   split_cand,
   covariate,
@@ -14,6 +15,8 @@ process_split_config_categorical(
 )
 }
 \arguments{
+\item{node_id}{(\code{count})\cr parent node identifier.}
+
 \item{var_name}{(\code{string})\cr name of the feature to be split.}
 
 \item{split_cand}{(\code{character})\cr split point, set of categories representing the left child node.}
@@ -28,7 +31,7 @@ See \code{\link[=get_valid_set]{get_valid_set()}} for details.}
 \item{lambda}{(\code{proportion})\cr balance between width and deviation.}
 }
 \value{
-List with elements \code{feature}, \code{feature_type}, \code{split_cand}, \code{ids_left_child}, \code{ids_right_child} and \code{conf_crit}.
+List with elements \code{node_id}, \code{feature}, \code{feature_type}, \code{split_cand}, \code{ids_left_child}, \code{ids_right_child} and \code{conf_crit}.
 }
 \description{
 Helper to compute the confident criterion of a categorical split

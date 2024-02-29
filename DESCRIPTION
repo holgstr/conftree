@@ -1,10 +1,10 @@
 Package: r2p
-Title: What the Package Does (One Line, Title Case)
+Title: Regression Trees Using Conformal Prediction
 Version: 0.0.0.9000
 Authors@R: 
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: r2p creates binary decision trees for regression problems using conformal prediction. It guarantees homogeneity within each of the subgroups while maximizing heterogeneity across subgroups. This can be done for standard supervised regression models, as well as heterogeneous treatment effect (HTE) models.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
