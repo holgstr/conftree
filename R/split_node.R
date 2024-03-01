@@ -127,8 +127,12 @@ process_covariate <- function(var_name, x_data, node_id, valid_set, alpha, lambd
   if (inherits(covariate, "numeric")) {
     uniques <- sort(unique(covariate))
     split_candidates <- (uniques[-length(uniques)] + uniques[-1]) / 2
-    split_candidates <- split_candidates[sapply(split_candidates, eval_split_cand_numeric, covariate = covariate, valid_set = valid_set, alpha = alpha)]
-    lapply(X = split_candidates, FUN = process_split_config_numeric, node_id = node_id, var_name = var_name, x_data = x_data, valid_set = valid_set, alpha = alpha, lambda = lambda)
+    if (length(split_candidates) == 0) {
+      NULL
+    } else {
+      split_candidates <- split_candidates[sapply(split_candidates, eval_split_cand_numeric, covariate = covariate, valid_set = valid_set, alpha = alpha)]
+      lapply(X = split_candidates, FUN = process_split_config_numeric, node_id = node_id, var_name = var_name, x_data = x_data, valid_set = valid_set, alpha = alpha, lambda = lambda)
+    }
   } else {
     # Sort factor levels by mean prediction.
     levels_sorted <- sort(tapply(valid_set$.pred, covariate, mean))

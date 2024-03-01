@@ -15,6 +15,7 @@ Imports:
     checkmate,
     magrittr,
     parsnip,
+    partykit,
     rsample
 Suggests:
     tidymodels
