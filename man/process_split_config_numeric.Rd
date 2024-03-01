@@ -8,7 +8,7 @@ process_split_config_numeric(
   node_id,
   var_name,
   split_cand,
-  covariate,
+  x_data,
   valid_set,
   alpha,
   lambda
@@ -21,7 +21,7 @@ process_split_config_numeric(
 
 \item{split_cand}{(\code{number})\cr value of the split point.}
 
-\item{covariate}{(\code{numeric})\cr covariate values of the observations in the parent node.}
+\item{x_data}{(\code{data.frame})\cr feature data matrix of the parent node.}
 
 \item{valid_set}{(\code{data.frame})\cr validation set.
 See \code{\link[=get_valid_set]{get_valid_set()}} for details.}
