@@ -23,42 +23,26 @@
 #'  r2ptree(data = bikes, target = "count", learner = randforest,
 #'      alpha = 0.05, cv_folds = 1, gamma = 0.01, lambda = 0.5)
 r2ptree <- function(data, target, learner, alpha = 0.05, cv_folds = 2, gamma = 0.01, lambda = 0.5) {
+  # Reorder columns to ensure correct column identification for partysplits.
+  data <- data[, c(setdiff(names(data), target), target)]
   valid_set <- get_valid_set(data = data, target = target, learner = learner, cv_folds = cv_folds)
   x_data <- data[, colnames(data) != target]
+  # Initialize tree.
   node <- partykit::partynode(id = 1)
   tree <- partykit::party(node = node, data = data)
+  # Grow tree iteratively.
   while (partykit::width(tree) < 4) {
-    terminal_nodes <- partykit::nodeids(tree, terminal = TRUE)
-    tree_data <- partykit::data_party(tree)
-    splits <- lapply(X = terminal_nodes, FUN = function(x) {
-      ids_node <- which(x == tree_data[, ncol(tree_data)])
-      valid_set_node <- valid_set[valid_set$testing_ids %in% ids_node, ]
-      process_node(x_data = x_data,
-                   node_id = x,
-                   valid_set = valid_set_node,
-                   alpha = alpha,
-                   lambda = lambda)
-    })
-    splits <- do.call("c", splits)
-    conf_crits <- unlist(lapply(splits, FUN = function(x) {x[]$conf_crit}))
-    split <- splits[[which.min(conf_crits)]]
-    feature_id <- which(names(x_data) == split$feature)
-    if (split$feature_type == "numeric") {
-      sp <- partykit::partysplit(varid = feature_id,
-                                 breaks = split$split_cand)
-    } else {
-      sp <- partykit::partysplit(varid = feature_id,
-                                 index = ifelse(levels(x_data[, feature_id]) %in% split$split_cand, 1L, 2L))
-    }
-    li <- as.list(node)
-    tosplit <- as.integer(split$node_id)
-    n <- length(li)
-    node_new <- partykit::partynode(id = tosplit, split = sp, kids = list(partykit::partynode(n + 1L), partykit::partynode(n + 2L)))
-    li_new <- as.list(node_new)
-    li[[tosplit]] <- li_new[[1L]]
-    li <- c(li, li_new[-1L])
-    node <- partykit::as.partynode(li)
+    candidates <- get_candidates(tree = tree,
+                             x_data = x_data,
+                             valid_set = valid_set,
+                             alpha = alpha,
+                             lambda = lambda)
+    split <- get_split(candidates = candidates,
+                       x_data = x_data)
+    node <- grow_node(node = node,
+                      split = split,
+                      x_data = x_data)
     tree <- partykit::party(node = node, data = data)
   }
-  plot(tree)
+  tree
 }

@@ -57,7 +57,7 @@ eval_split_cand <- function(ids_left, valid_set, alpha) {
 #' @param node_id (`count`)\cr parent node identifier.
 #' @param var_name (`string`)\cr name of the feature to be split.
 #' @param split_cand (`number`)\cr value of the split point.
-#' @param x_data (`data.frame`)\cr feature data matrix of the parent node.
+#' @param x_data (`data.frame`)\cr feature data matrix.
 #' @param valid_set (`data.frame`)\cr validation set.
 #'   See [get_valid_set()] for details.
 #' @param alpha (`proportion`)\cr miscoverage rate.
@@ -77,7 +77,7 @@ process_split_config_numeric <- function(node_id, var_name, split_cand, x_data, 
 #' @param node_id (`count`)\cr parent node identifier.
 #' @param var_name (`string`)\cr name of the feature to be split.
 #' @param split_cand (`character`)\cr split point, set of categories representing the left child node.
-#' @param x_data (`data.frame`)\cr feature data matrix of the parent node.
+#' @param x_data (`data.frame`)\cr feature data matrix.
 #' @param valid_set (`data.frame`)\cr validation set.
 #'   See [get_valid_set()] for details.
 #' @param alpha (`proportion`)\cr miscoverage rate.
@@ -112,7 +112,7 @@ process_split_config <- function(ids_left, ids_right, valid_set, alpha, lambda) 
 #' Helper to find all sensible splits in a covariate
 #'
 #' @param var_name (`string`)\cr name of the feature to be split.
-#' @param x_data (`data.frame`)\cr feature data matrix of the parent node.
+#' @param x_data (`data.frame`)\cr feature data matrix.
 #' @param node_id (`count`)\cr parent node identifier.
 #' @param valid_set (`data.frame`)\cr validation set.
 #'   See [get_valid_set()] for details.
@@ -157,7 +157,7 @@ process_covariate <- function(var_name, x_data, node_id, valid_set, alpha, lambd
 
 #' Helper to find all sensible splits in a parent node
 #'
-#' @param x_data (`data.frame`)\cr feature data matrix of the parent node.
+#' @param x_data (`data.frame`)\cr feature data matrix.
 #' @param node_id (`count`)\cr parent node identifier.
 #' @param valid_set (`data.frame`)\cr validation set.
 #'   See [get_valid_set()] for details.
