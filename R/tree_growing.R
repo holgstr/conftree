@@ -39,8 +39,8 @@ grow_node <- function(node, split, x_data) {
 #' @keywords internal
 #'
 get_split <- function(candidates, x_data) {
-  conf_crits <- unlist(lapply(candidates, FUN = function(x) {x[]$conf_crit}))
-  candidates[[which.min(conf_crits)]]
+  gains <- unlist(lapply(candidates, FUN = function(x) {x[]$gain}))
+  candidates[[which.max(gains)]]
 }
 
 #' Helper to get candidates for the next split of a tree

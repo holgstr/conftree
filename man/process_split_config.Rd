@@ -2,9 +2,9 @@
 % Please edit documentation in R/node_splitting.R
 \name{process_split_config}
 \alias{process_split_config}
-\title{Helper to compute the confident criterion of a split}
+\title{Helper to compute the gain in confident criterion of a split}
 \usage{
-process_split_config(ids_left, ids_right, valid_set, alpha, lambda)
+process_split_config(ids_left, ids_right, valid_set, crit_node, alpha, lambda)
 }
 \arguments{
 \item{ids_left}{(\code{integer})\cr ids of the left child node.}
@@ -14,6 +14,8 @@ process_split_config(ids_left, ids_right, valid_set, alpha, lambda)
 \item{valid_set}{(\code{data.frame})\cr validation set.
 See \code{\link[=get_valid_set]{get_valid_set()}} for details.}
 
+\item{crit_node}{(\code{number})\cr confident criterion of the parent node.}
+
 \item{alpha}{(\code{proportion})\cr miscoverage rate.}
 
 \item{lambda}{(\code{proportion})\cr balance between width and deviation.}
@@ -22,6 +24,6 @@ See \code{\link[=get_valid_set]{get_valid_set()}} for details.}
 The value of the confident criterion of a split.
 }
 \description{
-Helper to compute the confident criterion of a split
+Helper to compute the gain in confident criterion of a split
 }
 \keyword{internal}

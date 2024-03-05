@@ -4,7 +4,15 @@
 \alias{process_covariate}
 \title{Helper to find all sensible splits in a covariate}
 \usage{
-process_covariate(var_name, x_data, node_id, valid_set, alpha, lambda)
+process_covariate(
+  var_name,
+  x_data,
+  node_id,
+  valid_set,
+  crit_node,
+  alpha,
+  lambda
+)
 }
 \arguments{
 \item{var_name}{(\code{string})\cr name of the feature to be split.}
@@ -15,6 +23,8 @@ process_covariate(var_name, x_data, node_id, valid_set, alpha, lambda)
 
 \item{valid_set}{(\code{data.frame})\cr validation set.
 See \code{\link[=get_valid_set]{get_valid_set()}} for details.}
+
+\item{crit_node}{(\code{number})\cr confident criterion of the parent node.}
 
 \item{alpha}{(\code{proportion})\cr miscoverage rate.}
 

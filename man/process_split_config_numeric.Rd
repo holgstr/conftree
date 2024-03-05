@@ -2,7 +2,7 @@
 % Please edit documentation in R/node_splitting.R
 \name{process_split_config_numeric}
 \alias{process_split_config_numeric}
-\title{Helper to compute the confident criterion of a numeric split}
+\title{Helper to compute the gain in confident criterion of a numeric split}
 \usage{
 process_split_config_numeric(
   node_id,
@@ -10,6 +10,7 @@ process_split_config_numeric(
   split_cand,
   x_data,
   valid_set,
+  crit_node,
   alpha,
   lambda
 )
@@ -26,6 +27,8 @@ process_split_config_numeric(
 \item{valid_set}{(\code{data.frame})\cr validation set.
 See \code{\link[=get_valid_set]{get_valid_set()}} for details.}
 
+\item{crit_node}{(\code{number})\cr confident criterion of the parent node.}
+
 \item{alpha}{(\code{proportion})\cr miscoverage rate.}
 
 \item{lambda}{(\code{proportion})\cr balance between width and deviation.}
@@ -34,6 +37,6 @@ See \code{\link[=get_valid_set]{get_valid_set()}} for details.}
 List with elements \code{node_id}, \code{feature}, \code{feature_type}, \code{split_cand}, \code{ids_left_child}, \code{ids_right_child} and \code{conf_crit}.
 }
 \description{
-Helper to compute the confident criterion of a numeric split
+Helper to compute the gain in confident criterion of a numeric split
 }
 \keyword{internal}
