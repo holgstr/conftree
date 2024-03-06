@@ -51,11 +51,13 @@ get_split <- function(candidates, x_data) {
 #' @param valid_set (`data.frame`)\cr validation set.
 #'   See [get_valid_set()] for details.
 #' @param alpha (`proportion`)\cr miscoverage rate.
+#' @param gamma (`proportion`)\cr regularization parameter ensuring that reduction
+#' in the impurity of the confident homogeneity is sufficiently large.
 #' @param lambda (`proportion`)\cr balance between width and deviation.
 #' @return List of all sensible splits in the tree's terminal nodes.
 #' @keywords internal
 #'
-get_candidates <- function(tree, x_data, valid_set, alpha, lambda) {
+get_candidates <- function(tree, x_data, valid_set, alpha, gamma, lambda) {
   terminal_nodes <- partykit::nodeids(tree, terminal = TRUE)
   tree_data <- partykit::data_party(tree)
   splits <- lapply(X = terminal_nodes, FUN = function(x) {
@@ -65,6 +67,7 @@ get_candidates <- function(tree, x_data, valid_set, alpha, lambda) {
                  node_id = x,
                  valid_set = valid_set_node,
                  alpha = alpha,
+                 gamma = gamma,
                  lambda = lambda)
   })
   do.call("c", splits)

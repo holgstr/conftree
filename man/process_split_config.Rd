@@ -4,7 +4,15 @@
 \alias{process_split_config}
 \title{Helper to compute the gain in confident criterion of a split}
 \usage{
-process_split_config(ids_left, ids_right, valid_set, crit_node, alpha, lambda)
+process_split_config(
+  ids_left,
+  ids_right,
+  valid_set,
+  crit_node,
+  alpha,
+  gamma,
+  lambda
+)
 }
 \arguments{
 \item{ids_left}{(\code{integer})\cr ids of the left child node.}
@@ -17,6 +25,9 @@ See \code{\link[=get_valid_set]{get_valid_set()}} for details.}
 \item{crit_node}{(\code{number})\cr confident criterion of the parent node.}
 
 \item{alpha}{(\code{proportion})\cr miscoverage rate.}
+
+\item{gamma}{(\code{proportion})\cr regularization parameter ensuring that reduction
+in the impurity of the confident homogeneity is sufficiently large.}
 
 \item{lambda}{(\code{proportion})\cr balance between width and deviation.}
 }

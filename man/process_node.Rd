@@ -4,7 +4,7 @@
 \alias{process_node}
 \title{Helper to find all sensible splits in a parent node}
 \usage{
-process_node(x_data, node_id, valid_set, alpha, lambda)
+process_node(x_data, node_id, valid_set, alpha, gamma, lambda)
 }
 \arguments{
 \item{x_data}{(\code{data.frame})\cr feature data matrix.}
@@ -15,6 +15,9 @@ process_node(x_data, node_id, valid_set, alpha, lambda)
 See \code{\link[=get_valid_set]{get_valid_set()}} for details.}
 
 \item{alpha}{(\code{proportion})\cr miscoverage rate.}
+
+\item{gamma}{(\code{proportion})\cr regularization parameter ensuring that reduction
+in the impurity of the confident homogeneity is sufficiently large.}
 
 \item{lambda}{(\code{proportion})\cr balance between width and deviation.}
 }

@@ -12,6 +12,7 @@ process_split_config_numeric(
   valid_set,
   crit_node,
   alpha,
+  gamma,
   lambda
 )
 }
@@ -30,6 +31,9 @@ See \code{\link[=get_valid_set]{get_valid_set()}} for details.}
 \item{crit_node}{(\code{number})\cr confident criterion of the parent node.}
 
 \item{alpha}{(\code{proportion})\cr miscoverage rate.}
+
+\item{gamma}{(\code{proportion})\cr regularization parameter ensuring that reduction
+in the impurity of the confident homogeneity is sufficiently large.}
 
 \item{lambda}{(\code{proportion})\cr balance between width and deviation.}
 }

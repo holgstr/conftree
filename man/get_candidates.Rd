@@ -4,7 +4,7 @@
 \alias{get_candidates}
 \title{Helper to get candidates for the next split of a tree}
 \usage{
-get_candidates(tree, x_data, valid_set, alpha, lambda)
+get_candidates(tree, x_data, valid_set, alpha, gamma, lambda)
 }
 \arguments{
 \item{tree}{(\code{party})\cr tree object.
@@ -16,6 +16,9 @@ See \code{\link[partykit:party]{partykit::party()}} for details.}
 See \code{\link[=get_valid_set]{get_valid_set()}} for details.}
 
 \item{alpha}{(\code{proportion})\cr miscoverage rate.}
+
+\item{gamma}{(\code{proportion})\cr regularization parameter ensuring that reduction
+in the impurity of the confident homogeneity is sufficiently large.}
 
 \item{lambda}{(\code{proportion})\cr balance between width and deviation.}
 }

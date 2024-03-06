@@ -31,14 +31,19 @@ r2ptree <- function(data, target, learner, alpha = 0.05, cv_folds = 2, gamma = 0
   node <- partykit::partynode(id = 1)
   tree <- partykit::party(node = node, data = data)
   # Grow tree iteratively.
-  while (partykit::width(tree) < 4) {
+  while (partykit::width(tree) < 10) {
     candidates <- get_candidates(tree = tree,
                              x_data = x_data,
                              valid_set = valid_set,
                              alpha = alpha,
+                             gamma = gamma,
                              lambda = lambda)
     split <- get_split(candidates = candidates,
                        x_data = x_data)
+    # Check if split does not pass gamma-threshold or is negative.
+    if (split$gain <= 0) {
+      break
+    }
     node <- grow_node(node = node,
                       split = split,
                       x_data = x_data)
