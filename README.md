@@ -45,13 +45,13 @@ library(conftree)
 library(tidymodels)
 data(bikes)
 
-# Specify the learner used for model training:
+# Specify the learner to be used for model training:
 set.seed(1234)
 randforest <- rand_forest(trees = 200, min_n = 5) %>%
   set_mode("regression") %>%
   set_engine("ranger")
 
-# Find optimal subgroups using conformal prediction:
+# Find optimal subgroups:
 groups <- r2p(
   data = bikes,
   target = "count",
