@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-# **`conftree`**: Subgroups With Regression Trees Using Conformal Prediction
+# **`conftree`**: Subgroups With Trees Using Conformal Prediction
 
 This package uses conformal prediction for subgroup detection with regression trees. It is based on the `r2p` algorithm, as introduced by [Lee et. al (NeurIPS, 2020)][1]. In `conftree`, we improve this framework by extending it to [CV+/Jackknife+][2]. This works with any regression model that can be fitted with `tidymodels`.
 
@@ -36,7 +36,7 @@ remotes::install_github("holgstr/conftree")
 
 Let's find subgroups in the Washington bike share data. We use `tidymodels` to set a random forest as `learner`, a 5% miscoverage rate as `alpha`, and 10-fold CV+ to quantify the uncertainty in the resulting subgroups:
 
-```{r, message = FALSE, eval = FALSE}
+```{r, message = FALSE}
 library(conftree)
 library(tidymodels)
 data(bikes)
@@ -58,32 +58,6 @@ groups <- r2p(data = bikes,
 
 # Display tree structure:
 groups$tree
-
-```
-
-```{r, message = FALSE, echo = FALSE}
-library(tidymodels)
-devtools::load_all()
-data(bikes)
-
-# Specify the learner used for model training:
-set.seed(1234)
-randforest <- rand_forest(trees = 200, min_n = 5) %>%
-  set_mode("regression") %>%
-  set_engine("ranger")
-
-# Find optimal subgroups using conformal prediction:
-groups <- r2p(data = bikes,
-              target = "count",
-              learner = randforest,
-              cv_folds = 10,
-              alpha = 0.05,
-              gamma = 0.2,
-              lambda = 0.5)
-
-# Display tree structure:
-groups$tree
-
 ```
 
 [1]: https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html

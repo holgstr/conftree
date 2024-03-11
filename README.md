@@ -8,7 +8,7 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![R-CMD-check](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-# **`conftree`**: Subgroups With Regression Trees Using Conformal Prediction
+# **`conftree`**: Subgroups With Trees Using Conformal Prediction
 
 This package uses conformal prediction for subgroup detection with
 regression trees. It is based on the `r2p` algorithm, as introduced by
@@ -58,16 +58,15 @@ groups <- r2p(data = bikes,
 
 # Display tree structure:
 groups$tree
+#> [1] root
+#> |   [2] weekday in Sun: *
+#> |   [3] weekday in Mon, Tue, Wed, Thu, Fri, Sat
+#> |   |   [4] weekday in Sat: *
+#> |   |   [5] weekday in Sun, Mon, Tue, Wed, Thu, Fri
+#> |   |   |   [6] temp <= 6.15: *
+#> |   |   |   [7] temp > 6.15
+#> |   |   |   |   [8] temp <= 28.29
+#> |   |   |   |   |   [9] month <= 2.5: *
+#> |   |   |   |   |   [10] month > 2.5: *
+#> |   |   |   |   [11] temp > 28.29: *
 ```
-
-    #> [1] root
-    #> |   [2] weekday in Sun: *
-    #> |   [3] weekday in Mon, Tue, Wed, Thu, Fri, Sat
-    #> |   |   [4] weekday in Sat: *
-    #> |   |   [5] weekday in Sun, Mon, Tue, Wed, Thu, Fri
-    #> |   |   |   [6] temp <= 6.15: *
-    #> |   |   |   [7] temp > 6.15
-    #> |   |   |   |   [8] temp <= 28.29
-    #> |   |   |   |   |   [9] month <= 2.5: *
-    #> |   |   |   |   |   [10] month > 2.5: *
-    #> |   |   |   |   [11] temp > 28.29: *
