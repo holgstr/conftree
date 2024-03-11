@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_tree.R
 \name{plot.conftree}
 \alias{plot.conftree}
-\title{Plot a party tree}
+\title{Plot a conftree}
 \usage{
 \method{plot}{conftree}(x, ...)
 }
@@ -15,5 +15,5 @@
 The plot.
 }
 \description{
-Plot a party tree
+Plot a conftree
 }

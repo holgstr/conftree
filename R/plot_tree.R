@@ -1,4 +1,4 @@
-#' Plot a party tree
+#' Plot a conftree
 #'
 #' @param x (`conftree`)\cr tree containing detected subgroups.
 #' @param ... additional arguments.
