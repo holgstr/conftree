@@ -10,13 +10,15 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 
 # **`conftree`**: Subgroups With Trees Using Conformal Prediction
 
-This package uses conformal prediction for subgroup detection with
-regression trees. It is based on the `r2p` algorithm, as introduced by
-[Lee et. al (NeurIPS,
-2020)](https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html).
-In `conftree`, we improve this framework by extending it to
-[CV+/Jackknife+](https://arxiv.org/abs/1905.02928). This works with any
-regression model that can be fitted with `tidymodels`.
+This `R` package detects homogeneous subgroups within machine learning
+models with numeric outcomes (regression). It leverages [CV+ and
+Jackknife+](https://arxiv.org/abs/1905.02928) to simultaneously optimize
+inter-group heterogeneity and intra-group homogeneity. Therefore, it is
+an extension of the `r2p` algorithm ([Lee et. al, NeurIPS
+2020)](https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html)).
+With `conftree`, subgroups can be identified for all regression models
+that can be fitted with `tidymodels`, see
+[here](https://www.tidymodels.org/find/parsnip/) for a list.
 
 ## Installation
 

@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 # **`conftree`**: Subgroups With Trees Using Conformal Prediction
 
-This package uses conformal prediction for subgroup detection with regression trees. It is based on the `r2p` algorithm, as introduced by [Lee et. al (NeurIPS, 2020)][1]. In `conftree`, we improve this framework by extending it to [CV+/Jackknife+][2]. This works with any regression model that can be fitted with `tidymodels`.
+This `R` package detects homogeneous subgroups within machine learning models with numeric outcomes (regression). It leverages [CV+ and Jackknife+][1] to simultaneously optimize inter-group heterogeneity and intra-group homogeneity. Therefore, it is an extension of the `r2p` algorithm ([Lee et. al, NeurIPS 2020)][2]). With `conftree`, subgroups can be identified for all regression models that can be fitted with `tidymodels`, see [here][3] for a list.
 
 ## Installation
 
@@ -60,6 +60,8 @@ groups <- r2p(data = bikes,
 groups$tree
 ```
 
-[1]: https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html
+[1]: https://arxiv.org/abs/1905.02928
 
-[2]: https://arxiv.org/abs/1905.02928
+[2]: https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html
+
+[3]: https://www.tidymodels.org/find/parsnip/
