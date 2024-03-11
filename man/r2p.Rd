@@ -53,4 +53,5 @@ groups <- r2p(data = bikes,
               alpha = 0.05,
               gamma = 0.2,
               lambda = 0.5)
+groups$tree
 }

@@ -16,6 +16,6 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Holger Löwe \email{hbj.loewe@gmail.com}
 
 }

@@ -84,13 +84,13 @@ total_dev <- function(valid_set, ids_left, ids_right, alpha) {
   w_left * avg_dev(valid_set_left, alpha) + (1 - w_left) * avg_dev(valid_set_right, alpha)
 }
 
-#' Helper to compute the confident criterion
+#' Helper to compute confident homogeneity
 #' @param width (`number`)\cr total conformal interval length of a split.
 #' @param deviation (`number`)\cr total absolute deviation of a split.
 #' @param lambda (`proportion`)\cr balance between width and deviation.
-#' @return the value of the confident criterion.
+#' @return the value of the confident homogeneity.
 #' @keywords internal
 #'
-conf_crit <- function(width, deviation, lambda) {
+conf_homo <- function(width, deviation, lambda) {
   lambda * width + (1 - lambda) * deviation
 }

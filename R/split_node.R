@@ -52,7 +52,7 @@ eval_split_cand <- function(ids_left, valid_set, alpha) {
   alpha >= 1 / (n_min + 1)
 }
 
-#' Helper to compute the gain in confident criterion of a numeric split
+#' Helper to compute the gain in confident homogeneity of a numeric split
 #'
 #' @param node_id (`count`)\cr parent node identifier.
 #' @param var_name (`string`)\cr name of the feature to be split.
@@ -60,12 +60,12 @@ eval_split_cand <- function(ids_left, valid_set, alpha) {
 #' @param x_data (`data.frame`)\cr feature data matrix.
 #' @param valid_set (`data.frame`)\cr validation set.
 #'   See [get_valid_set()] for details.
-#' @param crit_node (`number`)\cr confident criterion of the parent node.
+#' @param crit_node (`number`)\cr confident homogeneity of the parent node.
 #' @param alpha (`proportion`)\cr miscoverage rate.
 #' @param gamma (`proportion`)\cr regularization parameter ensuring that reduction
 #' in the impurity of the confident homogeneity is sufficiently large.
 #' @param lambda (`proportion`)\cr balance between width and deviation.
-#' @return List with elements `node_id`, `feature`, `feature_type`, `split_cand`, `ids_left_child`, `ids_right_child` and `conf_crit`.
+#' @return List with elements `node_id`, `feature`, `feature_type`, `split_cand`, `ids_left_child`, `ids_right_child` and `gain`.
 #' @keywords internal
 #'
 process_split_config_numeric <- function(node_id, var_name, split_cand, x_data, valid_set, crit_node, alpha, gamma, lambda) {
@@ -75,7 +75,7 @@ process_split_config_numeric <- function(node_id, var_name, split_cand, x_data, 
   list("node_id" = node_id, "feature" = var_name, "feature_type" = "numeric", "split_cand" = split_cand, "ids_left_child" = ids_candidates_left, "ids_right_child" = ids_candidates_right, "gain" = gain)
 }
 
-#' Helper to compute the gain in confident criterion of a categorical split
+#' Helper to compute the gain in confident homogeneity of a categorical split
 #'
 #' @param node_id (`count`)\cr parent node identifier.
 #' @param var_name (`string`)\cr name of the feature to be split.
@@ -83,12 +83,12 @@ process_split_config_numeric <- function(node_id, var_name, split_cand, x_data, 
 #' @param x_data (`data.frame`)\cr feature data matrix.
 #' @param valid_set (`data.frame`)\cr validation set.
 #'   See [get_valid_set()] for details.
-#' @param crit_node (`number`)\cr confident criterion of the parent node.
+#' @param crit_node (`number`)\cr confident homogeneity of the parent node.
 #' @param alpha (`proportion`)\cr miscoverage rate.
 #' @param gamma (`proportion`)\cr regularization parameter ensuring that reduction
 #' in the impurity of the confident homogeneity is sufficiently large.
 #' @param lambda (`proportion`)\cr balance between width and deviation.
-#' @return List with elements `node_id`, `feature`, `feature_type`, `split_cand`, `ids_left_child`, `ids_right_child` and `conf_crit`.
+#' @return List with elements `node_id`, `feature`, `feature_type`, `split_cand`, `ids_left_child`, `ids_right_child` and `gain`.
 #' @keywords internal
 #'
 process_split_config_categorical <- function(node_id, var_name, split_cand, x_data, valid_set,  crit_node, alpha, gamma, lambda) {
@@ -98,24 +98,24 @@ process_split_config_categorical <- function(node_id, var_name, split_cand, x_da
   list("node_id" = node_id, "feature" = var_name, "feature_type" = "categorical", "split_cand" = split_cand, "ids_left_child" = ids_candidates_left, "ids_right_child" = ids_candidates_right, "gain" = gain)
 }
 
-#' Helper to compute the gain in confident criterion of a split
+#' Helper to compute the gain in confident homogeneity of a split
 #'
 #' @param ids_left (`integer`)\cr ids of the left child node.
 #' @param ids_right (`integer`)\cr ids of the right child node.
 #' @param valid_set (`data.frame`)\cr validation set.
 #'   See [get_valid_set()] for details.
-#' @param crit_node (`number`)\cr confident criterion of the parent node.
+#' @param crit_node (`number`)\cr confident homogeneity of the parent node.
 #' @param alpha (`proportion`)\cr miscoverage rate.
 #' @param gamma (`proportion`)\cr regularization parameter ensuring that reduction
 #' in the impurity of the confident homogeneity is sufficiently large.
 #' @param lambda (`proportion`)\cr balance between width and deviation.
-#' @return The value of the confident criterion of a split.
+#' @return The confident homogeneity of a split.
 #' @keywords internal
 #'
 process_split_config <- function(ids_left, ids_right, valid_set, crit_node, alpha, gamma, lambda) {
   total_width <- total_width(valid_set, ids_left, ids_right, alpha)
   total_dev <- total_dev(valid_set, ids_left, ids_right, alpha)
-  crit_split <- conf_crit(width = total_width, deviation = total_dev, lambda = lambda)
+  crit_split <- conf_homo(width = total_width, deviation = total_dev, lambda = lambda)
   max(0, crit_node - crit_split) * (crit_node * (1 - gamma) > crit_split)
 }
 
@@ -126,7 +126,7 @@ process_split_config <- function(ids_left, ids_right, valid_set, crit_node, alph
 #' @param node_id (`count`)\cr parent node identifier.
 #' @param valid_set (`data.frame`)\cr validation set.
 #'   See [get_valid_set()] for details.
-#' @param crit_node (`number`)\cr confident criterion of the parent node.
+#' @param crit_node (`number`)\cr confident homogeneity of the parent node.
 #' @param alpha (`proportion`)\cr miscoverage rate.
 #' @param gamma (`proportion`)\cr regularization parameter ensuring that reduction
 #' in the impurity of the confident homogeneity is sufficiently large.
@@ -182,24 +182,24 @@ process_covariate <- function(var_name, x_data, node_id, valid_set, crit_node, a
 #' @keywords internal
 #'
 process_node <- function(x_data, node_id, valid_set, alpha, gamma, lambda) {
-  # Confident criterion in the parent node.
+  # Confident homogeneity in the parent node.
   crit_node <- crit_node(valid_set = valid_set, alpha = alpha, lambda = lambda)
   # Sensible splits in the parent node.
   result <- lapply(X = colnames(x_data), FUN = process_covariate, x_data = x_data, node_id = node_id, valid_set = valid_set, crit_node = crit_node, alpha = alpha, gamma = gamma, lambda = lambda)
   do.call("c", result)
 }
 
-#' Helper to compute the confident criterion in a node.
+#' Helper to compute the confident homogeneity in a node.
 #'
 #' @param valid_set (`data.frame`)\cr validation set.
 #'   See [get_valid_set()] for details.
 #' @param alpha (`proportion`)\cr miscoverage rate.
 #' @param lambda (`proportion`)\cr balance between width and deviation.
-#' @return the confident criterion in the node.
+#' @return the confident homogeneity in the node.
 #' @keywords internal
 #'
 crit_node <- function(valid_set, alpha, lambda) {
   w_node <- avg_width(valid_set = valid_set, alpha = alpha)
   d_node <- avg_dev(valid_set = valid_set, alpha = alpha)
-  conf_crit(width = w_node, deviation = d_node, lambda = lambda)
+  conf_homo(width = w_node, deviation = d_node, lambda = lambda)
 }
