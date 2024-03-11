@@ -14,8 +14,8 @@ regression trees. It is based on the `r2p` algorithm, as introduced by
 [Lee et. al (NeurIPS,
 2020)](https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html).
 In `conftree`, we improve this framework by extending it to
-[CV+/Jackknife+](https://arxiv.org/abs/1905.02928). This integrates with
-any regression model that can be build with `tidymodels` (see [list of
+[CV+/Jackknife+](https://arxiv.org/abs/1905.02928). This works with any
+regression model that can be fitted with `tidymodels` (see [list of
 available models](https://www.tidymodels.org/find/parsnip/)).
 
 ## Installation

@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 # **`conftree`**: Subgroups With Regression Trees Using Conformal Prediction
 
-This package uses conformal prediction for subgroup detection with regression trees. It is based on the `r2p` algorithm, as introduced by [Lee et. al (NeurIPS, 2020)][1]. In `conftree`, we improve this framework by extending it to [CV+/Jackknife+][3]. This integrates with any regression model that can be build with `tidymodels` (see [list of available models][2]).
+This package uses conformal prediction for subgroup detection with regression trees. It is based on the `r2p` algorithm, as introduced by [Lee et. al (NeurIPS, 2020)][1]. In `conftree`, we improve this framework by extending it to [CV+/Jackknife+][3]. This works with any regression model that can be fitted with `tidymodels` (see [list of available models][2]).
 
 ## Installation
 
