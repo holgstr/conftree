@@ -1,14 +1,16 @@
 url: https://holgstr.github.io/conftree/
+
 template:
   bootstrap: 5
+
 navbar:
   bg: dark
   type: dark
   structure:
-    left: reference
-    right: github
+    left: [reference]
+    right: [search, github]
   components:
     github:
       icon: fa-github
-      href: http://github.com/holgstr/fme
+      href: http://github.com/holgstr/conftree
       aria-label: Github
