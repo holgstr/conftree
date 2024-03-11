@@ -18,5 +18,6 @@ Imports:
     partykit,
     rsample
 Suggests:
+    ranger,
     tidymodels
 URL: https://holgstr.github.io/conftree/

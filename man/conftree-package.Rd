@@ -8,6 +8,13 @@
 \description{
 \code{conftree} detects subgroups via recursive partitioning based on confident conformal homogeneity.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://holgstr.github.io/conftree/}
+}
+
+}
 \author{
 \strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
 

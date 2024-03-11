@@ -2,29 +2,29 @@
 % Please edit documentation in R/r2p.R
 \name{r2p}
 \alias{r2p}
-\title{Robust Recursive Partitioning Using Conformal Prediction}
+\title{Finding Subgroups With Regression Trees Using Conformal Prediction}
 \usage{
 r2p(
   data,
   target,
   learner,
-  alpha = 0.05,
   cv_folds = 2,
+  alpha = 0.05,
   gamma = 0.01,
   lambda = 0.5
 )
 }
 \arguments{
-\item{data}{(\code{data.frame})\cr.}
+\item{data}{(\code{data.frame})\cr data set for model training and uncertainty estimation.}
 
 \item{target}{(\code{string})\cr name of the target variable.}
 
 \item{learner}{(\code{model_spec} object)\cr the learner for training the prediction model.
 See \code{\link[parsnip:model_spec]{parsnip::model_spec()}} for details.}
 
-\item{alpha}{(\code{proportion})\cr miscoverage rate.}
-
 \item{cv_folds}{(\code{count})\cr number of CV+ folds.}
+
+\item{alpha}{(\code{proportion})\cr miscoverage rate.}
 
 \item{gamma}{(\code{proportion})\cr regularization parameter ensuring that reduction
 in the impurity of the confident homogeneity is sufficiently large.}
@@ -36,15 +36,21 @@ to the average absolute deviation (i.e. interval size vs. within-group homogenei
 The tree.
 }
 \description{
-Robust Recursive Partitioning Using Conformal Prediction
+Finding Subgroups With Regression Trees Using Conformal Prediction
 }
 \examples{
 library(tidymodels)
-tidymodels_prefer()
+library(ranger)
 data(bikes)
+set.seed(1234)
 randforest <- rand_forest(trees = 200, min_n = 5) \%>\%
  set_mode("regression") \%>\%
  set_engine("ranger")
- r2p(data = bikes, target = "count", learner = randforest,
-     alpha = 0.05, cv_folds = 1, gamma = 0.01, lambda = 0.5)
+ r2p(data = bikes,
+     target = "count",
+     learner = randforest,
+     cv_folds = 2,
+     alpha = 0.05,
+     gamma = 0.2,
+     lambda = 0.5)
 }

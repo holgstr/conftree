@@ -47,8 +47,13 @@ randforest <- rand_forest(trees = 200, min_n = 5) %>%
   set_engine("ranger")
 
 # Find optimal subgroups using conformal prediction:
-r2p(data = bikes, target = "count", learner = randforest,
-    alpha = 0.05, cv_folds = 10, gamma = 0.2, lambda = 0.5)
+r2p(data = bikes,
+    target = "count",
+    learner = randforest,
+    cv_folds = 10,
+    alpha = 0.05,
+    gamma = 0.2,
+    lambda = 0.5)
 
 ```
 
@@ -64,8 +69,13 @@ randforest <- rand_forest(trees = 200, min_n = 5) %>%
   set_engine("ranger")
 
 # Find optimal subgroups using conformal prediction:
-r2p(data = bikes, target = "count", learner = randforest,
-    alpha = 0.05, cv_folds = 10, gamma = 0.2, lambda = 0.5)
+r2p(data = bikes,
+    target = "count",
+    learner = randforest,
+    cv_folds = 10,
+    alpha = 0.05,
+    gamma = 0.2,
+    lambda = 0.5)
 
 ```
 

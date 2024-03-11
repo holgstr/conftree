@@ -1,11 +1,11 @@
-#' Robust Recursive Partitioning Using Conformal Prediction
+#' Finding Subgroups With Regression Trees Using Conformal Prediction
 #'
-#' @param data (`data.frame`)\cr.
+#' @param data (`data.frame`)\cr data set for model training and uncertainty estimation.
 #' @param target (`string`)\cr name of the target variable.
 #' @param learner (`model_spec` object)\cr the learner for training the prediction model.
 #'   See [parsnip::model_spec()] for details.
-#' @param alpha (`proportion`)\cr miscoverage rate.
 #' @param cv_folds (`count`)\cr number of CV+ folds.
+#' @param alpha (`proportion`)\cr miscoverage rate.
 #' @param gamma (`proportion`)\cr regularization parameter ensuring that reduction
 #' in the impurity of the confident homogeneity is sufficiently large.
 #' @param lambda (`proportion`)\cr balance parameter, quantifying the impact of the average interval length relative
@@ -15,14 +15,20 @@
 #'
 #' @examples
 #' library(tidymodels)
-#' tidymodels_prefer()
+#' library(ranger)
 #' data(bikes)
+#' set.seed(1234)
 #' randforest <- rand_forest(trees = 200, min_n = 5) %>%
 #'  set_mode("regression") %>%
 #'  set_engine("ranger")
-#'  r2p(data = bikes, target = "count", learner = randforest,
-#'      alpha = 0.05, cv_folds = 1, gamma = 0.01, lambda = 0.5)
-r2p <- function(data, target, learner, alpha = 0.05, cv_folds = 2, gamma = 0.01, lambda = 0.5) {
+#'  r2p(data = bikes,
+#'      target = "count",
+#'      learner = randforest,
+#'      cv_folds = 2,
+#'      alpha = 0.05,
+#'      gamma = 0.2,
+#'      lambda = 0.5)
+r2p <- function(data, target, learner, cv_folds = 2, alpha = 0.05, gamma = 0.01, lambda = 0.5) {
   # Reorder columns to ensure correct column identification for partysplits.
   data <- data[, c(setdiff(names(data), target), target)]
   valid_set <- get_valid_set(data = data, target = target, learner = learner, cv_folds = cv_folds)
