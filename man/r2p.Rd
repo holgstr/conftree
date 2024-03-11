@@ -19,7 +19,7 @@ r2p(
 
 \item{target}{(\code{string})\cr name of the target variable.}
 
-\item{learner}{(\code{model_spec} object)\cr the learner for training the prediction model.
+\item{learner}{(\code{model_spec})\cr the learner for training the prediction model.
 See \code{\link[parsnip:model_spec]{parsnip::model_spec()}} for details.}
 
 \item{cv_folds}{(\code{count})\cr number of CV+ folds.}
@@ -46,7 +46,7 @@ set.seed(1234)
 randforest <- rand_forest(trees = 200, min_n = 5) \%>\%
  set_mode("regression") \%>\%
  set_engine("ranger")
- r2p(data = bikes,
+r2p(data = bikes,
      target = "count",
      learner = randforest,
      cv_folds = 2,

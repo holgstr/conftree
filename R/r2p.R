@@ -2,7 +2,7 @@
 #'
 #' @param data (`data.frame`)\cr data set for model training and uncertainty estimation.
 #' @param target (`string`)\cr name of the target variable.
-#' @param learner (`model_spec` object)\cr the learner for training the prediction model.
+#' @param learner (`model_spec`)\cr the learner for training the prediction model.
 #'   See [parsnip::model_spec()] for details.
 #' @param cv_folds (`count`)\cr number of CV+ folds.
 #' @param alpha (`proportion`)\cr miscoverage rate.
@@ -55,5 +55,15 @@ r2p <- function(data, target, learner, cv_folds = 2, alpha = 0.05, gamma = 0.01,
                       x_data = x_data)
     tree <- partykit::party(node = node, data = data)
   }
-  tree
+  structure(
+    list(
+      tree = tree,
+      valid_set = valid_set,
+      info = list(cv_folds = cv_folds,
+                  alpha = alpha,
+                  gamma = gamma,
+                  lambda = lambda)
+    ),
+    class = c("conftree", "r2p")
+  )
 }

@@ -183,10 +183,23 @@ process_covariate <- function(var_name, x_data, node_id, valid_set, crit_node, a
 #'
 process_node <- function(x_data, node_id, valid_set, alpha, gamma, lambda) {
   # Confident criterion in the parent node.
-  w_node <- avg_width(valid_set = valid_set, alpha = alpha)
-  d_node <- avg_dev(valid_set = valid_set, alpha = alpha)
-  crit_node <- conf_crit(width = w_node, deviation = d_node, lambda = lambda)
+  crit_node <- crit_node(valid_set = valid_set, alpha = alpha, lambda = lambda)
   # Sensible splits in the parent node.
   result <- lapply(X = colnames(x_data), FUN = process_covariate, x_data = x_data, node_id = node_id, valid_set = valid_set, crit_node = crit_node, alpha = alpha, gamma = gamma, lambda = lambda)
   do.call("c", result)
+}
+
+#' Helper to compute the confident criterion in a node.
+#'
+#' @param valid_set (`data.frame`)\cr validation set.
+#'   See [get_valid_set()] for details.
+#' @param alpha (`proportion`)\cr miscoverage rate.
+#' @param lambda (`proportion`)\cr balance between width and deviation.
+#' @return the confident criterion in the node.
+#' @keywords internal
+#'
+crit_node <- function(valid_set, alpha, lambda) {
+  w_node <- avg_width(valid_set = valid_set, alpha = alpha)
+  d_node <- avg_dev(valid_set = valid_set, alpha = alpha)
+  conf_crit(width = w_node, deviation = d_node, lambda = lambda)
 }
