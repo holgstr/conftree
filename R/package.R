@@ -1,6 +1,6 @@
-#' `r2p` Package
+#' `conftree` Package
 #'
-#' `r2p` detects subgroups via recursive partitioning based on confident conformal homogeneity.
+#' `conftree` detects subgroups via recursive partitioning based on confident conformal homogeneity.
 #'
 "_PACKAGE"
 
