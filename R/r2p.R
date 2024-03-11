@@ -28,6 +28,7 @@
 #'               alpha = 0.05,
 #'               gamma = 0.2,
 #'               lambda = 0.5)
+#' groups$tree
 r2p <- function(data, target, learner, cv_folds = 2, alpha = 0.05, gamma = 0.01, lambda = 0.5) {
   # Reorder columns to ensure correct column identification for partysplits.
   data <- data[, c(setdiff(names(data), target), target)]
