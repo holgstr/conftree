@@ -8,9 +8,7 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![R-CMD-check](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-<!--# **`conftree`**: Subgroups With Trees Using Conformal Prediction -->
-
-## <span style="color:#F55431;">**`conftree`**</span>: Subgroups With Trees Using Conformal Prediction
+# <span style="color:#F55431;">**`conftree`**</span>: Subgroups With Trees Using Conformal Prediction
 
 This `R` package detects homogeneous subgroups in machine learning
 models with numeric outcomes (regression). It leverages
