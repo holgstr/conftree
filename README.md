@@ -16,9 +16,9 @@ Jackknife+](https://arxiv.org/abs/1905.02928) to simultaneously optimize
 inter-group heterogeneity and intra-group homogeneity. Therefore, it is
 an extension of the `r2p` algorithm ([Lee et. al, NeurIPS
 2020)](https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html)).
-With `conftree`, subgroups can be identified for all regression models
-that can be fitted with `tidymodels`, see
-[here](https://www.tidymodels.org/find/parsnip/) for a list.
+`conftree` works with any of the
+([100+](https://www.tidymodels.org/find/parsnip/)) learning algorithms
+for regression tasks available in `tidymodels`.
 
 ## Installation
 
