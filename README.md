@@ -17,8 +17,8 @@ inter-group heterogeneity and intra-group homogeneity. Therefore, it is
 an extension of the `r2p` algorithm ([Lee et. al, NeurIPS
 2020)](https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html)).
 `conftree` works with any of the
-([100+](https://www.tidymodels.org/find/parsnip/)) learning algorithms
-for regression tasks available in `tidymodels`.
+[100+](https://www.tidymodels.org/find/parsnip/) learning algorithms for
+regression tasks available in `tidymodels`.
 
 ## Installation
 
@@ -50,13 +50,15 @@ randforest <- rand_forest(trees = 200, min_n = 5) %>%
   set_engine("ranger")
 
 # Find optimal subgroups using conformal prediction:
-groups <- r2p(data = bikes,
-              target = "count",
-              learner = randforest,
-              cv_folds = 10,
-              alpha = 0.05,
-              gamma = 0.2,
-              lambda = 0.5)
+groups <- r2p(
+  data = bikes,
+  target = "count",
+  learner = randforest,
+  cv_folds = 10,
+  alpha = 0.05,
+  gamma = 0.2,
+  lambda = 0.5
+)
 
 # Display tree structure:
 groups$tree
