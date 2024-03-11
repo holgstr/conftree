@@ -21,7 +21,7 @@
 #' randforest <- rand_forest(trees = 200, min_n = 5) %>%
 #'  set_mode("regression") %>%
 #'  set_engine("ranger")
-#'  r2p(data = bikes,
+#' r2p(data = bikes,
 #'      target = "count",
 #'      learner = randforest,
 #'      cv_folds = 2,
