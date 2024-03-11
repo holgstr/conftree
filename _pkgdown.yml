@@ -5,7 +5,6 @@ template:
 
 navbar:
   bg: dark
-  type: dark
   structure:
     left: [reference]
     right: [search, github]
