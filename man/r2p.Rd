@@ -44,14 +44,16 @@ library(ranger)
 data(bikes)
 set.seed(1234)
 randforest <- rand_forest(trees = 200, min_n = 5) \%>\%
- set_mode("regression") \%>\%
- set_engine("ranger")
-groups <- r2p(data = bikes,
-              target = "count",
-              learner = randforest,
-              cv_folds = 2,
-              alpha = 0.05,
-              gamma = 0.2,
-              lambda = 0.5)
+  set_mode("regression") \%>\%
+  set_engine("ranger")
+groups <- r2p(
+  data = bikes,
+  target = "count",
+  learner = randforest,
+  cv_folds = 2,
+  alpha = 0.05,
+  gamma = 0.2,
+  lambda = 0.5
+)
 groups$tree
 }

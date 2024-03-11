@@ -65,14 +65,28 @@ eval_split_cand <- function(ids_left, valid_set, alpha) {
 #' @param gamma (`proportion`)\cr regularization parameter ensuring that reduction
 #' in the impurity of the confident homogeneity is sufficiently large.
 #' @param lambda (`proportion`)\cr balance between width and deviation.
-#' @return List with elements `node_id`, `feature`, `feature_type`, `split_cand`, `ids_left_child`, `ids_right_child` and `gain`.
+#' @return List with elements `node_id`, `feature`, `feature_type`, `split_cand`,
+#' `ids_left_child`, `ids_right_child` and `gain`.
 #' @keywords internal
 #'
-process_split_config_numeric <- function(node_id, var_name, split_cand, x_data, valid_set, crit_node, alpha, gamma, lambda) {
-  ids_candidates_left <- which((1:nrow(x_data) %in% valid_set$testing_ids) & x_data[,var_name] < split_cand)
-  ids_candidates_right <- which((1:nrow(x_data) %in% valid_set$testing_ids) & x_data[,var_name] >= split_cand)
-  gain <- process_split_config(ids_candidates_left, ids_candidates_right, valid_set, crit_node, alpha, gamma, lambda)
-  list("node_id" = node_id, "feature" = var_name, "feature_type" = "numeric", "split_cand" = split_cand, "ids_left_child" = ids_candidates_left, "ids_right_child" = ids_candidates_right, "gain" = gain)
+process_split_config_numeric <- function(
+    node_id, var_name, split_cand, x_data, valid_set,
+    crit_node, alpha, gamma, lambda) {
+  ids_candidates_left <- which((seq_len(nrow(x_data)) %in% valid_set$testing_ids) & x_data[
+    ,
+    var_name
+  ] < split_cand)
+  ids_candidates_right <- which((seq_len(nrow(x_data)) %in% valid_set$testing_ids) &
+    x_data[, var_name] >= split_cand)
+  gain <- process_split_config(
+    ids_candidates_left, ids_candidates_right, valid_set,
+    crit_node, alpha, gamma, lambda
+  )
+  list(
+    node_id = node_id, feature = var_name, feature_type = "numeric", split_cand = split_cand,
+    ids_left_child = ids_candidates_left, ids_right_child = ids_candidates_right,
+    gain = gain
+  )
 }
 
 #' Helper to compute the gain in confident homogeneity of a categorical split
@@ -88,14 +102,28 @@ process_split_config_numeric <- function(node_id, var_name, split_cand, x_data, 
 #' @param gamma (`proportion`)\cr regularization parameter ensuring that reduction
 #' in the impurity of the confident homogeneity is sufficiently large.
 #' @param lambda (`proportion`)\cr balance between width and deviation.
-#' @return List with elements `node_id`, `feature`, `feature_type`, `split_cand`, `ids_left_child`, `ids_right_child` and `gain`.
+#' @return List with elements `node_id`, `feature`, `feature_type`, `split_cand`,
+#' `ids_left_child`, `ids_right_child` and `gain`.
 #' @keywords internal
 #'
-process_split_config_categorical <- function(node_id, var_name, split_cand, x_data, valid_set,  crit_node, alpha, gamma, lambda) {
-  ids_candidates_left <- which((1:nrow(x_data) %in% valid_set$testing_ids) & x_data[,var_name] %in% split_cand)
-  ids_candidates_right <- which((1:nrow(x_data) %in% valid_set$testing_ids) & !(x_data[,var_name] %in% split_cand))
-  gain <- process_split_config(ids_candidates_left, ids_candidates_right, valid_set, crit_node, alpha, gamma, lambda)
-  list("node_id" = node_id, "feature" = var_name, "feature_type" = "categorical", "split_cand" = split_cand, "ids_left_child" = ids_candidates_left, "ids_right_child" = ids_candidates_right, "gain" = gain)
+process_split_config_categorical <- function(
+    node_id, var_name, split_cand, x_data,
+    valid_set, crit_node, alpha, gamma, lambda) {
+  ids_candidates_left <- which((seq_len(nrow(x_data)) %in% valid_set$testing_ids) & x_data[
+    ,
+    var_name
+  ] %in% split_cand)
+  ids_candidates_right <- which((seq_len(nrow(x_data)) %in% valid_set$testing_ids) &
+    !(x_data[, var_name] %in% split_cand))
+  gain <- process_split_config(
+    ids_candidates_left, ids_candidates_right, valid_set,
+    crit_node, alpha, gamma, lambda
+  )
+  list(
+    node_id = node_id, feature = var_name, feature_type = "categorical", split_cand = split_cand,
+    ids_left_child = ids_candidates_left, ids_right_child = ids_candidates_right,
+    gain = gain
+  )
 }
 
 #' Helper to compute the gain in confident homogeneity of a split
@@ -112,7 +140,9 @@ process_split_config_categorical <- function(node_id, var_name, split_cand, x_da
 #' @return The confident homogeneity of a split.
 #' @keywords internal
 #'
-process_split_config <- function(ids_left, ids_right, valid_set, crit_node, alpha, gamma, lambda) {
+process_split_config <- function(
+    ids_left, ids_right, valid_set, crit_node, alpha,
+    gamma, lambda) {
   total_width <- total_width(valid_set, ids_left, ids_right, alpha)
   total_dev <- total_dev(valid_set, ids_left, ids_right, alpha)
   crit_split <- conf_homo(width = total_width, deviation = total_dev, lambda = lambda)
@@ -134,7 +164,9 @@ process_split_config <- function(ids_left, ids_right, valid_set, crit_node, alph
 #' @return List of sensible splits in the covariate.
 #' @keywords internal
 #'
-process_covariate <- function(var_name, x_data, node_id, valid_set, crit_node, alpha, gamma, lambda) {
+process_covariate <- function(
+    var_name, x_data, node_id, valid_set, crit_node, alpha,
+    gamma, lambda) {
   covariate <- x_data[valid_set$testing_ids, colnames(x_data) == var_name]
   ## Numeric covariates:
   if (inherits(covariate, "numeric")) {
@@ -143,8 +175,14 @@ process_covariate <- function(var_name, x_data, node_id, valid_set, crit_node, a
     if (length(split_candidates) == 0) {
       NULL
     } else {
-      split_candidates <- split_candidates[sapply(split_candidates, eval_split_cand_numeric, covariate = covariate, valid_set = valid_set, alpha = alpha)]
-      lapply(X = split_candidates, FUN = process_split_config_numeric, node_id = node_id, var_name = var_name, x_data = x_data, valid_set = valid_set, crit_node = crit_node, alpha = alpha, gamma = gamma, lambda = lambda)
+      split_candidates <- split_candidates[sapply(split_candidates, eval_split_cand_numeric,
+        covariate = covariate, valid_set = valid_set, alpha = alpha
+      )]
+      lapply(
+        X = split_candidates, FUN = process_split_config_numeric, node_id = node_id,
+        var_name = var_name, x_data = x_data, valid_set = valid_set, crit_node = crit_node,
+        alpha = alpha, gamma = gamma, lambda = lambda
+      )
     }
   } else {
     # Sort factor levels by mean prediction.
@@ -155,14 +193,23 @@ process_covariate <- function(var_name, x_data, node_id, valid_set, crit_node, a
       NULL
     } else {
       # List of left-node factor levels.
-      split_candidates <- lapply(seq_along(levels_vector)[-length(levels_vector)], function(i) {
-        utils::head(levels_vector, i)
-      })
+      split_candidates <- lapply(
+        seq_along(levels_vector)[-length(levels_vector)],
+        function(i) {
+          utils::head(levels_vector, i)
+        }
+      )
       if (length(split_candidates) == 0) {
         NULL
       } else {
-        split_candidates <- split_candidates[sapply(split_candidates, eval_split_cand_categorical, covariate = covariate, valid_set = valid_set, alpha = alpha)]
-        lapply(X = split_candidates, FUN = process_split_config_categorical, node_id = node_id, var_name = var_name, x_data = x_data, valid_set = valid_set, crit_node = crit_node, alpha = alpha, gamma = gamma, lambda = lambda)
+        split_candidates <- split_candidates[sapply(split_candidates, eval_split_cand_categorical,
+          covariate = covariate, valid_set = valid_set, alpha = alpha
+        )]
+        lapply(
+          X = split_candidates, FUN = process_split_config_categorical,
+          node_id = node_id, var_name = var_name, x_data = x_data, valid_set = valid_set,
+          crit_node = crit_node, alpha = alpha, gamma = gamma, lambda = lambda
+        )
       }
     }
   }
@@ -185,7 +232,11 @@ process_node <- function(x_data, node_id, valid_set, alpha, gamma, lambda) {
   # Confident homogeneity in the parent node.
   crit_node <- crit_node(valid_set = valid_set, alpha = alpha, lambda = lambda)
   # Sensible splits in the parent node.
-  result <- lapply(X = colnames(x_data), FUN = process_covariate, x_data = x_data, node_id = node_id, valid_set = valid_set, crit_node = crit_node, alpha = alpha, gamma = gamma, lambda = lambda)
+  result <- lapply(
+    X = colnames(x_data), FUN = process_covariate, x_data = x_data,
+    node_id = node_id, valid_set = valid_set, crit_node = crit_node, alpha = alpha,
+    gamma = gamma, lambda = lambda
+  )
   do.call("c", result)
 }
 

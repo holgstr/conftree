@@ -23,25 +23,19 @@ plot.conftree <- function(x, ...) {
     round(crit_node(valid_set_node, alpha, lambda), 2)
   })
   # Plot object.
-  gg <- ggparty::ggparty(tree,
-                         terminal_space = 0.5,
-                         add_vars = list(sd =
-                                           function(data, node) {
-                                             list(round(stats::sd(node$data$count), 2))
-                                           }
-                         )) +
-    ggparty::geom_edge() +
-    ggparty::geom_edge_label() +
-    ggparty::geom_node_splitvar()
+  gg <- ggparty::ggparty(tree, terminal_space = 0.5, add_vars = list(sd = function(data,
+                                                                                   node) {
+    list(round(stats::sd(node$data$count), 2))
+  })) + ggparty::geom_edge() + ggparty::geom_edge_label() + ggparty::geom_node_splitvar()
   # Add data to object.
   gg$data$homogeneity <- homogeneity
-  gg <- gg +
-    ggparty::geom_node_label(ggplot2::aes(label = paste0("n = ", gg$data$nodesize,
-                                                         "\nhomogeneity = ", homogeneity,
-                                                         "\nid = ", gg$data$id)),
-                             fontface = "bold",
-                             ids = "all",
-                             size = 3,
-                             nudge_y = -0.05)
+  gg <- gg + ggparty::geom_node_label(
+    ggplot2::aes(label = paste0(
+      "n = ", gg$data$nodesize,
+      "\nhomogeneity = ", homogeneity, "\nid = ", gg$data$id
+    )),
+    fontface = "bold",
+    ids = "all", size = 3, nudge_y = -0.05
+  )
   plot(gg)
 }

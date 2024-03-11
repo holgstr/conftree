@@ -46,7 +46,10 @@ total_width <- function(valid_set, ids_left, ids_right, alpha) {
   valid_set_left <- subset(valid_set, valid_set$testing_ids %in% ids_left)
   valid_set_right <- subset(valid_set, valid_set$testing_ids %in% ids_right)
   w_left <- length(valid_set_left) / (length(valid_set_left) + length(valid_set_right))
-  w_left * avg_width(valid_set_left, alpha) + (1 - w_left) * avg_width(valid_set_right, alpha)
+  w_left * avg_width(valid_set_left, alpha) + (1 - w_left) * avg_width(
+    valid_set_right,
+    alpha
+  )
 }
 
 #' Helper to compute the mean absolute deviation of a validation set
@@ -81,7 +84,10 @@ total_dev <- function(valid_set, ids_left, ids_right, alpha) {
   valid_set_left <- subset(valid_set, valid_set$testing_ids %in% ids_left)
   valid_set_right <- subset(valid_set, valid_set$testing_ids %in% ids_right)
   w_left <- length(valid_set_left) / (length(valid_set_left) + length(valid_set_right))
-  w_left * avg_dev(valid_set_left, alpha) + (1 - w_left) * avg_dev(valid_set_right, alpha)
+  w_left * avg_dev(valid_set_left, alpha) + (1 - w_left) * avg_dev(
+    valid_set_right,
+    alpha
+  )
 }
 
 #' Helper to compute confident homogeneity

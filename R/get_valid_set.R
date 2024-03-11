@@ -9,7 +9,8 @@
 #' @keywords internal
 #'
 get_valid_set <- function(data, target, learner, cv_folds) {
-  # Get CV+ splits. As "1" encodes a single train-test split, we create two folds in this case.
+  # Get CV+ splits. As '1' encodes a single train-test split, we create two
+  # folds in this case.
   folds <- rsample::vfold_cv(data, v = max(cv_folds, 2))
   predictions <- lapply(folds$splits, function(split) {
     # Extract the training and testing data for this fold

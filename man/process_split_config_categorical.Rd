@@ -38,7 +38,8 @@ in the impurity of the confident homogeneity is sufficiently large.}
 \item{lambda}{(\code{proportion})\cr balance between width and deviation.}
 }
 \value{
-List with elements \code{node_id}, \code{feature}, \code{feature_type}, \code{split_cand}, \code{ids_left_child}, \code{ids_right_child} and \code{gain}.
+List with elements \code{node_id}, \code{feature}, \code{feature_type}, \code{split_cand},
+\code{ids_left_child}, \code{ids_right_child} and \code{gain}.
 }
 \description{
 Helper to compute the gain in confident homogeneity of a categorical split

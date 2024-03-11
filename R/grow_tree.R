@@ -11,19 +11,18 @@
 grow_node <- function(node, split, x_data) {
   feature_id <- which(names(x_data) == split$feature)
   if (split$feature_type == "numeric") {
-    sp <- partykit::partysplit(varid = feature_id,
-                               breaks = split$split_cand)
+    sp <- partykit::partysplit(varid = feature_id, breaks = split$split_cand)
   } else {
-    sp <- partykit::partysplit(varid = feature_id,
-                               index = ifelse(levels(x_data[, feature_id]) %in% split$split_cand, 1L, 2L))
+    sp <- partykit::partysplit(varid = feature_id, index = ifelse(levels(x_data[
+      ,
+      feature_id
+    ]) %in% split$split_cand, 1L, 2L))
   }
   li <- as.list(node)
   tosplit <- as.integer(split$node_id)
   n <- length(li)
-  node_new <- partykit::partynode(id = tosplit,
-                                  split = sp,
-                                  kids = list(partykit::partynode(n + 1L),
-                                              partykit::partynode(n + 2L)))
+  node_new <- partykit::partynode(id = tosplit, split = sp, kids = list(partykit::partynode(n +
+    1L), partykit::partynode(n + 2L)))
   li_new <- as.list(node_new)
   li[[tosplit]] <- li_new[[1L]]
   li <- c(li, li_new[-1L])
@@ -39,7 +38,9 @@ grow_node <- function(node, split, x_data) {
 #' @keywords internal
 #'
 get_split <- function(candidates, x_data) {
-  gains <- unlist(lapply(candidates, FUN = function(x) {x[]$gain}))
+  gains <- unlist(lapply(candidates, FUN = function(x) {
+    x[]$gain
+  }))
   candidates[[which.max(gains)]]
 }
 
@@ -63,12 +64,10 @@ get_candidates <- function(tree, x_data, valid_set, alpha, gamma, lambda) {
   splits <- lapply(X = terminal_nodes, FUN = function(x) {
     ids_node <- which(x == tree_data[, ncol(tree_data)])
     valid_set_node <- valid_set[valid_set$testing_ids %in% ids_node, ]
-    process_node(x_data = x_data,
-                 node_id = x,
-                 valid_set = valid_set_node,
-                 alpha = alpha,
-                 gamma = gamma,
-                 lambda = lambda)
+    process_node(
+      x_data = x_data, node_id = x, valid_set = valid_set_node, alpha = alpha,
+      gamma = gamma, lambda = lambda
+    )
   })
   do.call("c", splits)
 }
