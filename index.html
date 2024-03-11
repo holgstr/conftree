@@ -52,8 +52,8 @@
 <div class="row">
   <main id="main" class="col-md-9">
 <div class="section level1">
-<div class="page-header"><h1 id="conftree-subgroups-with-regression-trees-using-conformal-prediction">
-<strong><code>conftree</code></strong>: Subgroups With Regression Trees Using Conformal Prediction<a class="anchor" aria-label="anchor" href="#conftree-subgroups-with-regression-trees-using-conformal-prediction"></a>
+<div class="page-header"><h1 id="conftree-subgroups-with-trees-using-conformal-prediction">
+<strong><code>conftree</code></strong>: Subgroups With Trees Using Conformal Prediction<a class="anchor" aria-label="anchor" href="#conftree-subgroups-with-trees-using-conformal-prediction"></a>
 </h1></div>
 <p>This package uses conformal prediction for subgroup detection with regression trees. It is based on the <code>r2p</code> algorithm, as introduced by <a href="https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html" class="external-link">Lee et. al (NeurIPS, 2020)</a>. In <code>conftree</code>, we improve this framework by extending it to <a href="https://arxiv.org/abs/1905.02928" class="external-link">CV+/Jackknife+</a>. This works with any regression model that can be fitted with <code>tidymodels</code>.</p>
 <div class="section level2">
@@ -91,18 +91,18 @@
 <span>              lambda <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Display tree structure:</span></span>
-<span><span class="va">groups</span><span class="op">$</span><span class="va">tree</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co">#&gt; [1] root</span></span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt; |   [2] weekday in Sun: *</span></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; |   [3] weekday in Mon, Tue, Wed, Thu, Fri, Sat</span></span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; |   |   [4] weekday in Sat: *</span></span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; |   |   [5] weekday in Sun, Mon, Tue, Wed, Thu, Fri</span></span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; |   |   |   [6] temp &lt;= 6.15: *</span></span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; |   |   |   [7] temp &gt; 6.15</span></span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; |   |   |   |   [8] temp &lt;= 28.29</span></span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt; |   |   |   |   |   [9] month &lt;= 2.5: *</span></span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; |   |   |   |   |   [10] month &gt; 2.5: *</span></span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; |   |   |   |   [11] temp &gt; 28.29: *</span></span></code></pre></div>
+<span><span class="va">groups</span><span class="op">$</span><span class="va">tree</span></span>
+<span><span class="co">#&gt; [1] root</span></span>
+<span><span class="co">#&gt; |   [2] weekday in Sun: *</span></span>
+<span><span class="co">#&gt; |   [3] weekday in Mon, Tue, Wed, Thu, Fri, Sat</span></span>
+<span><span class="co">#&gt; |   |   [4] weekday in Sat: *</span></span>
+<span><span class="co">#&gt; |   |   [5] weekday in Sun, Mon, Tue, Wed, Thu, Fri</span></span>
+<span><span class="co">#&gt; |   |   |   [6] temp &lt;= 6.15: *</span></span>
+<span><span class="co">#&gt; |   |   |   [7] temp &gt; 6.15</span></span>
+<span><span class="co">#&gt; |   |   |   |   [8] temp &lt;= 28.29</span></span>
+<span><span class="co">#&gt; |   |   |   |   |   [9] month &lt;= 2.5: *</span></span>
+<span><span class="co">#&gt; |   |   |   |   |   [10] month &gt; 2.5: *</span></span>
+<span><span class="co">#&gt; |   |   |   |   [11] temp &gt; 28.29: *</span></span></code></pre></div>
 </div>
 </div>
 
