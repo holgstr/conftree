@@ -55,7 +55,7 @@
 <div class="page-header"><h1 id="conftree-subgroups-with-trees-using-conformal-prediction">
 <strong><code>conftree</code></strong>: Subgroups With Trees Using Conformal Prediction<a class="anchor" aria-label="anchor" href="#conftree-subgroups-with-trees-using-conformal-prediction"></a>
 </h1></div>
-<p>This <code>R</code> package detects homogeneous subgroups within machine learning models with numeric outcomes (regression). It leverages <a href="https://arxiv.org/abs/1905.02928" class="external-link">CV+ and Jackknife+</a> to simultaneously optimize inter-group heterogeneity and intra-group homogeneity. Therefore, it is an extension of the <code>r2p</code> algorithm (<a href="https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html" class="external-link">Lee et. al, NeurIPS 2020)</a>). <code>conftree</code> works with any of the (<a href="https://www.tidymodels.org/find/parsnip/" class="external-link">100+</a>) learning algorithms for regression tasks available in <code>tidymodels</code>.</p>
+<p>This <code>R</code> package detects homogeneous subgroups within machine learning models with numeric outcomes (regression). It leverages <a href="https://arxiv.org/abs/1905.02928" class="external-link">CV+ and Jackknife+</a> to simultaneously optimize inter-group heterogeneity and intra-group homogeneity. Therefore, it is an extension of the <code>r2p</code> algorithm (<a href="https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html" class="external-link">Lee et. al, NeurIPS 2020)</a>). <code>conftree</code> works with any of the <a href="https://www.tidymodels.org/find/parsnip/" class="external-link">100+</a> learning algorithms for regression tasks available in <code>tidymodels</code>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -82,13 +82,15 @@
 <span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"ranger"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Find optimal subgroups using conformal prediction:</span></span>
-<span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/r2p.html">r2p</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">bikes</span>,</span>
-<span>              target <span class="op">=</span> <span class="st">"count"</span>,</span>
-<span>              learner <span class="op">=</span> <span class="va">randforest</span>,</span>
-<span>              cv_folds <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>              alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>              gamma <span class="op">=</span> <span class="fl">0.2</span>,</span>
-<span>              lambda <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/r2p.html">r2p</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">bikes</span>,</span>
+<span>  target <span class="op">=</span> <span class="st">"count"</span>,</span>
+<span>  learner <span class="op">=</span> <span class="va">randforest</span>,</span>
+<span>  cv_folds <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  gamma <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  lambda <span class="op">=</span> <span class="fl">0.5</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Display tree structure:</span></span>
 <span><span class="va">groups</span><span class="op">$</span><span class="va">tree</span></span>
