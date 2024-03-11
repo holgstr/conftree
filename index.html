@@ -55,7 +55,7 @@
 <div class="page-header"><h1 id="conftree-subgroups-with-regression-trees-using-conformal-prediction">
 <strong><code>conftree</code></strong>: Subgroups With Regression Trees Using Conformal Prediction<a class="anchor" aria-label="anchor" href="#conftree-subgroups-with-regression-trees-using-conformal-prediction"></a>
 </h1></div>
-<p>This package uses conformal prediction for subgroup detection with regression trees. It is based on the <code>r2p</code> algorithm, as introduced by <a href="https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html" class="external-link">Lee et. al (NeurIPS, 2020)</a>. In <code>conftree</code>, we improve this framework by extending it to <a href="https://arxiv.org/abs/1905.02928" class="external-link">CV+/Jackknife+</a>. This works with any regression model that can be fitted with <code>tidymodels</code> (see <a href="https://www.tidymodels.org/find/parsnip/" class="external-link">list of available models</a>).</p>
+<p>This package uses conformal prediction for subgroup detection with regression trees. It is based on the <code>r2p</code> algorithm, as introduced by <a href="https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html" class="external-link">Lee et. al (NeurIPS, 2020)</a>. In <code>conftree</code>, we improve this framework by extending it to <a href="https://arxiv.org/abs/1905.02928" class="external-link">CV+/Jackknife+</a>. This works with any regression model that can be fitted with <code>tidymodels</code>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -82,13 +82,16 @@
 <span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"ranger"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Find optimal subgroups using conformal prediction:</span></span>
-<span><span class="fu"><a href="reference/r2p.html">r2p</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">bikes</span>,</span>
-<span>    target <span class="op">=</span> <span class="st">"count"</span>,</span>
-<span>    learner <span class="op">=</span> <span class="va">randforest</span>,</span>
-<span>    cv_folds <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>    alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>    gamma <span class="op">=</span> <span class="fl">0.2</span>,</span>
-<span>    lambda <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/r2p.html">r2p</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">bikes</span>,</span>
+<span>              target <span class="op">=</span> <span class="st">"count"</span>,</span>
+<span>              learner <span class="op">=</span> <span class="va">randforest</span>,</span>
+<span>              cv_folds <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>              alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>              gamma <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>              lambda <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Display tree structure:</span></span>
+<span><span class="va">groups</span><span class="op">$</span><span class="va">tree</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co">#&gt; [1] root</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt; |   [2] weekday in Sun: *</span></span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; |   [3] weekday in Mon, Tue, Wed, Thu, Fri, Sat</span></span>
