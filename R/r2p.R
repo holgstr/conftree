@@ -21,13 +21,13 @@
 #' randforest <- rand_forest(trees = 200, min_n = 5) %>%
 #'  set_mode("regression") %>%
 #'  set_engine("ranger")
-#' r2p(data = bikes,
-#'      target = "count",
-#'      learner = randforest,
-#'      cv_folds = 2,
-#'      alpha = 0.05,
-#'      gamma = 0.2,
-#'      lambda = 0.5)
+#' groups <- r2p(data = bikes,
+#'               target = "count",
+#'               learner = randforest,
+#'               cv_folds = 2,
+#'               alpha = 0.05,
+#'               gamma = 0.2,
+#'               lambda = 0.5)
 r2p <- function(data, target, learner, cv_folds = 2, alpha = 0.05, gamma = 0.01, lambda = 0.5) {
   # Reorder columns to ensure correct column identification for partysplits.
   data <- data[, c(setdiff(names(data), target), target)]
