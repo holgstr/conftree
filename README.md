@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-## **`conftree`**: Subgroups With Trees Using Conformal Prediction
+# **`conftree`**: Subgroups With Trees Using Conformal Prediction
 
 <!-- badges: start -->
 
