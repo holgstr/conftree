@@ -12,14 +12,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-# **`conftree`**
+## **`conftree`**: Subgroups With Trees Using Conformal Prediction
 
 <!-- badges: start -->
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
-
-## Subgroups With Trees Using Conformal Prediction
 
 This `R` package detects homogeneous subgroups in machine learning models with numeric outcomes (regression). It leverages [CV+/Jackknife+][1] to simultaneously optimize inter-group heterogeneity and intra-group homogeneity. In this way, it is an extension of the `r2p` algorithm ([Lee et. al, NeurIPS 2020][2]). `conftree` works with any of the [100+][3] learning algorithms for regression tasks available in `tidymodels`.
 
