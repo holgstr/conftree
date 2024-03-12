@@ -20,7 +20,8 @@
 #'   cv_folds = 2,
 #'   alpha = 0.05,
 #'   gamma = 0.2,
-#'   lambda = 0.5
+#'   lambda = 0.5,
+#'   max_groups = 10
 #' )
 #' plot(groups)
 plot.conftree <- function(x, ...) {

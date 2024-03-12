@@ -60,7 +60,8 @@ groups <- r2p(
   cv_folds = 10,
   alpha = 0.05,
   gamma = 0.2,
-  lambda = 0.5
+  lambda = 0.5,
+  max_groups = 10
 )
 
 # Display tree structure:

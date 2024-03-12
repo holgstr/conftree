@@ -8,10 +8,11 @@ r2p(
   data,
   target,
   learner,
-  cv_folds = 2,
+  cv_folds = 10,
   alpha = 0.05,
-  gamma = 0.01,
-  lambda = 0.5
+  gamma = 0.1,
+  lambda = 0.5,
+  max_groups = 10
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ in the impurity of the confident homogeneity is sufficiently large.}
 
 \item{lambda}{(\code{proportion})\cr balance parameter, quantifying the impact of the average interval length relative
 to the average absolute deviation (i.e. interval size vs. within-group homogeneity)}
+
+\item{max_groups}{(\code{count})\cr maximum number of subgroups.}
 }
 \value{
 The tree.
@@ -50,10 +53,11 @@ groups <- r2p(
   data = bikes,
   target = "count",
   learner = randforest,
-  cv_folds = 2,
+  cv_folds = 10,
   alpha = 0.05,
   gamma = 0.2,
-  lambda = 0.5
+  lambda = 0.5,
+  max_groups = 10
 )
 groups$tree
 }

@@ -10,6 +10,7 @@
 #' in the impurity of the confident homogeneity is sufficiently large.
 #' @param lambda (`proportion`)\cr balance parameter, quantifying the impact of the average interval length relative
 #' to the average absolute deviation (i.e. interval size vs. within-group homogeneity)
+#' @param max_groups (`count`)\cr maximum number of subgroups.
 #' @return The tree.
 #' @export
 #'
@@ -25,15 +26,16 @@
 #'   data = bikes,
 #'   target = "count",
 #'   learner = randforest,
-#'   cv_folds = 2,
+#'   cv_folds = 10,
 #'   alpha = 0.05,
 #'   gamma = 0.2,
-#'   lambda = 0.5
+#'   lambda = 0.5,
+#'   max_groups = 10
 #' )
 #' groups$tree
 r2p <- function(
-    data, target, learner, cv_folds = 2, alpha = 0.05, gamma = 0.01,
-    lambda = 0.5) {
+    data, target, learner, cv_folds = 10, alpha = 0.05, gamma = 0.1,
+    lambda = 0.5, max_groups = 10) {
   # Reorder columns to ensure correct column identification for partysplits.
   data <- data[, c(setdiff(names(data), target), target)]
   valid_set <- get_valid_set(data = data, target = target, learner = learner, cv_folds = cv_folds)
@@ -42,7 +44,7 @@ r2p <- function(
   node <- partykit::partynode(id = 1)
   tree <- partykit::party(node = node, data = data)
   # Grow tree iteratively.
-  while (partykit::width(tree) < 10) {
+  while (partykit::width(tree) < max_groups) {
     candidates <- get_candidates(
       tree = tree, x_data = x_data, valid_set = valid_set,
       alpha = alpha, gamma = gamma, lambda = lambda
