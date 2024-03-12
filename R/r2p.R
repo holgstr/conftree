@@ -55,8 +55,20 @@ r2p <- function(
     node <- grow_node(node = node, split = split, x_data = x_data)
     tree <- partykit::party(node = node, data = data)
   }
-  structure(list(tree = tree, valid_set = valid_set, info = list(
-    cv_folds = cv_folds,
-    alpha = alpha, gamma = gamma, lambda = lambda
-  )), class = c("conftree", "r2p"))
+  var_across <- tree_var_across(tree = tree, valid_set = valid_set)
+  var_within <- tree_var_within(tree = tree, valid_set = valid_set)
+  structure(list(
+    tree = tree,
+    valid_set = valid_set,
+    summmary = list(
+      var_across = var_across,
+      var_within = var_within
+    ),
+    info = list(
+      cv_folds = cv_folds,
+      alpha = alpha,
+      gamma = gamma,
+      lambda = lambda
+    )
+  ), class = c("conftree", "r2p"))
 }

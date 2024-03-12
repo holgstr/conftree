@@ -1,9 +1,9 @@
 Package: conftree
-Title: Regression Trees With Conformal Prediction
-Version: 0.0.0.9000
+Title: Subgroups with Trees using Conformal Prediction
+Version: 0.0.1
 Authors@R: 
     person("Holger", "Löwe", , "hbj.loewe@gmail.com", role = c("aut", "cre"))
-Description: r2p creates binary decision trees for regression problems using conformal prediction. It guarantees homogeneity within each of the subgroups while maximizing heterogeneity across subgroups. This can be done for standard supervised regression models, as well as heterogeneous treatment effect (HTE) models.
+Description: Detect subgroups in machine learning models with numeric outcomes (regression). This leverages CV+/Jackknife+ to simultaneously optimize inter-group heterogeneity and intra-group homogeneity. In this way, it is an extension of the r2p algorithm, see Lee et al. (2020) <arXiv:2006.07917v2>. This works with any of the learning algorithms for regression tasks available in 'tidymodels'.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

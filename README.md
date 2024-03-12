@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# **`conftree`**: Subgroups With Trees Using Conformal Prediction
+# **`conftree`**: Subgroups with Trees using Conformal Prediction
 
 <!-- badges: start -->
 
@@ -11,11 +11,12 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![R-CMD-check](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-This `R` package detects homogeneous subgroups in machine learning
-models with numeric outcomes (regression). It leverages
+This `R` package detects subgroups in machine learning models with
+numeric outcomes (regression). It leverages
 [CV+/Jackknife+](https://arxiv.org/abs/1905.02928) to simultaneously
-optimize inter-group heterogeneity and intra-group homogeneity. In this
-way, it is an extension of the `r2p` algorithm ([Lee et. al, NeurIPS
+optimize inter-group heterogeneity and intra-group homogeneity w.r.t.
+the predicted target variable. In this way, it is an extension of the
+`r2p` algorithm ([Lee et al., NeurIPS
 2020](https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html)).
 `conftree` works with any of the
 [100+](https://www.tidymodels.org/find/parsnip/) learning algorithms for
