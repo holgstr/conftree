@@ -49,9 +49,6 @@
     <loc>https://holgstr.github.io/conftree/reference/get_candidates.html</loc>
   </url>
   <url>
-    <loc>https://holgstr.github.io/conftree/reference/get_homogeneity.html</loc>
-  </url>
-  <url>
     <loc>https://holgstr.github.io/conftree/reference/get_pred_mean.html</loc>
   </url>
   <url>
@@ -92,5 +89,23 @@
   </url>
   <url>
     <loc>https://holgstr.github.io/conftree/reference/total_width.html</loc>
+  </url>
+  <url>
+    <loc>https://holgstr.github.io/conftree/reference/tree_dev.html</loc>
+  </url>
+  <url>
+    <loc>https://holgstr.github.io/conftree/reference/tree_homogeneity.html</loc>
+  </url>
+  <url>
+    <loc>https://holgstr.github.io/conftree/reference/tree_predmean.html</loc>
+  </url>
+  <url>
+    <loc>https://holgstr.github.io/conftree/reference/tree_var_across.html</loc>
+  </url>
+  <url>
+    <loc>https://holgstr.github.io/conftree/reference/tree_var_within.html</loc>
+  </url>
+  <url>
+    <loc>https://holgstr.github.io/conftree/reference/tree_width.html</loc>
   </url>
 </urlset>
