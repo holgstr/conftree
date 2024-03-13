@@ -62,18 +62,18 @@ plot.conftree <- function(x, ...) {
     valid_set,
     alpha
   )
-  # Add data: Variance within the outer nodes.
-  gg$data$var <- as.list(round(unlist(tree_var_nodes(
+  # Add data: SD within the outer nodes.
+  gg$data$sd <- as.list(round(sqrt(unlist(tree_var_nodes(
     tree,
     valid_set,
     terminal = FALSE
-  )), 2))
+  ))), 2))
   # Add data to plot.
   gg <- gg + ggparty::geom_node_label(
     ggplot2::aes(label = paste0(
       "n = ", gg$data$nodesize,
       "\nmean = ", gg$data$predmean,
-      "\nvar = ", gg$data$var
+      "\nsd = ", gg$data$sd
       # "\nhomogeneity = ", gg$data$homogeneity,
       # "\ninterval width = ", gg$data$width,
       # "\ndeviation = ", gg$data$dev
@@ -84,7 +84,7 @@ plot.conftree <- function(x, ...) {
     size = 3,
     nudge_y = -0.06
   ) +
-    ggparty::geom_node_plot(gglist = list(geom_boxplot(aes(x = "", y = count),
+    ggparty::geom_node_plot(gglist = list(ggplot2::geom_boxplot(ggplot2::aes(x = "", y = count),
                                                        show.legend = FALSE)),
                             height = 0.7,
                             nudge_x = -0.02,
