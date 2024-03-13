@@ -106,24 +106,6 @@ tree_dev <- function(tree, valid_set, alpha) {
   })
 }
 
-#' Helper to get the variance within a tree's terminal nodes
-#'
-#' @param tree (`party`)\cr tree object.
-#'   See [partykit::party()] for details.
-#' @param valid_set (`data.frame`)\cr validation set.
-#'   See [get_valid_set()] for details.
-#' @return Variance within the tree's terminal nodes.
-#' @keywords internal
-#'
-tree_var_within <- function(tree, valid_set) {
-  means <- unlist(tree_predmean(tree = tree, valid_set = valid_set))
-  terminal_nodes <- partykit::nodeids(tree, terminal = TRUE)
-  means <- means[terminal_nodes]
-  # We need population variance:
-  n <- length(means)
-  stats::var(means) * (n - 1) / n
-}
-
 #' Helper to get the variance across a tree's terminal nodes
 #'
 #' @param tree (`party`)\cr tree object.
@@ -134,6 +116,24 @@ tree_var_within <- function(tree, valid_set) {
 #' @keywords internal
 #'
 tree_var_across <- function(tree, valid_set) {
+  means <- unlist(tree_predmean(tree = tree, valid_set = valid_set))
+  terminal_nodes <- partykit::nodeids(tree, terminal = TRUE)
+  means <- means[terminal_nodes]
+  # We need population variance:
+  n <- length(means)
+  stats::var(means) * (n - 1) / n
+}
+
+#' Helper to get the variance within a tree's terminal nodes
+#'
+#' @param tree (`party`)\cr tree object.
+#'   See [partykit::party()] for details.
+#' @param valid_set (`data.frame`)\cr validation set.
+#'   See [get_valid_set()] for details.
+#' @return Variance within the tree's terminal nodes.
+#' @keywords internal
+#'
+tree_var_within<- function(tree, valid_set) {
   terminal_nodes <- partykit::nodeids(tree, terminal = TRUE)
   tree_data <- partykit::data_party(tree)
   variances <- sapply(X = terminal_nodes, FUN = function(x) {

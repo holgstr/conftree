@@ -33,12 +33,7 @@ plot.conftree <- function(x, ...) {
 
   # Plot object.
   gg <- ggparty::ggparty(tree,
-    terminal_space = 0.5,
-    add_vars = list(sd = function(data,
-                                  node) {
-      list(round(stats::sd(node$data$count), 2))
-    })
-  ) +
+    terminal_space = 0.5) +
     ggparty::geom_edge() +
     ggparty::geom_edge_label() +
     ggparty::geom_node_splitvar()
@@ -67,21 +62,30 @@ plot.conftree <- function(x, ...) {
     valid_set,
     alpha
   )
-
+  # Add data: Variance within the outer nodes.
+  gg$data$var <- tree_var_within(
+    tree,
+    valid_set
+  )
   # Add data to plot.
   gg <- gg + ggparty::geom_node_label(
     ggplot2::aes(label = paste0(
       "n = ", gg$data$nodesize,
       "\nmean = ", gg$data$predmean,
-      "\nhomogeneity = ", gg$data$homogeneity,
-      "\ninterval width = ", gg$data$width,
-      "\ndeviation = ", gg$data$dev
+      "\nvar = ", gg$data$var
+      # "\nhomogeneity = ", gg$data$homogeneity,
+      # "\ninterval width = ", gg$data$width,
+      # "\ndeviation = ", gg$data$dev
       # "\nid = ", gg$data$id
     )),
     fontface = "bold",
-    ids = "all",
+    ids = "terminal",
     size = 3,
     nudge_y = -0.06
-  )
+  ) +
+    ggparty::geom_node_plot(gglist = list(geom_boxplot(aes(x = "", y = count),
+                                                       show.legend = FALSE)),
+                            height = 0.7,
+                            nudge_y = -0.1)
   plot(gg)
 }
