@@ -33,7 +33,7 @@ groups <- r2p(
   alpha = 0.05,
   gamma = 0.2,
   lambda = 0.5,
-  max_groups = 10
+  max_groups = 3
 )
 plot(groups)
 }
