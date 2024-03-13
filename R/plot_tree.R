@@ -63,10 +63,11 @@ plot.conftree <- function(x, ...) {
     alpha
   )
   # Add data: Variance within the outer nodes.
-  gg$data$var <- tree_var_within(
+  gg$data$var <- as.list(round(unlist(tree_var_nodes(
     tree,
-    valid_set
-  )
+    valid_set,
+    terminal = FALSE
+  )), 2))
   # Add data to plot.
   gg <- gg + ggparty::geom_node_label(
     ggplot2::aes(label = paste0(
@@ -86,6 +87,7 @@ plot.conftree <- function(x, ...) {
     ggparty::geom_node_plot(gglist = list(geom_boxplot(aes(x = "", y = count),
                                                        show.legend = FALSE)),
                             height = 0.7,
-                            nudge_y = -0.1)
+                            nudge_x = -0.02,
+                            nudge_y = -0.13)
   plot(gg)
 }
