@@ -87,7 +87,7 @@ plot.conftree <- function(x, ...) {
     nudge_y = -0.06
   ) +
     ggparty::geom_node_plot(gglist = list(ggplot2::geom_boxplot(ggplot2::aes(x = "", y = .data[[target]]),
-                                                       show.legend = FALSE), xlab("")),
+                                                       show.legend = FALSE), ggplot2::xlab("")),
                             height = 0.7,
                             nudge_x = -0.02,
                             nudge_y = -0.13,
