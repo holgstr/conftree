@@ -48,7 +48,7 @@ data(bikes)
 set.seed(1234)
 
 # Specify the learner to be used for model training:
-randforest <- rand_forest(trees = 200, min_n = 5) %>%
+randforest <- rand_forest(trees = 200) %>%
   set_mode("regression") %>%
   set_engine("ranger")
 
@@ -61,7 +61,7 @@ groups <- r2p(
   alpha = 0.05,
   gamma = 0.2,
   lambda = 0.5,
-  max_groups = 10
+  max_groups = 4
 )
 
 # Display tree structure:
@@ -72,9 +72,10 @@ groups$tree
 #> |   |   [4] weekday in Sat: *
 #> |   |   [5] weekday in Sun, Mon, Tue, Wed, Thu, Fri
 #> |   |   |   [6] temp <= 6.15: *
-#> |   |   |   [7] temp > 6.15
-#> |   |   |   |   [8] temp <= 28.29
-#> |   |   |   |   |   [9] month <= 2.5: *
-#> |   |   |   |   |   [10] month > 2.5: *
-#> |   |   |   |   [11] temp > 28.29: *
+#> |   |   |   [7] temp > 6.15: *
+
+# Plot:
+plot(groups)
 ```
+
+![](man/figures/unnamed-chunk-2-1.png)<!-- -->

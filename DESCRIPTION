@@ -17,6 +17,7 @@ Imports:
     magrittr,
     parsnip,
     partykit,
+    rlang,
     rsample
 Suggests:
     ranger,

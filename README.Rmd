@@ -44,7 +44,7 @@ data(bikes)
 set.seed(1234)
 
 # Specify the learner to be used for model training:
-randforest <- rand_forest(trees = 200, min_n = 5) %>%
+randforest <- rand_forest(trees = 200) %>%
   set_mode("regression") %>%
   set_engine("ranger")
 
@@ -57,11 +57,14 @@ groups <- r2p(
   alpha = 0.05,
   gamma = 0.2,
   lambda = 0.5,
-  max_groups = 10
+  max_groups = 4
 )
 
 # Display tree structure:
 groups$tree
+
+# Plot:
+plot(groups)
 ```
 
 [1]: https://arxiv.org/abs/1905.02928
