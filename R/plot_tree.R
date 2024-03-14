@@ -27,6 +27,7 @@
 plot.conftree <- function(x, ...) {
   tree <- x$tree
 
+  target <- x$info$target
   valid_set <- x$valid_set
   alpha <- x$info$alpha
   lambda <- x$info$lambda
@@ -84,7 +85,7 @@ plot.conftree <- function(x, ...) {
     size = 3,
     nudge_y = -0.06
   ) +
-    ggparty::geom_node_plot(gglist = list(ggplot2::geom_boxplot(ggplot2::aes(x = "", y = count),
+    ggparty::geom_node_plot(gglist = list(ggplot2::geom_boxplot(ggplot2::aes(x = "", y = .data[[target]]),
                                                        show.legend = FALSE)),
                             height = 0.7,
                             nudge_x = -0.02,

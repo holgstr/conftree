@@ -49,6 +49,10 @@ r2p <- function(
       tree = tree, x_data = x_data, valid_set = valid_set,
       alpha = alpha, gamma = gamma, lambda = lambda
     )
+    # Check if any sensible candidate splits available.
+    if (length(candidates) == 0) {
+      break
+    }
     split <- get_split(candidates = candidates, x_data = x_data)
     # Check if split does not pass gamma-threshold or is negative.
     if (split$gain <= 0) {
@@ -67,6 +71,7 @@ r2p <- function(
       var_within = var_within
     ),
     info = list(
+      target = target,
       cv_folds = cv_folds,
       alpha = alpha,
       gamma = gamma,
