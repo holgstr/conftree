@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-This `R` package detects subgroups in machine learning models with numeric outcomes (regression). It leverages [CV+/Jackknife+][1] to simultaneously optimize inter-group heterogeneity and intra-group homogeneity w.r.t. the predicted target variable. In this way, it is an extension of the `r2p` algorithm ([Lee et al., NeurIPS 2020][2]). `conftree` works with any of the [100+][3] learning algorithms for regression tasks available in `tidymodels`.
+This experimental `R` package detects subgroups in machine learning models with numeric outcomes (regression). It leverages [CV+/Jackknife+][1] to simultaneously optimize inter-group heterogeneity and intra-group homogeneity w.r.t. the predicted target variable. In this way, it is an extension of the `r2p` algorithm ([Lee et al., NeurIPS 2020][2]). `conftree` works with any of the [100+][3] learning algorithms for regression tasks available in `tidymodels`.
 
 ## Installation
 
@@ -34,7 +34,7 @@ remotes::install_github("holgstr/conftree")
 
 ## Quickstart
 
-Let's find subgroups in the Washington bike share data. We use `tidymodels` to set a random forest as `learner`, a 5% miscoverage rate as `alpha`, and 10-fold CV+ to quantify the uncertainty in the resulting subgroups:
+Let's find subgroups in the Washington bike share data. We use `tidymodels` to set a random forest as `learner`, a 5% miscoverage rate as `alpha`, and 10 `cv_folds` for the CV+ to quantify the uncertainty in the resulting subgroups:
 
 ```{r, message = FALSE}
 library(conftree)

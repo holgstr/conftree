@@ -11,8 +11,8 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![R-CMD-check](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-This `R` package detects subgroups in machine learning models with
-numeric outcomes (regression). It leverages
+This experimental `R` package detects subgroups in machine learning
+models with numeric outcomes (regression). It leverages
 [CV+/Jackknife+](https://arxiv.org/abs/1905.02928) to simultaneously
 optimize inter-group heterogeneity and intra-group homogeneity w.r.t.
 the predicted target variable. In this way, it is an extension of the
@@ -37,8 +37,8 @@ remotes::install_github("holgstr/conftree")
 
 Let’s find subgroups in the Washington bike share data. We use
 `tidymodels` to set a random forest as `learner`, a 5% miscoverage rate
-as `alpha`, and 10-fold CV+ to quantify the uncertainty in the resulting
-subgroups:
+as `alpha`, and 10 `cv_folds` for the CV+ to quantify the uncertainty in
+the resulting subgroups:
 
 ``` r
 library(conftree)
