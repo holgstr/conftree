@@ -19,7 +19,7 @@ get_valid_set <- function(data, target, learner, cv_folds) {
     testing_ids <- rsample::complement(split)
     # Fit the model on the training data
     model <- learner %>%
-      parsnip::fit(as.formula(paste(target, "~ .")), data = training_data)
+      parsnip::fit(stats::as.formula(paste(target, "~ .")), data = training_data)
     # Predict on the testing data
     cbind(stats::predict(model, testing_data), testing_ids)
   })
