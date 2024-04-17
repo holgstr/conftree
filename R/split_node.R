@@ -49,7 +49,12 @@ eval_split_cand_categorical <- function(split_cand, covariate, valid_set, alpha)
 eval_split_cand <- function(ids_left, valid_set, alpha) {
   n_left <- length(ids_left)
   n_min <- min(n_left, nrow(valid_set) - n_left)
-  alpha >= 1 / (n_min + 1)
+  if ("residual_t" %in% names(valid_set)) {
+    alpha_c <- 1 - sqrt(1 - alpha)
+    alpha_c >= 1 / (n_min + 1)
+  } else {
+    alpha >= 1 / (n_min + 1)
+  }
 }
 
 #' Helper to compute the gain in confident homogeneity of a numeric split

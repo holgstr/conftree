@@ -48,7 +48,7 @@ data(bikes)
 set.seed(1234)
 
 # Specify the learner to be used for model training:
-randforest <- rand_forest(trees = 200) %>%
+forest <- rand_forest() %>%
   set_mode("regression") %>%
   set_engine("ranger")
 
@@ -56,7 +56,7 @@ randforest <- rand_forest(trees = 200) %>%
 groups <- r2p(
   data = bikes,
   target = "count",
-  learner = randforest,
+  learner = forest,
   cv_folds = 10,
   alpha = 0.05,
   gamma = 0.2,

@@ -30,7 +30,13 @@ conf_quantile <- function(residuals, alpha) {
 #' @keywords internal
 #'
 avg_width <- function(valid_set, alpha) {
-  2 * conf_quantile(valid_set$residual, alpha)
+  if ("residual_t" %in% names(valid_set)) {
+    # Correct alpha for ITE quantiles:
+    alpha_c <- 1 - sqrt(1 - alpha)
+    2 * (conf_quantile(valid_set$residual_t, alpha_c) + conf_quantile(valid_set$residual_t, alpha_c))
+  } else {
+    2 * conf_quantile(valid_set$residual, alpha)
+  }
 }
 
 #' Helper to compute the total conformal interval length of a candidate split
