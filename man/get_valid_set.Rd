@@ -4,7 +4,7 @@
 \alias{get_valid_set}
 \title{Helper to retrieve validation set and predictions}
 \usage{
-get_valid_set(data, target, learner, cv_folds)
+get_valid_set(data, target, learner, cv_folds, treatment = NULL)
 }
 \arguments{
 \item{data}{(\code{data.frame})\cr.}
@@ -15,6 +15,8 @@ get_valid_set(data, target, learner, cv_folds)
 See \code{\link[parsnip:model_spec]{parsnip::model_spec()}} for details.}
 
 \item{cv_folds}{(\code{count})\cr number of CV+ folds.}
+
+\item{treatment}{(\code{string})\cr name of the treatment variable, if applicable.}
 }
 \value{
 Data frame with predictions and indices.

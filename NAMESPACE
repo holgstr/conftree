@@ -2,6 +2,7 @@
 
 S3method(plot,conftree)
 export(r2p)
+export(r2p_hte)
 import(checkmate)
 importFrom(magrittr,"%>%")
 importFrom(rlang,.data)

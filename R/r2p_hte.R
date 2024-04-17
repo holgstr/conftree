@@ -1,7 +1,10 @@
-#' Finding Subgroups with Conformal Trees
+#' Finding Subgroups in Treatment Effects with Conformal Trees
 #'
 #' @param data (`data.frame`)\cr data set for model training and uncertainty estimation.
 #' @param target (`string`)\cr name of the target variable. The target must be a numeric variable.
+#' @param treatment (`string`)\cr name of the treatment variable. If `treatment`\cr is a factor,
+#' then the first level is treated as treatment indicator. If `treatment`\cr is a numeric, then
+#' zero-one encoding is assumed and `"1"`\cr treated as treatment indicator.
 #' @param learner (`model_spec`)\cr the learner for training the prediction model.
 #'   See [parsnip::model_spec()] for details.
 #' @param cv_folds (`count`)\cr number of CV+ folds.
@@ -22,9 +25,10 @@
 #' randforest <- rand_forest() %>%
 #'   set_mode("regression") %>%
 #'   set_engine("ranger")
-#' groups <- r2p(
+#' groups <- r2p_hte(
 #'   data = bikes,
 #'   target = "count",
+#'   treatment = "year",
 #'   learner = randforest,
 #'   cv_folds = 10,
 #'   alpha = 0.05,
@@ -33,12 +37,12 @@
 #'   max_groups = 10
 #' )
 #' groups$tree
-r2p <- function(
-    data, target, learner, cv_folds = 10, alpha = 0.05, gamma = 0.1,
+r2p_hte <- function(
+    data, target, treatment, learner, cv_folds = 10, alpha = 0.05, gamma = 0.1,
     lambda = 0.5, max_groups = 10) {
   # Reorder columns to ensure correct column identification for partysplits.
   data <- data[, c(setdiff(names(data), target), target)]
-  valid_set <- get_valid_set(data = data, target = target, learner = learner, cv_folds = cv_folds)
+  valid_set <- get_valid_set(data = data, target = target, learner = learner, cv_folds = cv_folds, treatment = treatment)
   x_data <- data[, colnames(data) != target]
   # Initialize tree.
   node <- partykit::partynode(id = 1)
@@ -72,10 +76,11 @@ r2p <- function(
     ),
     info = list(
       target = target,
+      treatment = treatment,
       cv_folds = cv_folds,
       alpha = alpha,
       gamma = gamma,
       lambda = lambda
     )
-  ), class = c("conftree", "r2p"))
+  ), class = c("conftree", "r2p_hte"))
 }
