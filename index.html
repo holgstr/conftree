@@ -58,12 +58,19 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="conftree-subgroups-with-trees-using-conformal-prediction">
-<strong><code>conftree</code></strong>: Subgroups with Trees using Conformal Prediction<a class="anchor" aria-label="anchor" href="#conftree-subgroups-with-trees-using-conformal-prediction"></a>
+<div class="page-header"><h1 id="conftree-finding-subgroups-with-conformal-trees">
+<strong><code>conftree</code></strong>: Finding Subgroups with Conformal Trees<a class="anchor" aria-label="anchor" href="#conftree-finding-subgroups-with-conformal-trees"></a>
 </h1></div>
 <!-- badges: start -->
 
-<p>This experimental <code>R</code> package detects subgroups in machine learning models with numeric outcomes (regression). It leverages <a href="https://arxiv.org/abs/1905.02928" class="external-link">CV+/Jackknife+</a> to simultaneously optimize inter-group heterogeneity and intra-group homogeneity w.r.t. the predicted target variable. In this way, it is an extension of the <code>r2p</code> algorithm (<a href="https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html" class="external-link">Lee et al., NeurIPS 2020</a>). <code>conftree</code> works with any of the <a href="https://www.tidymodels.org/find/parsnip/" class="external-link">100+</a> learning algorithms for regression tasks available in <code>tidymodels</code>.</p>
+<p>This <code>R</code> package finds robust subgroups in data with a single continuous response, suitable for either regression or treatment effect models. Subgroups are identified via recursive partitioning, resulting in an interpretable tree. Conformal prediction methods (SCR, CV+ and Jackknife+) are leveraged to simultaneously optimize inter-group heterogeneity and intra-group homogeneity. First, predictions are made using an arbitrary regression learner from the <a href="https://www.tidymodels.org/find/parsnip/" class="external-link">100+ algorithms</a> available in <code>tidymodels</code>. Then, the data is split recursively using the robust conformal criterion. In this way, <code>conftree</code> is an extension the R2P algorithm from <a href="https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html" class="external-link">Lee et al. (NeurIPS 2020)</a>.</p>
+<p><strong>Scope:</strong></p>
+<ul>
+<li>subgroups for regression problems with <code><a href="reference/r2p.html">r2p()</a></code>
+</li>
+<li>subgroups for treatment effects with <code><a href="reference/r2p_hte.html">r2p_hte()</a></code>
+</li>
+</ul>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -77,7 +84,7 @@
 <div class="section level2">
 <h2 id="quickstart">Quickstart<a class="anchor" aria-label="anchor" href="#quickstart"></a>
 </h2>
-<p>Let’s find subgroups in the Washington bike share data. We use <code>tidymodels</code> to set a random forest as <code>learner</code>, a 5% miscoverage rate as <code>alpha</code>, and 10 <code>cv_folds</code> for the CV+ to quantify the uncertainty in the resulting subgroups:</p>
+<p>Let’s find subgroups in the Washington bike share data. We use a random forest from <code>tidymodels</code> as <code>learner</code>, a 5% miscoverage rate as <code>alpha</code>, and 10 <code>cv_folds</code> for the CV+ to quantify the uncertainty in the resulting subgroups:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://holgstr.github.io/conftree/">conftree</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span>

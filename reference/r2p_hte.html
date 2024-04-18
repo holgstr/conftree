@@ -73,7 +73,7 @@
 
 <dt>treatment</dt>
 <dd><p>(<code>string</code>)<br> name of the treatment variable. If <code>treatment</code><br> is a factor,
-then the first level is treated as treatment indicator. If <code>treatment</code><br> is a numeric, then
+then the first level is treated as control and the second level as treatment indicator. If <code>treatment</code><br> is a numeric, then
 zero-one encoding is assumed and <code>"1"</code><br> treated as treatment indicator.</p></dd>
 
 
@@ -133,14 +133,10 @@ to the average absolute deviation (i.e. interval size vs. within-group homogenei
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">groups</span><span class="op">$</span><span class="va">tree</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] root</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |   [2] weekday in Mon, Tue, Wed, Thu, Fri, Sat</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |   |   [3] weekday in Mon, Tue, Wed, Thu, Fri</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |   |   |   [4] year in 1: *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |   |   |   [5] year in 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |   |   |   |   [6] temp &lt;= 8.61: *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |   |   |   |   [7] temp &gt; 8.61: *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |   |   [8] weekday in Sun, Sat: *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> |   [9] weekday in Sun: *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |   [2] weekday in Sun: *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |   [3] weekday in Mon, Tue, Wed, Thu, Fri, Sat</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |   |   [4] weekday in Sat: *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |   |   [5] weekday in Sun, Mon, Tue, Wed, Thu, Fri: *</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
