@@ -22,7 +22,7 @@ r2p_hte(
 \item{target}{(\code{string})\cr name of the target variable. The target must be a numeric variable.}
 
 \item{treatment}{(\code{string})\cr name of the treatment variable. If \code{treatment}\cr is a factor,
-then the first level is treated as treatment indicator. If \code{treatment}\cr is a numeric, then
+then the first level is treated as control and the second level as treatment indicator. If \code{treatment}\cr is a numeric, then
 zero-one encoding is assumed and \code{"1"}\cr treated as treatment indicator.}
 
 \item{learner}{(\code{model_spec})\cr the learner for training the prediction model.

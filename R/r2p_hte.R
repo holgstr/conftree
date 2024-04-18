@@ -3,7 +3,7 @@
 #' @param data (`data.frame`)\cr data set for model training and uncertainty estimation.
 #' @param target (`string`)\cr name of the target variable. The target must be a numeric variable.
 #' @param treatment (`string`)\cr name of the treatment variable. If `treatment`\cr is a factor,
-#' then the first level is treated as treatment indicator. If `treatment`\cr is a numeric, then
+#' then the first level is treated as control and the second level as treatment indicator. If `treatment`\cr is a numeric, then
 #' zero-one encoding is assumed and `"1"`\cr treated as treatment indicator.
 #' @param learner (`model_spec`)\cr the learner for training the prediction model.
 #'   See [parsnip::model_spec()] for details.
@@ -40,9 +40,13 @@
 r2p_hte <- function(
     data, target, treatment, learner, cv_folds = 10, alpha = 0.05, gamma = 0.1,
     lambda = 0.5, max_groups = 10) {
+  # Convert treatment indicator to factor.
+  data[[treatment]] <- as.factor(data[[treatment]])
   # Reorder columns to ensure correct column identification for partysplits.
   data <- data[, c(setdiff(names(data), target), target)]
   valid_set <- get_valid_set(data = data, target = target, learner = learner, cv_folds = cv_folds, treatment = treatment)
+  # Specific to HTE - treatment itself cannot be used for splitting.
+  data <- data[, colnames(data) != treatment]
   x_data <- data[, colnames(data) != target]
   # Initialize tree.
   node <- partykit::partynode(id = 1)

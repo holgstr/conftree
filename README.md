@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# **`conftree`**: Subgroups with Trees using Conformal Prediction
+# **`conftree`**: Finding Subgroups with Conformal Trees
 
 <!-- badges: start -->
 
@@ -11,16 +11,23 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![R-CMD-check](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-This experimental `R` package detects subgroups in machine learning
-models with numeric outcomes (regression). It leverages
-[CV+/Jackknife+](https://arxiv.org/abs/1905.02928) to simultaneously
-optimize inter-group heterogeneity and intra-group homogeneity w.r.t.
-the predicted target variable. In this way, it is an extension of the
-`r2p` algorithm ([Lee et al., NeurIPS
-2020](https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html)).
-`conftree` works with any of the
-[100+](https://www.tidymodels.org/find/parsnip/) learning algorithms for
-regression tasks available in `tidymodels`.
+This `R` package finds robust subgroups in data with a single continuous
+response, suitable for either regression or treatment effect models.
+Subgroups are identified via recursive partitioning, resulting in an
+interpretable tree. Conformal prediction methods (SCR, CV+ and
+Jackknife+) are leveraged to simultaneously optimize inter-group
+heterogeneity and intra-group homogeneity. First, predictions are made
+using an arbitrary regression learner from the [100+
+algorithms](https://www.tidymodels.org/find/parsnip/) available in
+`tidymodels`. Then, the data is split recursively using the robust
+conformal criterion. In this way, `conftree` is an extension the R2P
+algorithm from [Lee et al. (NeurIPS
+2020)](https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html).
+
+**Scope:**
+
+- subgroups for regression problems with `r2p()`
+- subgroups for treatment effects with `r2p_hte()`
 
 ## Installation
 
@@ -35,10 +42,10 @@ remotes::install_github("holgstr/conftree")
 
 ## Quickstart
 
-Let’s find subgroups in the Washington bike share data. We use
-`tidymodels` to set a random forest as `learner`, a 5% miscoverage rate
-as `alpha`, and 10 `cv_folds` for the CV+ to quantify the uncertainty in
-the resulting subgroups:
+Let’s find subgroups in the Washington bike share data. We use a random
+forest from `tidymodels` as `learner`, a 5% miscoverage rate as `alpha`,
+and 10 `cv_folds` for the CV+ to quantify the uncertainty in the
+resulting subgroups:
 
 ``` r
 library(conftree)

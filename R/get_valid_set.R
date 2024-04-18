@@ -27,10 +27,10 @@ get_valid_set <- function(data, target, learner, cv_folds, treatment = NULL) {
     } else {
       treat_levels <- levels(testing_data[[treatment]])
       # Treatment model predictions:
-      testing_data[[treatment]] <- treat_levels[1]
+      testing_data[[treatment]] <- treat_levels[2]
       pred_t <- stats::predict(model, testing_data)[[1]]
       # Control model predictions:
-      testing_data[[treatment]] <- treat_levels[2]
+      testing_data[[treatment]] <- treat_levels[1]
       pred_c <- stats::predict(model, testing_data)[[1]]
       # Format output:
       data.frame(pred_treat = pred_t, pred_ctrl = pred_c, testing_ids)
