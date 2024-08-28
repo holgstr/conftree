@@ -1,117 +1,41 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://holgstr.github.io/conftree/404.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/index.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/avg_dev.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/avg_width.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/bikes.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/conf_homo.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/conf_quantile.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/conftree-package.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/crit_node.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/eval_split_cand.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/eval_split_cand_categorical.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/eval_split_cand_numeric.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/get_candidates.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/get_pred_mean.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/get_split.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/get_valid_set.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/grow_node.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/plot.conftree.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/process_covariate.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/process_node.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/process_split_config.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/process_split_config_categorical.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/process_split_config_numeric.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/r2p.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/r2p_hte.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/total_dev.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/total_width.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/tree_dev.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/tree_homogeneity.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/tree_predmean.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/tree_var_across.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/tree_var_nodes.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/tree_var_within.html</loc>
-  </url>
-  <url>
-    <loc>https://holgstr.github.io/conftree/reference/tree_width.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://holgstr.github.io/conftree/404.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/LICENSE-text.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/LICENSE.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/authors.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/index.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/avg_dev.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/avg_width.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/bikes.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/conf_homo.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/conf_quantile.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/conftree-package.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/crit_node.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/eval_split_cand.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/eval_split_cand_categorical.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/eval_split_cand_numeric.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/get_candidates.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/get_pred_mean.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/get_split.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/get_valid_set.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/grow_node.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/index.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/plot.conftree.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/process_covariate.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/process_node.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/process_split_config.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/process_split_config_categorical.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/process_split_config_numeric.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/r2p.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/r2p_hte.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/total_dev.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/total_width.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/tree_dev.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/tree_homogeneity.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/tree_predmean.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/tree_var_across.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/tree_var_nodes.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/tree_var_within.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/tree_width.html</loc></url>
 </urlset>
+
