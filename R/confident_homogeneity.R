@@ -18,7 +18,7 @@ get_pred_mean <- function(valid_set) {
 #'
 conf_quantile <- function(residuals, alpha) {
   assertTRUE(alpha >= 1 / (length(residuals) + 1))
-  prob <- (1 - alpha) * (1 + 1 / length(residuals))
+  prob <- ceiling((1 - alpha) * (n + 1))/n
   stats::quantile(residuals, probs = prob, type = 1, names = FALSE)
 }
 
@@ -30,11 +30,11 @@ conf_quantile <- function(residuals, alpha) {
 #' @keywords internal
 #'
 avg_width <- function(valid_set, alpha) {
-  if ("residual_t" %in% names(valid_set)) {
-    # Correct alpha for ITE quantiles:
+  if ("residual_t" %in% names(valid_set)) { # treatment effects:
+    # Correct alpha for CATE quantiles:
     alpha_c <- 1 - sqrt(1 - alpha)
-    2 * (conf_quantile(valid_set$residual_t, alpha_c) + conf_quantile(valid_set$residual_t, alpha_c))
-  } else {
+    2 * (conf_quantile(valid_set$residual_t, alpha_c) + conf_quantile(valid_set$residual_c, alpha_c))
+  } else { # regression:
     2 * conf_quantile(valid_set$residual, alpha)
   }
 }
