@@ -17,10 +17,10 @@ get_pred_mean <- function(valid_set) {
 #' @keywords internal
 #'
 conf_quantile <- function(residuals, alpha) {
-  n <- length(residuals)
+  n <- length(na.omit(residuals))
   assertTRUE(alpha >= 1 / (n + 1))
   prob <- ceiling((1 - alpha) * (n + 1))/n
-  stats::quantile(residuals, probs = prob, type = 1, names = FALSE)
+  stats::quantile(residuals, probs = prob, type = 1, na.rm = TRUE, names = FALSE)
 }
 
 #' Helper to compute the mean conformal interval length of a validation set

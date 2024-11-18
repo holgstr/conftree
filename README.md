@@ -20,8 +20,8 @@ heterogeneity and intra-group homogeneity. First, predictions are made
 using an arbitrary regression learner from the [100+
 algorithms](https://www.tidymodels.org/find/parsnip/) available in
 `tidymodels`. Then, the data is split recursively using the robust
-conformal criterion. In this way, `conftree` is an extension the R2P
-algorithm from [Lee et al. (NeurIPS
+conformal criterion. In this way, `conftree` extends the R2P algorithm
+of [Lee et al. (NeurIPS
 2020)](https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html).
 
 **Scope:**

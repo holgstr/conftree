@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-This `R` package finds robust subgroups in data with a single continuous response, suitable for either regression or treatment effect models. Subgroups are identified via recursive partitioning, resulting in an interpretable tree. Conformal prediction methods (SCR, CV+ and Jackknife+) are leveraged to simultaneously optimize inter-group heterogeneity and intra-group homogeneity. First, predictions are made using an arbitrary regression learner from the [100+ algorithms][1] available in `tidymodels`. Then, the data is split recursively using the robust conformal criterion. In this way, `conftree` is an extension the R2P algorithm from [Lee et al. (NeurIPS 2020)][2].
+This `R` package finds robust subgroups in data with a single continuous response, suitable for either regression or treatment effect models. Subgroups are identified via recursive partitioning, resulting in an interpretable tree. Conformal prediction methods (SCR, CV+ and Jackknife+) are leveraged to simultaneously optimize inter-group heterogeneity and intra-group homogeneity. First, predictions are made using an arbitrary regression learner from the [100+ algorithms][1] available in `tidymodels`. Then, the data is split recursively using the robust conformal criterion. In this way, `conftree` extends the R2P algorithm of [Lee et al. (NeurIPS 2020)][2].
 
 **Scope:**
 
