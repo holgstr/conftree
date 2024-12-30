@@ -53,7 +53,7 @@ total_width <- function(valid_set, ids_left, ids_right, alpha) {
   valid_set_left <- subset(valid_set, valid_set$testing_ids %in% ids_left)
   valid_set_right <- subset(valid_set, valid_set$testing_ids %in% ids_right)
   # Lee et al. first use sums and then same divisor, so this is mathematically equivalent.
-  w_left <- length(valid_set_left) / (length(valid_set_left) + length(valid_set_right))
+  w_left <- nrow(valid_set_left) / (nrow(valid_set_left) + nrow(valid_set_right))
   w_left * avg_width(valid_set_left, alpha) + (1 - w_left) * avg_width(
     valid_set_right,
     alpha
@@ -93,7 +93,7 @@ total_dev <- function(valid_set, ids_left, ids_right, alpha) {
   valid_set_left <- subset(valid_set, valid_set$testing_ids %in% ids_left)
   valid_set_right <- subset(valid_set, valid_set$testing_ids %in% ids_right)
   # Lee et al. first use sums and then same divisor, so this is mathematically equivalent.
-  w_left <- length(valid_set_left) / (length(valid_set_left) + length(valid_set_right))
+  w_left <- nrow(valid_set_left) / (nrow(valid_set_left) + nrow(valid_set_right))
   w_left * avg_dev(valid_set_left, alpha) + (1 - w_left) * avg_dev(
     valid_set_right,
     alpha

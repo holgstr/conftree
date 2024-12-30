@@ -46,8 +46,8 @@ r2p_hte <- function(
   data <- data[, c(setdiff(names(data), target), target)]
   valid_set <- get_valid_set(data = data, target = target, learner = learner, cv_folds = cv_folds, treatment = treatment)
   # Specific to HTE - treatment itself cannot be used for splitting.
-  data <- data[, colnames(data) != treatment]
-  x_data <- data[, colnames(data) != target]
+  data <- data[, colnames(data) != treatment, drop = FALSE]
+  x_data <- data[, colnames(data) != target, drop = FALSE]
   # Initialize tree.
   node <- partykit::partynode(id = 1)
   tree <- partykit::party(node = node, data = data)
