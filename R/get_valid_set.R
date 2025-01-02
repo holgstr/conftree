@@ -58,9 +58,9 @@ get_valid_set <- function(data, target, learner, cv_folds, treatment = NULL) {
     valid_set$.pred <- valid_set$pred_treat - valid_set$pred_ctrl
     valid_set <- valid_set[ , !(names(valid_set) %in% c("pred_treat", "pred_ctrl"))]
     #### Add treatment-control differentiation:
-    valid_set$treatment <- data$treatment[valid_set$testing_ids]
-    valid_set$residual_t[valid_set$treatment == levels(valid_set$treatment)[2]] <- NA
-    valid_set$residual_c[valid_set$treatment == levels(valid_set$treatment)[1]] <- NA
+    valid_set$treatment <- data[[treatment]][valid_set$testing_ids]
+    valid_set$residual_t[valid_set$treatment == levels(valid_set$treatment)[1]] <- NA
+    valid_set$residual_c[valid_set$treatment == levels(valid_set$treatment)[2]] <- NA
     valid_set$treatment <- NULL
   }
   valid_set[order(valid_set$testing_ids), ][ , order(names(valid_set))]

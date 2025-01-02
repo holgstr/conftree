@@ -58,7 +58,7 @@ plot.conftree <- function(x, ...) {
     valid_set,
     alpha
   )
-  # Add data: Conformal interval width in the nodes.
+  # Add data: Average absolute deviation in the nodes.
   gg$data$dev <- tree_dev(
     tree,
     valid_set,
@@ -75,10 +75,10 @@ plot.conftree <- function(x, ...) {
     ggplot2::aes(label = paste0(
       "n = ", gg$data$nodesize,
       "\nmean = ", gg$data$predmean,
-      "\nsd = ", gg$data$sd
+      # "\nsd = ", gg$data$sd,
       # "\nhomogeneity = ", gg$data$homogeneity,
-      # "\ninterval width = ", gg$data$width,
-      # "\ndeviation = ", gg$data$dev
+      "\ninterval width = ", gg$data$width,
+      "\navg. absolute deviation = ", gg$data$dev
       # "\nid = ", gg$data$id
     )),
     fontface = "bold",

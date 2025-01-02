@@ -13,6 +13,8 @@
 #'
 eval_split_cand_numeric <- function(split_cand, covariate, valid_set, alpha) {
   ids_candidates_left <- which(covariate < split_cand)
+  len = length(ids_candidates_left)
+  if (len<10) {print(len)}
   eval_split_cand(ids_candidates_left, valid_set, alpha)
 }
 
@@ -47,12 +49,17 @@ eval_split_cand_categorical <- function(split_cand, covariate, valid_set, alpha)
 #' @keywords internal
 #'
 eval_split_cand <- function(ids_left, valid_set, alpha) {
-  n_left <- length(ids_left)
-  n_min <- min(n_left, nrow(valid_set) - n_left)
   if ("residual_t" %in% names(valid_set)) {
     alpha_c <- 1 - sqrt(1 - alpha)
+    valid_set_left <- subset(valid_set, valid_set$testing_ids %in% ids_left)
+    valid_set_right <- valid_set[!(valid_set$testing_ids %in% ids_left), ]
+    n_min_l <- min(length(na.omit(valid_set_left$residual_t)), length(na.omit(valid_set_left$residual_c)))
+    n_min_r <- min(length(na.omit(valid_set_right$residual_t)), length(na.omit(valid_set_right$residual_c)))
+    n_min <- min(n_min_l, n_min_r)
     alpha_c >= 1 / (n_min + 1)
   } else {
+    n_left <- length(ids_left)
+    n_min <- min(n_left, nrow(valid_set) - n_left)
     alpha >= 1 / (n_min + 1)
   }
 }
@@ -81,6 +88,8 @@ process_split_config_numeric <- function(
     ,
     var_name
   ] < split_cand)
+  len = length(ids_candidates_left)
+  if (len<10) {print(len)}
   ids_candidates_right <- which((seq_len(nrow(x_data)) %in% valid_set$testing_ids) &
     x_data[, var_name] >= split_cand)
   gain <- process_split_config(
