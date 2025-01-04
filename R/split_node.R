@@ -89,8 +89,6 @@ process_split_config_numeric <- function(
     ,
     var_name
   ] < split_cand)
-  len = length(ids_candidates_left)
-  if (len<10) {print(len)}
   ids_candidates_right <- which((seq_len(nrow(x_data)) %in% valid_set$testing_ids) &
     x_data[, var_name] >= split_cand)
   gain <- process_split_config(

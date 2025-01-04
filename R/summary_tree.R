@@ -1,3 +1,18 @@
+#' Helper to round numbers according to their magnitude
+#'
+#' @param x (`numeric`)\cr number to round.
+#' @param sig (`number`)\cr non-zero decimal digits to consider for rounding.
+#' @return Rounded number.
+#' @keywords internal
+#'
+round_plot <- function(x, sig = 2) {
+  if (x < 1 & x != 0) {
+    scale <- floor(log10(abs(x)))
+    return(round(x, sig - scale - 1))
+  }
+  return(round(x, 2))
+}
+
 #' Helper to get the mean prediction for all inner and outer nodes in a tree
 #'
 #' @param tree (`party`)\cr tree object.
@@ -17,7 +32,7 @@ tree_predmean <- function(tree, valid_set) {
     ids_node <- which(tree_data$`(fitted)` %in% ids_node_set)
     # Subset of valid_set:
     valid_set_node <- valid_set[valid_set$testing_ids %in% ids_node, ]
-    round(get_pred_mean(
+    round_plot(get_pred_mean(
       valid_set = valid_set_node
     ), 2)
   })
@@ -44,7 +59,7 @@ tree_homogeneity <- function(tree, valid_set, alpha, lambda) {
     ids_node <- which(tree_data$`(fitted)` %in% ids_node_set)
     # Subset of valid_set:
     valid_set_node <- valid_set[valid_set$testing_ids %in% ids_node, ]
-    round(crit_node(
+    round_plot(crit_node(
       valid_set = valid_set_node,
       alpha = alpha,
       lambda = lambda
@@ -72,7 +87,7 @@ tree_width <- function(tree, valid_set, alpha) {
     ids_node <- which(tree_data$`(fitted)` %in% ids_node_set)
     # Subset of valid_set:
     valid_set_node <- valid_set[valid_set$testing_ids %in% ids_node, ]
-    round(avg_width(
+    round_plot(avg_width(
       valid_set = valid_set_node,
       alpha = alpha
     ), 2)
@@ -99,7 +114,7 @@ tree_dev <- function(tree, valid_set, alpha) {
     ids_node <- which(tree_data$`(fitted)` %in% ids_node_set)
     # Subset of valid_set:
     valid_set_node <- valid_set[valid_set$testing_ids %in% ids_node, ]
-    round(avg_dev(
+    round_plot(avg_dev(
       valid_set = valid_set_node,
       alpha = alpha
     ), 2)
