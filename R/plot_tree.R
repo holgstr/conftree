@@ -27,11 +27,15 @@
 #' plot(groups)
 plot.conftree <- function(x, ...) {
   tree <- x$tree
-
   target <- x$info$target
   valid_set <- x$valid_set
   alpha <- x$info$alpha
   lambda <- x$info$lambda
+
+  # For treatment models, use CATE estimates.
+  if (!(is.null(x$info) && is.null(x$info$treatment))) {
+    tree$data[[target]] <- valid_set$.pred
+  }
 
   # Plot object.
   gg <- ggparty::ggparty(tree,
@@ -90,7 +94,7 @@ plot.conftree <- function(x, ...) {
                                                        show.legend = FALSE), ggplot2::xlab("")),
                             height = 0.7,
                             nudge_x = -0.02,
-                            nudge_y = -0.13,
+                            nudge_y = -0.16,
                             shared_axis_labels = TRUE)
   plot(gg)
 }
