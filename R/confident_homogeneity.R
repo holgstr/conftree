@@ -17,7 +17,7 @@ get_pred_mean <- function(valid_set) {
 #' @keywords internal
 #'
 conf_quantile <- function(residuals, alpha) {
-  n <- length(na.omit(residuals))
+  n <- length(stats::na.omit(residuals))
   assertTRUE(alpha >= 1 / (n + 1))
   prob <- ceiling((1 - alpha) * (n + 1))/n
   stats::quantile(residuals, probs = prob, type = 1, na.rm = TRUE, names = FALSE)

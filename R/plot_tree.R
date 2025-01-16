@@ -3,7 +3,6 @@
 #' @param x (`conftree`)\cr tree containing detected subgroups.
 #' @param ... additional arguments.
 #' @return The plot.
-#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
@@ -19,7 +18,7 @@
 #'   target = "count",
 #'   learner = randforest,
 #'   cv_folds = 2,
-#'   alpha = 0.05,
+#'   alpha = 0.1,
 #'   gamma = 0.2,
 #'   lambda = 0.5,
 #'   max_groups = 3
@@ -97,4 +96,86 @@ plot.conftree <- function(x, ...) {
                             nudge_y = -0.16,
                             shared_axis_labels = TRUE)
   plot(gg)
+}
+
+#' Print a conftree
+#'
+#' @param x (`conftree`)\cr tree containing detected subgroups.
+#' @param ... additional arguments.
+#' @export
+#'
+#' @examples
+#' library(tidymodels)
+#' library(ranger)
+#' data(bikes)
+#' set.seed(1234)
+#' randforest <- rand_forest(trees = 200, min_n = 5) %>%
+#'   set_mode("regression") %>%
+#'   set_engine("ranger")
+#' groups <- r2p(
+#'   data = bikes,
+#'   target = "count",
+#'   learner = randforest,
+#'   cv_folds = 2,
+#'   alpha = 0.05,
+#'   gamma = 0.2,
+#'   lambda = 0.5,
+#'   max_groups = 3
+#' )
+#' print(groups)
+print.conftree <- function(x, ...) {
+  if (partykit::width(x$tree) < 1) {
+    cat("No subgroups detected.")
+  } else {
+    cat("Conformal tree with", partykit::width(x$tree), "subgroups:\n")
+    print(x$tree)
+    cat("---\n")
+    cat("* terminal nodes (subgroups)")
+  }
+}
+
+#' Prints summary for a conftree
+#'
+#' @param object (`conftree`)\cr tree containing detected subgroups.
+#' @param ... additional arguments.
+#' @export
+#'
+#' @examples
+#' library(tidymodels)
+#' library(ranger)
+#' data(bikes)
+#' set.seed(1234)
+#' randforest <- rand_forest(trees = 200, min_n = 5) %>%
+#'   set_mode("regression") %>%
+#'   set_engine("ranger")
+#' groups <- r2p(
+#'   data = bikes,
+#'   target = "count",
+#'   learner = randforest,
+#'   cv_folds = 2,
+#'   alpha = 0.05,
+#'   gamma = 0.2,
+#'   lambda = 0.5,
+#'   max_groups = 3
+#' )
+#' summary(groups)
+summary.conftree <- function(object, ...) {
+  if (partykit::width(object$tree) < 1) {
+    cat("No subgroups detected.")
+  } else {
+    tree <- object$tree
+    valid_set <- object$valid_set
+    alpha <- object$info$alpha
+    group_ids <- partykit::nodeids(tree, terminal = TRUE)
+    data <- partykit::data_party(tree)
+    ns <- as.numeric(table(data[,ncol(data)]))
+    widths <- as.numeric(tree_width(tree, valid_set, alpha))[group_ids]
+    devs <- as.numeric(tree_dev(tree, valid_set, alpha))[group_ids]
+    means <- as.numeric(tree_predmean(tree, valid_set))[group_ids]
+    res <- data.frame("n" = ns, "mean" = means, "width" = widths, "deviation" = devs)
+    cat("Conformal tree with", partykit::width(tree), "subgroups:\n")
+    print(res)
+    cat("---\n")
+    cat("Alpha: ", alpha, "Lambda: ", object$info$lambda, "Gamma: ", object$info$gamma, "\n")
+  }
 }

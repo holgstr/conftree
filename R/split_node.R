@@ -54,8 +54,8 @@ eval_split_cand <- function(ids_left, valid_set, alpha) {
     valid_set_left <- valid_set[ids_left,]
     #valid_set_right <- valid_set[!(valid_set$testing_ids %in% ids_left), ]
     valid_set_right <- valid_set[-ids_left,]
-    n_min_l <- min(length(na.omit(valid_set_left$residual_t)), length(na.omit(valid_set_left$residual_c)))
-    n_min_r <- min(length(na.omit(valid_set_right$residual_t)), length(na.omit(valid_set_right$residual_c)))
+    n_min_l <- min(length(stats::na.omit(valid_set_left$residual_t)), length(stats::na.omit(valid_set_left$residual_c)))
+    n_min_r <- min(length(stats::na.omit(valid_set_right$residual_t)), length(stats::na.omit(valid_set_right$residual_c)))
     n_min <- min(n_min_l, n_min_r)
     alpha_c >= 1 / (n_min + 1)
   } else {

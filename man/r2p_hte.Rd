@@ -36,7 +36,7 @@ See \code{\link[parsnip:model_spec]{parsnip::model_spec()}} for details.}
 in the impurity of the confident homogeneity is sufficiently large.}
 
 \item{lambda}{(\code{proportion})\cr balance parameter, quantifying the impact of the average interval length relative
-to the average absolute deviation (i.e. interval size vs. within-group homogeneity)}
+to the average absolute deviation (i.e. interval width vs. average absolute deviation)}
 
 \item{max_groups}{(\code{count})\cr maximum number of subgroups.}
 }

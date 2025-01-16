@@ -12,7 +12,7 @@
 #' @param gamma (`proportion`)\cr regularization parameter ensuring that reduction
 #' in the impurity of the confident homogeneity is sufficiently large.
 #' @param lambda (`proportion`)\cr balance parameter, quantifying the impact of the average interval length relative
-#' to the average absolute deviation (i.e. interval size vs. within-group homogeneity)
+#' to the average absolute deviation (i.e. interval width vs. average absolute deviation)
 #' @param max_groups (`count`)\cr maximum number of subgroups.
 #' @return The tree.
 #' @export
