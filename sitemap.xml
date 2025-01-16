@@ -21,6 +21,7 @@
 <url><loc>https://holgstr.github.io/conftree/reference/grow_node.html</loc></url>
 <url><loc>https://holgstr.github.io/conftree/reference/index.html</loc></url>
 <url><loc>https://holgstr.github.io/conftree/reference/plot.conftree.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/print.conftree.html</loc></url>
 <url><loc>https://holgstr.github.io/conftree/reference/process_covariate.html</loc></url>
 <url><loc>https://holgstr.github.io/conftree/reference/process_node.html</loc></url>
 <url><loc>https://holgstr.github.io/conftree/reference/process_split_config.html</loc></url>
@@ -29,6 +30,7 @@
 <url><loc>https://holgstr.github.io/conftree/reference/r2p.html</loc></url>
 <url><loc>https://holgstr.github.io/conftree/reference/r2p_hte.html</loc></url>
 <url><loc>https://holgstr.github.io/conftree/reference/round_plot.html</loc></url>
+<url><loc>https://holgstr.github.io/conftree/reference/summary.conftree.html</loc></url>
 <url><loc>https://holgstr.github.io/conftree/reference/total_dev.html</loc></url>
 <url><loc>https://holgstr.github.io/conftree/reference/total_width.html</loc></url>
 <url><loc>https://holgstr.github.io/conftree/reference/tree_dev.html</loc></url>
