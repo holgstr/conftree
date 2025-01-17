@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 
 ```{r}
 library("conftree")
+set.seed(123)
 ```
 
 # Regression
@@ -28,7 +29,7 @@ data(bikes, package = "conftree")
 
 ## Select learner
 
-```{r}
+```{r, results='hide'}
 library("tidymodels")
 forest <- rand_forest() %>%
   set_mode("regression") %>%
@@ -38,7 +39,6 @@ forest <- rand_forest() %>%
 ## Detect subgroups
 
 ```{r}
-set.seed(123)
 groups <- r2p(
   data = bikes,
   target = "count",
