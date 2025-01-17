@@ -1,0 +1,60 @@
+---
+title: "conftree"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{conftree}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+```{r}
+library("conftree")
+```
+
+# Regression
+
+## Data: bike sharing usage in Washington, D.C.
+
+```{r}
+data(bikes, package = "conftree")
+```
+
+## Select learner
+
+```{r}
+library("tidymodels")
+forest <- rand_forest() %>%
+  set_mode("regression") %>%
+  set_engine("ranger")
+```
+
+## Detect subgroups
+
+```{r}
+set.seed(123)
+groups <- r2p(
+  data = bikes,
+  target = "count",
+  learner = forest,
+  cv_folds = 10,
+  alpha = 0.1,
+  gamma = 0.01,
+  lambda = 0.5,
+  max_groups = 4
+)
+```
+
+## Understand results
+
+```{r}
+groups
+```
+
+

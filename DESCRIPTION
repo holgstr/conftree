@@ -20,6 +20,9 @@ Imports:
     rlang,
     rsample
 Suggests:
+    knitr,
     ranger,
+    rmarkdown,
     tidymodels
 URL: https://holgstr.github.io/conftree/
+VignetteBuilder: knitr

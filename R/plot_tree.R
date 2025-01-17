@@ -25,77 +25,81 @@
 #' )
 #' plot(groups)
 plot.conftree <- function(x, ...) {
-  tree <- x$tree
-  target <- x$info$target
-  valid_set <- x$valid_set
-  alpha <- x$info$alpha
-  lambda <- x$info$lambda
+  if (partykit::width(x$tree) < 2) {
+    cat("No subgroups detected.")
+  } else {
+    tree <- x$tree
+    target <- x$info$target
+    valid_set <- x$valid_set
+    alpha <- x$info$alpha
+    lambda <- x$info$lambda
 
-  # For treatment models, use CATE estimates.
-  if (!(is.null(x$info) && is.null(x$info$treatment))) {
-    tree$data[[target]] <- valid_set$.pred
+    # For treatment models, use CATE estimates.
+    if (!(is.null(x$info) && is.null(x$info$treatment))) {
+      tree$data[[target]] <- valid_set$.pred
+    }
+
+    # Plot object.
+    gg <- ggparty::ggparty(tree,
+                           terminal_space = 0.5) +
+      ggparty::geom_edge() +
+      ggparty::geom_edge_label() +
+      ggparty::geom_node_splitvar()
+
+    # Add data: mean prediction in the nodes.
+    gg$data$predmean <- tree_predmean(
+      tree,
+      valid_set
+    )
+    # Add data: homogeneity in the nodes.
+    gg$data$homogeneity <- tree_homogeneity(
+      tree,
+      valid_set,
+      alpha,
+      lambda
+    )
+    # Add data: Conformal interval width in the nodes.
+    gg$data$width <- tree_width(
+      tree,
+      valid_set,
+      alpha
+    )
+    # Add data: Average absolute deviation in the nodes.
+    gg$data$dev <- tree_dev(
+      tree,
+      valid_set,
+      alpha
+    )
+    # Add data: SD within the outer nodes.
+    gg$data$sd <- as.list(round(sqrt(unlist(tree_var_nodes(
+      tree,
+      valid_set,
+      terminal = FALSE
+    ))), 2))
+    # Add data to plot.
+    gg <- gg + ggparty::geom_node_label(
+      ggplot2::aes(label = paste0(
+        "n = ", gg$data$nodesize,
+        "\nmean = ", gg$data$predmean,
+        # "\nsd = ", gg$data$sd,
+        # "\nhomogeneity = ", gg$data$homogeneity,
+        "\ninterval width = ", gg$data$width,
+        "\navg. absolute deviation = ", gg$data$dev
+        # "\nid = ", gg$data$id
+      )),
+      fontface = "bold",
+      ids = "terminal",
+      size = 3,
+      nudge_y = -0.06
+    ) +
+      ggparty::geom_node_plot(gglist = list(ggplot2::geom_boxplot(ggplot2::aes(x = "", y = .data[[target]]),
+                                                                  show.legend = FALSE), ggplot2::xlab("")),
+                              height = 0.7,
+                              nudge_x = -0.02,
+                              nudge_y = -0.16,
+                              shared_axis_labels = TRUE)
+    plot(gg)
   }
-
-  # Plot object.
-  gg <- ggparty::ggparty(tree,
-    terminal_space = 0.5) +
-    ggparty::geom_edge() +
-    ggparty::geom_edge_label() +
-    ggparty::geom_node_splitvar()
-
-  # Add data: mean prediction in the nodes.
-  gg$data$predmean <- tree_predmean(
-    tree,
-    valid_set
-  )
-  # Add data: homogeneity in the nodes.
-  gg$data$homogeneity <- tree_homogeneity(
-    tree,
-    valid_set,
-    alpha,
-    lambda
-  )
-  # Add data: Conformal interval width in the nodes.
-  gg$data$width <- tree_width(
-    tree,
-    valid_set,
-    alpha
-  )
-  # Add data: Average absolute deviation in the nodes.
-  gg$data$dev <- tree_dev(
-    tree,
-    valid_set,
-    alpha
-  )
-  # Add data: SD within the outer nodes.
-  gg$data$sd <- as.list(round(sqrt(unlist(tree_var_nodes(
-    tree,
-    valid_set,
-    terminal = FALSE
-  ))), 2))
-  # Add data to plot.
-  gg <- gg + ggparty::geom_node_label(
-    ggplot2::aes(label = paste0(
-      "n = ", gg$data$nodesize,
-      "\nmean = ", gg$data$predmean,
-      # "\nsd = ", gg$data$sd,
-      # "\nhomogeneity = ", gg$data$homogeneity,
-      "\ninterval width = ", gg$data$width,
-      "\navg. absolute deviation = ", gg$data$dev
-      # "\nid = ", gg$data$id
-    )),
-    fontface = "bold",
-    ids = "terminal",
-    size = 3,
-    nudge_y = -0.06
-  ) +
-    ggparty::geom_node_plot(gglist = list(ggplot2::geom_boxplot(ggplot2::aes(x = "", y = .data[[target]]),
-                                                       show.legend = FALSE), ggplot2::xlab("")),
-                            height = 0.7,
-                            nudge_x = -0.02,
-                            nudge_y = -0.16,
-                            shared_axis_labels = TRUE)
-  plot(gg)
 }
 
 #' Print a conftree
@@ -124,7 +128,7 @@ plot.conftree <- function(x, ...) {
 #' )
 #' print(groups)
 print.conftree <- function(x, ...) {
-  if (partykit::width(x$tree) < 1) {
+  if (partykit::width(x$tree) < 2) {
     cat("No subgroups detected.")
   } else {
     cat("Conformal tree with", partykit::width(x$tree), "subgroups:\n")
@@ -160,7 +164,7 @@ print.conftree <- function(x, ...) {
 #' )
 #' summary(groups)
 summary.conftree <- function(object, ...) {
-  if (partykit::width(object$tree) < 1) {
+  if (partykit::width(object$tree) < 2) {
     cat("No subgroups detected.")
   } else {
     tree <- object$tree
