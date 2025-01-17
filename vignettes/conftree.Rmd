@@ -29,7 +29,7 @@ data(bikes, package = "conftree")
 
 ## Select learner
 
-```{r, results='hide'}
+```{r, , message=FALSE}
 library("tidymodels")
 forest <- rand_forest() %>%
   set_mode("regression") %>%
