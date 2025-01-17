@@ -5,10 +5,13 @@ template:
 
 navbar:
   structure:
-    left: [reference]
+    left: [reference, articles]
     right: [search, github]
   components:
     github:
       icon: fa-github
       href: http://github.com/holgstr/conftree
       aria-label: Github
+    articles:
+      text: Get Started
+      href: articles/conftree.html
