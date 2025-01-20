@@ -29,7 +29,7 @@ data(bikes, package = "conftree")
 
 ## Select learner
 
-```{r, , message=FALSE}
+```{r, message=FALSE}
 library("tidymodels")
 forest <- rand_forest() %>%
   set_mode("regression") %>%
@@ -43,7 +43,7 @@ groups <- r2p(
   data = bikes,
   target = "count",
   learner = forest,
-  cv_folds = 10,
+  cv_folds = 1,
   alpha = 0.1,
   gamma = 0.01,
   lambda = 0.5,
@@ -56,5 +56,57 @@ groups <- r2p(
 ```{r}
 groups
 ```
+```{r}
+summary(groups)
+```
 
+```{r}
+plot(groups)
+```
 
+# Treatment Effects
+
+## Data: simulate synthetic data
+
+```{r}
+set.seed(1234)
+dgp <- dgp(p = pF_exp_x1_x2,
+           m = mF_x1,
+           t = tF_div_x1_x2,
+           model = "normal",
+           xmodel = "unif",
+           sd = 0.7)
+sim <- simulate(object = dgp,
+                nsim = 500L,
+                d = 4L)
+```
+
+## Select learner
+
+```{r}
+linear <- linear_reg() %>%
+  set_mode("regression") %>%
+  set_engine("lm")
+```
+
+## Detect subgroups
+
+```{r}
+groups_hte <- r2p_hte(
+  data = sim,
+  target = "y",
+  learner = linear,
+  cv_folds = 500,
+  alpha = 0.1,
+  gamma = 0.01,
+  lambda = 0.5,
+  max_groups = 8,
+  treatment = "trt"
+)
+```
+
+## Understand results
+
+```{r}
+plot(groups_hte)
+```

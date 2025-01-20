@@ -34,9 +34,11 @@ plot.conftree <- function(x, ...) {
     alpha <- x$info$alpha
     lambda <- x$info$lambda
 
-    # For treatment models, use CATE estimates.
-    if (!(is.null(x$info) && is.null(x$info$treatment))) {
-      tree$data[[target]] <- valid_set$.pred
+    if ("r2p_hte" %in% class(x)) {
+      tree$data[[target]] <- NA
+      tree$data[[target]][valid_set$testing_ids] <- valid_set$.pred
+      colnames(tree$data)[ncol(tree$data)] <- "CATE"
+      target <- "CATE"
     }
 
     # Plot object.
@@ -93,7 +95,9 @@ plot.conftree <- function(x, ...) {
       nudge_y = -0.06
     ) +
       ggparty::geom_node_plot(gglist = list(ggplot2::geom_boxplot(ggplot2::aes(x = "", y = .data[[target]]),
-                                                                  show.legend = FALSE), ggplot2::xlab("")),
+                                                                  show.legend = FALSE, na.rm = TRUE), ggplot2::xlab(""), ggplot2::theme(
+                                                                    axis.title.y = ggplot2::element_text(vjust = 0.7, margin = ggplot2::margin(r = 30))
+                                                                  )),
                               height = 0.7,
                               nudge_x = -0.02,
                               nudge_y = -0.16,
