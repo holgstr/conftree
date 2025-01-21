@@ -69,8 +69,7 @@ plot(groups)
 ## Data: simulate synthetic data
 
 ```{r, include = FALSE}
-library(remotes)
-install_github("susanne-207/htesim")
+remotes::install_github("susanne-207/htesim")
 ```
 
 ```{r}

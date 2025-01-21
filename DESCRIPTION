@@ -21,7 +21,9 @@ Imports:
     rsample
 Suggests:
     knitr,
+    htesim,
     ranger,
+    remotes,
     rmarkdown,
     tidymodels
 URL: https://holgstr.github.io/conftree/
