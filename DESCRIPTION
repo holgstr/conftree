@@ -26,5 +26,7 @@ Suggests:
     remotes,
     rmarkdown,
     tidymodels
+Remotes:
+    github::susanne-207/htesim
 URL: https://holgstr.github.io/conftree/
 VignetteBuilder: knitr
