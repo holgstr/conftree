@@ -66,10 +66,6 @@ r2p <- function(
   structure(list(
     tree = tree,
     valid_set = valid_set,
-    summmary = list(
-      var_across = var_across,
-      var_within = var_within
-    ),
     info = list(
       target = target,
       cv_folds = cv_folds,
