@@ -61,8 +61,6 @@ r2p <- function(
     node <- grow_node(node = node, split = split, x_data = x_data)
     tree <- partykit::party(node = node, data = data)
   }
-  var_across <- tree_var_across(tree = tree, valid_set = valid_set)
-  var_within <- tree_var_within(tree = tree, valid_set = valid_set)
   structure(list(
     tree = tree,
     valid_set = valid_set,
