@@ -185,5 +185,6 @@ summary.conftree <- function(object, ...) {
     print(res)
     cat("---\n")
     cat("Alpha: ", alpha, "Lambda: ", object$info$lambda, "Gamma: ", object$info$gamma, "\n")
+    invisible(res)
   }
 }

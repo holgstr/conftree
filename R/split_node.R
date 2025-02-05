@@ -185,6 +185,11 @@ process_covariate <- function(
   if (inherits(covariate, "numeric")) {
     uniques <- sort(unique(covariate))
     split_candidates <- (uniques[-length(uniques)] + uniques[-1]) / 2
+    if (length(split_candidates) > 100) {
+      breaks <- quantile(covariate, probs = seq(0, 1, length.out = 101))
+      split_candidates <- breaks
+      split_candidates <- (head(breaks, -1) + tail(breaks, -1)) / 2
+    }
     if (length(split_candidates) == 0) {
       NULL
     } else {
