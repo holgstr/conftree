@@ -155,7 +155,7 @@ agg_data <- function(results) {
   })
 }
 
-final_res <- lapply(datasets, function(x) {agg_data(run_data(x, 2, 100))})
+final_res <- lapply(datasets, function(x) {agg_data(run_data(x, 100, 100))})
 final_res
 ```
 
