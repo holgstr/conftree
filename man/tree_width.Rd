@@ -21,4 +21,3 @@ List of the conformal interval width in the tree's nodes.
 \description{
 Helper to get conformal interval width for all inner and outer nodes in a tree
 }
-\keyword{internal}

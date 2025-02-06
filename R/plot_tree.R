@@ -72,12 +72,12 @@ plot.conftree <- function(x, ...) {
       valid_set,
       alpha
     )
-    # Add data: SD within the outer nodes.
-    gg$data$sd <- as.list(round(sqrt(unlist(tree_var_nodes(
-      tree,
-      valid_set,
-      terminal = FALSE
-    ))), 2))
+    ## Add data: SD within the outer nodes.
+    #gg$data$sd <- as.list(round(sqrt(unlist(tree_var_nodes(
+    #  tree,
+    #  valid_set,
+    #  terminal = FALSE
+    #))), 2))
     # Add data to plot.
     gg <- gg + ggparty::geom_node_label(
       ggplot2::aes(label = paste0(

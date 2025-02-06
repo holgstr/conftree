@@ -5,7 +5,7 @@ template:
 
 navbar:
   structure:
-    left: [articles, reference]
+    left: [articles, exp, reference]
     right: [search, github]
   components:
     github:
@@ -15,3 +15,6 @@ navbar:
     articles:
       text: Get Started
       href: articles/conftree.html
+    exp:
+      text: Experiments
+      href: articles/experiments.html

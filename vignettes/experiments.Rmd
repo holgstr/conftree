@@ -1,0 +1,162 @@
+---
+title: "Experiments"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{experiments}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+```{r}
+library("conftree")
+library("partykit")
+library("rpart")
+library("tidymodels")
+set.seed(123)
+```
+
+# Data
+
+For this experiment, we use 4 regression data sets. Data sets are retrieved from [OpenML][https://www.openml.org/] and identified via their unique ID. *A detailed description can be found on the corresponding OpenML website entry.
+
+```{r}
+library("mlr3oml")
+# Bikes (n = 727, k = 10, target = "count")
+data(bikes, package = "conftree")
+# Abalone (n = 6497, k = 8, target "rings")
+abalone <- as.data.frame(odt(id = 44956)$data)
+# Diamonds (n = 53940, k = 10, target "price")
+diamonds <- as.data.frame(odt(id = 42225)$data)
+# Elevators (n = 16599, k = 18, target "Goal")
+elevators <- as.data.frame(odt(id = 216)$data)
+elevators[1:16] <- lapply(elevators[1:16], as.numeric)
+# Miami Housing (n = 13932, k = 15, target "SALE_PRC")
+miami <- as.data.frame(odt(id = 43093)$data[,-c(3)])
+miami[1:16] <- lapply(miami[1:16], as.numeric)
+# Wines (n = 6497, k = 11, target "quality")
+wines <- as.data.frame(odt(id = 287)$data)
+```
+
+We rearrange each data set such that the target column is the last column in the data.
+
+```{r}
+abalone <- abalone[c(setdiff(names(abalone), "rings"), "rings")]
+diamonds <- diamonds[c(setdiff(names(diamonds), "price"), "price")]
+elevators <- elevators[c(setdiff(names(elevators), "Goal"), "Goal")]
+miami <- miami[c(setdiff(names(miami), "SALE_PRC"), "SALE_PRC")]
+wines <- wines[c(setdiff(names(wines), "quality"), "quality")]
+
+datasets <- list(abalone, bikes, diamonds, elevators, miami, wines)
+```
+
+# Experiments
+
+## Setup
+
+We want to compare subgroup detection for regression problems with R2P/R2P+ to CART and CTREE. For each data set and recursive partitioning method, we measure heterogeneity _across_ groups with the variance of the subgroup means ($Var_{ac}$) and homogeneity _within_ groups with the mean subgroup variance ($Var_{in}$). For well-identified subgroups, $Var_{ac}$ should be high and $Var_{in}$ should be low. Further, we are interested in the number of subgroups identified, and, for R2P+, the mean interval width across groups. To study the impact of cross validation+ (CV+), we run a configuration with R2P+ with 10 CV+ folds and compare it to the results of R2P using split conformal prediction (SCR) .
+
+```{r}
+process_data <- function(data) {
+  ## Learner
+  forest <- rand_forest() %>%
+     set_mode("regression") %>%
+     set_engine("ranger")
+  ## R2P
+  g_r2p <- r2p(
+  data = data,
+  target = colnames(data)[ncol(data)],
+  learner = forest,
+  cv_folds = 1,
+  alpha = 0.2,
+  gamma = 0.01,
+  lambda = 0.5
+)
+  groups <- width(g_r2p$tree)
+  ## Learner
+  forest <- rand_forest() %>%
+     set_mode("regression") %>%
+     set_engine("ranger")
+  ## R2P+
+  g_r2pp <- r2p(
+  data = data,
+  target = colnames(data)[ncol(data)],
+  learner = forest,
+  cv_folds = 20,
+  alpha = 0.2,
+  gamma = 0.01,
+  lambda = 0.5
+)
+  list(g_r2p, g_r2pp)
+}
+
+run_data <- function(data, rep, n_sample) {
+  # Initialize result variables
+  n_groups_r2p <- NULL
+  n_groups_r2pp <- NULL
+  avg_width_r2p <- NULL
+  avg_width_r2pp <- NULL
+  vac_r2p <- NULL
+  vac_r2pp <- NULL
+  vin_r2p <- NULL
+  vin_r2pp <- NULL
+  
+  # Loop through repetitions
+  for (i in seq_len(rep)) {
+    sample_s <- data[sample(nrow(data), n_sample), ]
+    pis <- process_data(sample_s)
+    n_groups_r2p[i] <- pis[[1]]$info$n_groups
+    n_groups_r2pp[i] <- pis[[2]]$info$n_groups
+    group_ids_r2p <- partykit::nodeids(pis[[1]]$tree, terminal = TRUE)
+    group_ids_r2pp <- partykit::nodeids(pis[[2]]$tree, terminal = TRUE)
+    avg_width_r2p[i] <- mean(as.numeric(tree_width(pis[[1]]$tree,
+                                                    pis[[1]]$valid_set,
+                                                    pis[[1]]$info$alpha))[group_ids_r2p])
+    avg_width_r2pp[i] <- mean(as.numeric(tree_width(pis[[2]]$tree,
+                                                    pis[[2]]$valid_set,
+                                                    pis[[2]]$info$alpha))[group_ids_r2pp])
+    vac_r2p[i] <- pis[[1]]$info$var_ac
+    vac_r2pp[i] <- pis[[2]]$info$var_ac
+    vin_r2p[i] <- pis[[1]]$info$var_in
+    vin_r2pp[i] <- pis[[2]]$info$var_in
+  }
+  
+  # Create data frames to store results
+  df_r2p <- data.frame(
+    n_groups = n_groups_r2p,
+    avg_width = avg_width_r2p,
+    var_ac = vac_r2p,
+    var_in = vin_r2p
+  )
+  
+  df_r2pp <- data.frame(
+    n_groups = n_groups_r2pp,
+    avg_width = avg_width_r2pp,
+    var_ac = vac_r2pp,
+    var_in = vin_r2pp
+  )
+  
+  # Return both data frames
+  list(df_r2p = df_r2p, df_r2pp = df_r2pp)
+  
+}
+
+agg_data <- function(results) {
+  lapply(results, function(x) {
+    means <- colMeans(x, na.rm = TRUE)
+    sds <- apply(x, 2, function(x) {sd(x, na.rm = TRUE)})
+    data.frame(mean = means, sd = sds)
+  })
+}
+
+final_res <- lapply(datasets, function(x) {agg_data(run_data(x, 2, 100))})
+final_res
+```
+
+

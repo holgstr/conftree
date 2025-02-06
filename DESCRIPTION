@@ -22,9 +22,11 @@ Imports:
 Suggests:
     knitr,
     htesim,
+    mlr3oml,
     ranger,
     remotes,
     rmarkdown,
+    rpart,
     tidymodels
 Remotes:
     github::susanne-207/htesim

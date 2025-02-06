@@ -66,6 +66,9 @@ r2p <- function(
     valid_set = valid_set,
     info = list(
       target = target,
+      n_groups = partykit::width(tree),
+      var_ac = tree_vars(tree = tree, target = target)[1],
+      var_in = tree_vars(tree = tree, target = target)[2],
       cv_folds = cv_folds,
       alpha = alpha,
       gamma = gamma,
