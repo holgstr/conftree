@@ -122,8 +122,8 @@ run_data <- function(data, rep, n_sample) {
     pis <- process_data(sample_s)
     n_groups_r2p[i] <- pis[[1]]$info$n_groups
     n_groups_r2pp[i] <- pis[[2]]$info$n_groups
-    group_ids_r2p <- partykit::nodeids(pis[[1]]$tree, terminal = TRUE)
-    group_ids_r2pp <- partykit::nodeids(pis[[2]]$tree, terminal = TRUE)
+    group_ids_r2p <- nodeids(pis[[1]]$tree, terminal = TRUE)
+    group_ids_r2pp <- nodeids(pis[[2]]$tree, terminal = TRUE)
     avg_width_r2p[i] <- mean(as.numeric(tree_width(pis[[1]]$tree,
                                                     pis[[1]]$valid_set,
                                                     pis[[1]]$info$alpha))[group_ids_r2p])
