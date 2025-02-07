@@ -13,18 +13,20 @@ knitr::opts_chunk$set(
 )
 ```
 
+We compare R2P with R2P+ for subgroup detection in regression data. For each data set and subgroup detection method, we measure heterogeneity _across_ groups with the variance of the subgroup means ($Var_{ac}$) and homogeneity _within_ groups with the mean subgroup variance ($Var_{in}$). For well-identified subgroups, $Var_{ac}$ should be high and $Var_{in}$ should be low. Further, we are interested in the mean interval width across groups and the total number of subgroups identified, respectively. Specifically, we are interested in the performance for small data set with $n = 100$, as R2P and R2P+ can be expected to perform more similarly the larger a data set is. Therefore, we sample 100 observations from each data set 500 times, and aggregate the results. The aggregation also alleviates the randomness induced by the CV splits in R2P (split conformal prediction) and R2P+ (CV+).
 
-```{r}
+# Prerequisites
+
+```{r, message = FALSE}
 library("conftree")
 library("partykit")
 library("rpart")
 library("tidymodels")
-set.seed(123)
 ```
 
 # Data
 
-For this experiment, we use 4 regression data sets. Data sets are retrieved from [OpenML][https://www.openml.org/] and identified via their unique ID. *A detailed description can be found on the corresponding OpenML website entry.
+For this experiment, we use 6 regression data sets. Data sets are retrieved from [OpenML](https://www.openml.org/) and identified via their unique ID. A detailed description can be found on the corresponding OpenML website entry.
 
 ```{r}
 library("mlr3oml")
@@ -53,17 +55,18 @@ elevators <- elevators[c(setdiff(names(elevators), "Goal"), "Goal")]
 miami <- miami[c(setdiff(names(miami), "SALE_PRC"), "SALE_PRC")]
 wines <- wines[c(setdiff(names(wines), "quality"), "quality")]
 
-datasets <- list(abalone, bikes, diamonds, elevators, miami, wines)
+datasets <- list("abalone" = abalone, "bikes" = bikes, "diamonds" = diamonds, "elevators" = elevators, "miami" = miami, "wines" = wines)
 ```
 
 # Experiments
 
 ## Setup
 
-We want to compare subgroup detection for regression problems with R2P/R2P+ to CART and CTREE. For each data set and recursive partitioning method, we measure heterogeneity _across_ groups with the variance of the subgroup means ($Var_{ac}$) and homogeneity _within_ groups with the mean subgroup variance ($Var_{in}$). For well-identified subgroups, $Var_{ac}$ should be high and $Var_{in}$ should be low. Further, we are interested in the number of subgroups identified, and, for R2P+, the mean interval width across groups. To study the impact of cross validation+ (CV+), we run a configuration with R2P+ with 10 CV+ folds and compare it to the results of R2P using split conformal prediction (SCR) .
+We use a random forest base learner and set the R2P/R2P+ hyperparameters to $\lambda = 0.5$, $\gamma = 0.01$ and $\max_groups$ is left at the default of $10$. We set $\alpha = 0.2$, which means at least 4 observations must be placed in any potential subgroup. Note that setting $\alpha$ to this relatively large value allows us to study R2P and R2P+ in a comparable setting, since for $n = 100$ we do not want to limit the ability to detect subgroups by the theoretical requirements of the conformal guarantees, which asks $\alpha \geq \frac{1}{n_{l}+1}$ for a subgroup of size $n_l$.
 
 ```{r}
 process_data <- function(data) {
+  
   ## Learner
   forest <- rand_forest() %>%
      set_mode("regression") %>%
@@ -76,9 +79,10 @@ process_data <- function(data) {
   cv_folds = 1,
   alpha = 0.2,
   gamma = 0.01,
-  lambda = 0.5
+  lambda = 0.5,
+  max_groups = 10
 )
-  groups <- width(g_r2p$tree)
+
   ## Learner
   forest <- rand_forest() %>%
      set_mode("regression") %>%
@@ -91,11 +95,16 @@ process_data <- function(data) {
   cv_folds = 20,
   alpha = 0.2,
   gamma = 0.01,
-  lambda = 0.5
+  lambda = 0.5,
+  max_groups = 10
 )
   list(g_r2p, g_r2pp)
 }
+```
 
+We define functions to run the experiments and aggregate the results. For each of the four measures, we report means and standard deviations for R2P and R2P+, respectively.
+
+```{r}
 run_data <- function(data, rep, n_sample) {
   # Initialize result variables
   n_groups_r2p <- NULL
@@ -143,7 +152,7 @@ run_data <- function(data, rep, n_sample) {
   )
   
   # Return both data frames
-  list(df_r2p = df_r2p, df_r2pp = df_r2pp)
+  list("r2p" = df_r2p, "r2p_plus" = df_r2pp)
   
 }
 
@@ -154,9 +163,17 @@ agg_data <- function(results) {
     data.frame(mean = means, sd = sds)
   })
 }
-
-final_res <- lapply(datasets, function(x) {agg_data(run_data(x, 100, 100))})
-final_res
 ```
 
+## Run
 
+```{r}
+set.seed(123)
+final_res <- lapply(datasets, function(x) {agg_data(run_data(x, 500, 100))})
+```
+
+## Results
+
+```{r}
+final_res
+```
