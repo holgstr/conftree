@@ -60,38 +60,43 @@
 
     
     
+<p>We compare R2P with R2P+ for subgroup detection in regression data.
+For each data set and subgroup detection method, we measure
+heterogeneity <em>across</em> groups with the variance of the subgroup
+means
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><msub><mi>r</mi><mrow><mi>a</mi><mi>c</mi></mrow></msub></mrow><annotation encoding="application/x-tex">Var_{ac}</annotation></semantics></math>)
+and homogeneity <em>within</em> groups with the mean subgroup variance
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><msub><mi>r</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">Var_{in}</annotation></semantics></math>).
+For well-identified subgroups,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><msub><mi>r</mi><mrow><mi>a</mi><mi>c</mi></mrow></msub></mrow><annotation encoding="application/x-tex">Var_{ac}</annotation></semantics></math>
+should be high and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><msub><mi>r</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">Var_{in}</annotation></semantics></math>
+should be low. Further, we are interested in the mean interval width
+across groups and the total number of subgroups identified,
+respectively. Specifically, we are interested in the performance for
+small data set with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">n = 100</annotation></semantics></math>,
+as R2P and R2P+ can be expected to perform more similarly the larger a
+data set is. Therefore, we sample 100 observations from each data set
+500 times, and aggregate the results. The aggregation also alleviates
+the randomness induced by the CV splits in R2P (split conformal
+prediction) and R2P+ (CV+).</p>
+<div class="section level2">
+<h2 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://holgstr.github.io/conftree/">"conftree"</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="http://partykit.r-forge.r-project.org/partykit/" class="external-link">"partykit"</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: grid</span></span>
-<span><span class="co">#&gt; Loading required package: libcoin</span></span>
-<span><span class="co">#&gt; Loading required package: mvtnorm</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/bethatkinson/rpart" class="external-link">"rpart"</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://tidymodels.tidymodels.org" class="external-link">"tidymodels"</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; ── <span style="font-weight: bold;">Attaching packages</span> ────────────────────────────────────── tidymodels 1.2.0 ──</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">broom       </span> 1.0.7     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">recipes     </span> 1.1.0</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dials       </span> 1.3.0     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">rsample     </span> 1.2.1</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">dplyr       </span> 1.1.4     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tibble      </span> 3.2.1</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">ggplot2     </span> 3.5.1     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tidyr       </span> 1.3.1</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">infer       </span> 1.0.7     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">tune        </span> 1.2.1</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">modeldata   </span> 1.4.0     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflows   </span> 1.1.4</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">parsnip     </span> 1.2.1     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">workflowsets</span> 1.1.0</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">purrr       </span> 1.0.4     <span style="color: #00BB00;">✔</span> <span style="color: #0000BB;">yardstick   </span> 1.3.2</span></span>
-<span><span class="co">#&gt; ── <span style="font-weight: bold;">Conflicts</span> ───────────────────────────────────────── tidymodels_conflicts() ──</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">purrr</span>::<span style="color: #00BB00;">discard()</span> masks <span style="color: #0000BB;">scales</span>::discard()</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">filter()</span>  masks <span style="color: #0000BB;">stats</span>::filter()</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dplyr</span>::<span style="color: #00BB00;">lag()</span>     masks <span style="color: #0000BB;">stats</span>::lag()</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">dials</span>::<span style="color: #00BB00;">prune()</span>   masks <span style="color: #0000BB;">rpart</span>::prune()</span></span>
-<span><span class="co">#&gt; <span style="color: #BB0000;">✖</span> <span style="color: #0000BB;">recipes</span>::<span style="color: #00BB00;">step()</span>  masks <span style="color: #0000BB;">stats</span>::step()</span></span>
-<span><span class="co">#&gt; <span style="color: #0000BB;">•</span> Use <span style="color: #00BB00;">tidymodels_prefer()</span> to resolve common conflicts.</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://tidymodels.tidymodels.org" class="external-link">"tidymodels"</a></span><span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level2">
 <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a>
 </h2>
-<p>For this experiment, we use 4 regression data sets. Data sets are
-retrieved from [OpenML][<a href="https://www.openml.org/" class="external-link uri">https://www.openml.org/</a>] and identified via their unique
-ID. *A detailed description can be found on the corresponding OpenML
-website entry.</p>
+<p>For this experiment, we use 6 regression data sets. Data sets are
+retrieved from <a href="https://www.openml.org/" class="external-link">OpenML</a> and
+identified via their unique ID. A detailed description can be found on
+the corresponding OpenML website entry.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://mlr3oml.mlr-org.com" class="external-link">"mlr3oml"</a></span><span class="op">)</span></span>
 <span><span class="co"># Bikes (n = 727, k = 10, target = "count")</span></span>
@@ -117,7 +122,7 @@ column in the data.</p>
 <span><span class="va">miami</span> <span class="op">&lt;-</span> <span class="va">miami</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">miami</span><span class="op">)</span>, <span class="st">"SALE_PRC"</span><span class="op">)</span>, <span class="st">"SALE_PRC"</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="va">wines</span> <span class="op">&lt;-</span> <span class="va">wines</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">wines</span><span class="op">)</span>, <span class="st">"quality"</span><span class="op">)</span>, <span class="st">"quality"</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
-<span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">abalone</span>, <span class="va">bikes</span>, <span class="va">diamonds</span>, <span class="va">elevators</span>, <span class="va">miami</span>, <span class="va">wines</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"abalone"</span> <span class="op">=</span> <span class="va">abalone</span>, <span class="st">"bikes"</span> <span class="op">=</span> <span class="va">bikes</span>, <span class="st">"diamonds"</span> <span class="op">=</span> <span class="va">diamonds</span>, <span class="st">"elevators"</span> <span class="op">=</span> <span class="va">elevators</span>, <span class="st">"miami"</span> <span class="op">=</span> <span class="va">miami</span>, <span class="st">"wines"</span> <span class="op">=</span> <span class="va">wines</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="experiments">Experiments<a class="anchor" aria-label="anchor" href="#experiments"></a>
@@ -125,24 +130,30 @@ column in the data.</p>
 <div class="section level3">
 <h3 id="setup">Setup<a class="anchor" aria-label="anchor" href="#setup"></a>
 </h3>
-<p>We want to compare subgroup detection for regression problems with
-R2P/R2P+ to CART and CTREE. For each data set and recursive partitioning
-method, we measure heterogeneity <em>across</em> groups with the
-variance of the subgroup means
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><msub><mi>r</mi><mrow><mi>a</mi><mi>c</mi></mrow></msub></mrow><annotation encoding="application/x-tex">Var_{ac}</annotation></semantics></math>)
-and homogeneity <em>within</em> groups with the mean subgroup variance
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><msub><mi>r</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">Var_{in}</annotation></semantics></math>).
-For well-identified subgroups,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><msub><mi>r</mi><mrow><mi>a</mi><mi>c</mi></mrow></msub></mrow><annotation encoding="application/x-tex">Var_{ac}</annotation></semantics></math>
-should be high and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><msub><mi>r</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">Var_{in}</annotation></semantics></math>
-should be low. Further, we are interested in the number of subgroups
-identified, and, for R2P+, the mean interval width across groups. To
-study the impact of cross validation+ (CV+), we run a configuration with
-R2P+ with 10 CV+ folds and compare it to the results of R2P using split
-conformal prediction (SCR) .</p>
+<p>We use a random forest base learner and set the R2P/R2P+
+hyperparameters to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mn>0.5</mn></mrow><annotation encoding="application/x-tex">\lambda = 0.5</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>=</mo><mn>0.01</mn></mrow><annotation encoding="application/x-tex">\gamma = 0.01</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>max</mo><mi>g</mi></msub><mi>r</mi><mi>o</mi><mi>u</mi><mi>p</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\max_groups</annotation></semantics></math>
+is left at the default of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>10</mn><annotation encoding="application/x-tex">10</annotation></semantics></math>.
+We set
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mn>0.2</mn></mrow><annotation encoding="application/x-tex">\alpha = 0.2</annotation></semantics></math>,
+which means at least 4 observations must be placed in any potential
+subgroup. Note that setting
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+to this relatively large value allows us to study R2P and R2P+ in a
+comparable setting, since for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>100</mn></mrow><annotation encoding="application/x-tex">n = 100</annotation></semantics></math>
+we do not want to limit the ability to detect subgroups by the
+theoretical requirements of the conformal guarantees, which asks
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>≥</mo><mfrac><mn>1</mn><mrow><msub><mi>n</mi><mi>l</mi></msub><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\alpha \geq \frac{1}{n_{l}+1}</annotation></semantics></math>
+for a subgroup of size
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>l</mi></msub><annotation encoding="application/x-tex">n_l</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">process_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
 <span>  <span class="co">## Learner</span></span>
 <span>  <span class="va">forest</span> <span class="op">&lt;-</span> <span class="fu">rand_forest</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>     <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -155,9 +166,10 @@ conformal prediction (SCR) .</p>
 <span>  cv_folds <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>  gamma <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span>  lambda <span class="op">=</span> <span class="fl">0.5</span></span>
+<span>  lambda <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  max_groups <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span></span>
-<span>  <span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/partykit/man/partynode-methods.html" class="external-link">width</a></span><span class="op">(</span><span class="va">g_r2p</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span></span>
+<span></span>
 <span>  <span class="co">## Learner</span></span>
 <span>  <span class="va">forest</span> <span class="op">&lt;-</span> <span class="fu">rand_forest</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>     <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -170,12 +182,16 @@ conformal prediction (SCR) .</p>
 <span>  cv_folds <span class="op">=</span> <span class="fl">20</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.2</span>,</span>
 <span>  gamma <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span>  lambda <span class="op">=</span> <span class="fl">0.5</span></span>
+<span>  lambda <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  max_groups <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">g_r2p</span>, <span class="va">g_r2pp</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">run_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">rep</span>, <span class="va">n_sample</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<p>We define functions to run the experiments and aggregate the results.
+For each of the four measures, we report means and standard deviations
+for R2P and R2P+, respectively.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">run_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">rep</span>, <span class="va">n_sample</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># Initialize result variables</span></span>
 <span>  <span class="va">n_groups_r2p</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
 <span>  <span class="va">n_groups_r2pp</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
@@ -222,7 +238,7 @@ conformal prediction (SCR) .</p>
 <span>  <span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="co"># Return both data frames</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>df_r2p <span class="op">=</span> <span class="va">df_r2p</span>, df_r2pp <span class="op">=</span> <span class="va">df_r2pp</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"r2p"</span> <span class="op">=</span> <span class="va">df_r2p</span>, <span class="st">"r2p_plus"</span> <span class="op">=</span> <span class="va">df_r2pp</span><span class="op">)</span></span>
 <span>  </span>
 <span><span class="op">}</span></span>
 <span></span>
@@ -232,104 +248,114 @@ conformal prediction (SCR) .</p>
 <span>    <span class="va">sds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">x</span>, <span class="fl">2</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>mean <span class="op">=</span> <span class="va">means</span>, sd <span class="op">=</span> <span class="va">sds</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">final_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">datasets</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu">agg_data</span><span class="op">(</span><span class="fu">run_data</span><span class="op">(</span><span class="va">x</span>, <span class="fl">100</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span>
-<span><span class="va">final_res</span></span>
-<span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt; [[1]]$df_r2p</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="run">Run<a class="anchor" aria-label="anchor" href="#run"></a>
+</h3>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span><span class="va">final_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">datasets</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu">agg_data</span><span class="op">(</span><span class="fu">run_data</span><span class="op">(</span><span class="va">x</span>, <span class="fl">500</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
+</h3>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">final_res</span></span>
+<span><span class="co">#&gt; $abalone</span></span>
+<span><span class="co">#&gt; $abalone$r2p</span></span>
 <span><span class="co">#&gt;               mean       sd</span></span>
-<span><span class="co">#&gt; n_groups  2.960000 1.171376</span></span>
-<span><span class="co">#&gt; avg_width 5.518988 1.261375</span></span>
-<span><span class="co">#&gt; var_ac    3.235840 1.876836</span></span>
-<span><span class="co">#&gt; var_in    7.437084 2.259951</span></span>
+<span><span class="co">#&gt; n_groups  2.984000 1.220953</span></span>
+<span><span class="co">#&gt; avg_width 5.551533 1.204233</span></span>
+<span><span class="co">#&gt; var_ac    3.421474 2.258672</span></span>
+<span><span class="co">#&gt; var_in    7.440119 2.502079</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[1]]$df_r2pp</span></span>
-<span><span class="co">#&gt;               mean       sd</span></span>
-<span><span class="co">#&gt; n_groups  4.170000 1.853498</span></span>
-<span><span class="co">#&gt; avg_width 5.004691 1.083016</span></span>
-<span><span class="co">#&gt; var_ac    3.893729 1.991213</span></span>
-<span><span class="co">#&gt; var_in    6.500659 2.304883</span></span>
+<span><span class="co">#&gt; $abalone$r2p_plus</span></span>
+<span><span class="co">#&gt;               mean        sd</span></span>
+<span><span class="co">#&gt; n_groups  4.036000 1.7368758</span></span>
+<span><span class="co">#&gt; avg_width 5.041334 0.9341293</span></span>
+<span><span class="co">#&gt; var_ac    4.052611 2.2871746</span></span>
+<span><span class="co">#&gt; var_in    6.617038 2.2746189</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[2]]</span></span>
-<span><span class="co">#&gt; [[2]]$df_r2p</span></span>
+<span><span class="co">#&gt; $bikes</span></span>
+<span><span class="co">#&gt; $bikes$r2p</span></span>
 <span><span class="co">#&gt;                 mean          sd</span></span>
-<span><span class="co">#&gt; n_groups      3.7400    1.548019</span></span>
-<span><span class="co">#&gt; avg_width   194.4021   38.638890</span></span>
-<span><span class="co">#&gt; var_ac     9938.2467 6490.354803</span></span>
-<span><span class="co">#&gt; var_in    15142.6634 6356.785126</span></span>
+<span><span class="co">#&gt; n_groups      3.8700    1.502536</span></span>
+<span><span class="co">#&gt; avg_width   185.0592   38.136711</span></span>
+<span><span class="co">#&gt; var_ac    11229.8270 5953.912864</span></span>
+<span><span class="co">#&gt; var_in    13388.2490 6055.619242</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[2]]$df_r2pp</span></span>
+<span><span class="co">#&gt; $bikes$r2p_plus</span></span>
 <span><span class="co">#&gt;                 mean          sd</span></span>
-<span><span class="co">#&gt; n_groups      6.3200    1.989264</span></span>
-<span><span class="co">#&gt; avg_width   143.7268   25.328753</span></span>
-<span><span class="co">#&gt; var_ac    16212.3744 4770.343674</span></span>
-<span><span class="co">#&gt; var_in     7601.6214 3004.399906</span></span>
+<span><span class="co">#&gt; n_groups      6.3640    1.928456</span></span>
+<span><span class="co">#&gt; avg_width   143.5786   22.105168</span></span>
+<span><span class="co">#&gt; var_ac    16537.8758 4954.407384</span></span>
+<span><span class="co">#&gt; var_in     7565.1171 2983.096008</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[3]]</span></span>
-<span><span class="co">#&gt; [[3]]$df_r2p</span></span>
+<span><span class="co">#&gt; $diamonds</span></span>
+<span><span class="co">#&gt; $diamonds$r2p</span></span>
 <span><span class="co">#&gt;                   mean           sd</span></span>
-<span><span class="co">#&gt; n_groups         5.180 1.572362e+00</span></span>
-<span><span class="co">#&gt; avg_width     2786.682 1.006474e+03</span></span>
-<span><span class="co">#&gt; var_ac    12955013.512 6.598271e+06</span></span>
-<span><span class="co">#&gt; var_in     4179106.642 1.675187e+06</span></span>
+<span><span class="co">#&gt; n_groups         5.094 1.434322e+00</span></span>
+<span><span class="co">#&gt; avg_width     2739.016 9.452874e+02</span></span>
+<span><span class="co">#&gt; var_ac    13363004.932 6.911751e+06</span></span>
+<span><span class="co">#&gt; var_in     4342538.944 1.971144e+06</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[3]]$df_r2pp</span></span>
+<span><span class="co">#&gt; $diamonds$r2p_plus</span></span>
 <span><span class="co">#&gt;                   mean           sd</span></span>
-<span><span class="co">#&gt; n_groups         7.780 1.661082e+00</span></span>
-<span><span class="co">#&gt; avg_width     2521.912 6.449891e+02</span></span>
-<span><span class="co">#&gt; var_ac    14748142.907 6.157314e+06</span></span>
-<span><span class="co">#&gt; var_in     3003723.808 1.143499e+06</span></span>
+<span><span class="co">#&gt; n_groups         7.978 1.626902e+00</span></span>
+<span><span class="co">#&gt; avg_width     2497.378 6.789871e+02</span></span>
+<span><span class="co">#&gt; var_ac    15225083.062 6.538073e+06</span></span>
+<span><span class="co">#&gt; var_in     2992085.930 1.127263e+06</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[4]]</span></span>
-<span><span class="co">#&gt; [[4]]$df_r2p</span></span>
+<span><span class="co">#&gt; $elevators</span></span>
+<span><span class="co">#&gt; $elevators$r2p</span></span>
 <span><span class="co">#&gt;                   mean           sd</span></span>
-<span><span class="co">#&gt; n_groups  3.130000e+00 1.203152e+00</span></span>
-<span><span class="co">#&gt; avg_width 1.000543e-02 2.576774e-03</span></span>
-<span><span class="co">#&gt; var_ac    8.752581e-06 1.239039e-05</span></span>
-<span><span class="co">#&gt; var_in    4.036001e-05 1.563074e-05</span></span>
+<span><span class="co">#&gt; n_groups  3.220000e+00 1.139384e+00</span></span>
+<span><span class="co">#&gt; avg_width 1.029241e-02 2.839237e-03</span></span>
+<span><span class="co">#&gt; var_ac    9.399720e-06 1.392493e-05</span></span>
+<span><span class="co">#&gt; var_in    3.857927e-05 1.420509e-05</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[4]]$df_r2pp</span></span>
+<span><span class="co">#&gt; $elevators$r2p_plus</span></span>
 <span><span class="co">#&gt;                   mean           sd</span></span>
-<span><span class="co">#&gt; n_groups  4.400000e+00 1.711518e+00</span></span>
-<span><span class="co">#&gt; avg_width 1.001678e-02 2.682521e-03</span></span>
-<span><span class="co">#&gt; var_ac    1.226545e-05 1.897798e-05</span></span>
-<span><span class="co">#&gt; var_in    3.588905e-05 1.340442e-05</span></span>
+<span><span class="co">#&gt; n_groups  4.482000e+00 1.637999e+00</span></span>
+<span><span class="co">#&gt; avg_width 9.807843e-03 2.205374e-03</span></span>
+<span><span class="co">#&gt; var_ac    1.452498e-05 1.871628e-05</span></span>
+<span><span class="co">#&gt; var_in    3.533479e-05 1.465198e-05</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[5]]</span></span>
-<span><span class="co">#&gt; [[5]]$df_r2p</span></span>
+<span><span class="co">#&gt; $miami</span></span>
+<span><span class="co">#&gt; $miami$r2p</span></span>
 <span><span class="co">#&gt;                   mean           sd</span></span>
-<span><span class="co">#&gt; n_groups  3.100000e+00 1.226805e+00</span></span>
-<span><span class="co">#&gt; avg_width 3.023391e+05 7.616216e+04</span></span>
-<span><span class="co">#&gt; var_ac    1.727289e+10 2.226174e+10</span></span>
-<span><span class="co">#&gt; var_in    9.175850e+10 4.574147e+10</span></span>
+<span><span class="co">#&gt; n_groups  3.220000e+00 1.254890e+00</span></span>
+<span><span class="co">#&gt; avg_width 3.024762e+05 9.011276e+04</span></span>
+<span><span class="co">#&gt; var_ac    1.897242e+10 2.829815e+10</span></span>
+<span><span class="co">#&gt; var_in    8.938808e+10 4.921858e+10</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[5]]$df_r2pp</span></span>
+<span><span class="co">#&gt; $miami$r2p_plus</span></span>
 <span><span class="co">#&gt;                   mean           sd</span></span>
-<span><span class="co">#&gt; n_groups  4.830000e+00 1.928285e+00</span></span>
-<span><span class="co">#&gt; avg_width 2.597470e+05 7.001439e+04</span></span>
-<span><span class="co">#&gt; var_ac    2.415276e+10 2.859909e+10</span></span>
-<span><span class="co">#&gt; var_in    7.623128e+10 4.123284e+10</span></span>
+<span><span class="co">#&gt; n_groups  5.050000e+00 1.866136e+00</span></span>
+<span><span class="co">#&gt; avg_width 2.561305e+05 5.969747e+04</span></span>
+<span><span class="co">#&gt; var_ac    2.494681e+10 2.379236e+10</span></span>
+<span><span class="co">#&gt; var_in    7.133980e+10 3.691334e+10</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[6]]</span></span>
-<span><span class="co">#&gt; [[6]]$df_r2p</span></span>
+<span><span class="co">#&gt; $wines</span></span>
+<span><span class="co">#&gt; $wines$r2p</span></span>
 <span><span class="co">#&gt;                 mean         sd</span></span>
-<span><span class="co">#&gt; n_groups  3.07000000 1.12146189</span></span>
-<span><span class="co">#&gt; avg_width 1.77223333 0.31413215</span></span>
-<span><span class="co">#&gt; var_ac    0.09309501 0.09657896</span></span>
-<span><span class="co">#&gt; var_in    0.67932655 0.15743283</span></span>
+<span><span class="co">#&gt; n_groups  3.08600000 1.21884172</span></span>
+<span><span class="co">#&gt; avg_width 1.78732581 0.34772081</span></span>
+<span><span class="co">#&gt; var_ac    0.07691911 0.07907306</span></span>
+<span><span class="co">#&gt; var_in    0.67550618 0.15823389</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; [[6]]$df_r2pp</span></span>
+<span><span class="co">#&gt; $wines$r2p_plus</span></span>
 <span><span class="co">#&gt;                mean         sd</span></span>
-<span><span class="co">#&gt; n_groups  4.2400000 1.88626080</span></span>
-<span><span class="co">#&gt; avg_width 1.7302423 0.26929982</span></span>
-<span><span class="co">#&gt; var_ac    0.1107243 0.08655824</span></span>
-<span><span class="co">#&gt; var_in    0.6491995 0.15050397</span></span></code></pre></div>
+<span><span class="co">#&gt; n_groups  4.2840000 1.87038517</span></span>
+<span><span class="co">#&gt; avg_width 1.7203876 0.25358830</span></span>
+<span><span class="co">#&gt; var_ac    0.1061634 0.09362968</span></span>
+<span><span class="co">#&gt; var_in    0.6484246 0.15905370</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
