@@ -62,7 +62,7 @@ datasets <- list("abalone" = abalone, "bikes" = bikes, "diamonds" = diamonds, "e
 
 ## Setup
 
-We use a random forest base learner and set the R2P/R2P+ hyperparameters to $\lambda = 0.5$, $\gamma = 0.01$ and $\max_groups$ is left at the default of $10$. We set $\alpha = 0.2$, which means at least 4 observations must be placed in any potential subgroup. Note that setting $\alpha$ to this relatively large value allows us to study R2P and R2P+ in a comparable setting, since for $n = 100$ we do not want to limit the ability to detect subgroups by the theoretical requirements of the conformal guarantees, which asks $\alpha \geq \frac{1}{n_{l}+1}$ for a subgroup of size $n_l$.
+We use a random forest base learner and set the R2P/R2P+ hyperparameters to $\lambda = 0.5$, $\gamma = 0.01$ and $\max_groups$ is left at the default of $10$. In R2P+, we use `cv_folds = 20`. Further, we set $\alpha = 0.2$, which means at least 4 observations must be placed in any potential subgroup. Note that setting $\alpha$ to this relatively large value allows us to study R2P and R2P+ in a comparable setting, since for $n = 100$ we do not want to limit the ability to detect subgroups by the theoretical requirements of the conformal guarantees, which asks $\alpha \geq \frac{1}{n_{l}+1}$ for a subgroup of size $n_l$.
 
 ```{r}
 process_data <- function(data) {
