@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   conftree: conftree.html
   experiments: experiments.html
-last_built: 2025-02-07T00:42Z
+last_built: 2025-02-07T03:19Z
 urls:
   reference: https://holgstr.github.io/conftree/reference
   article: https://holgstr.github.io/conftree/articles
