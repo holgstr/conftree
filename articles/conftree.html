@@ -93,7 +93,7 @@
 <span>  alpha <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  gamma <span class="op">=</span> <span class="fl">0.01</span>,</span>
 <span>  lambda <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>  max_groups <span class="op">=</span> <span class="fl">4</span></span>
+<span>  max_groups <span class="op">=</span> <span class="fl">3</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -101,24 +101,21 @@
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">groups</span></span>
-<span><span class="co">#&gt; Conformal tree with 4 subgroups:</span></span>
+<span><span class="co">#&gt; Conformal tree with 3 subgroups:</span></span>
 <span><span class="co">#&gt; [1] root</span></span>
 <span><span class="co">#&gt; |   [2] workingday in False: *</span></span>
 <span><span class="co">#&gt; |   [3] workingday in True</span></span>
-<span><span class="co">#&gt; |   |   [4] year in 0</span></span>
-<span><span class="co">#&gt; |   |   |   [5] season in spring: *</span></span>
-<span><span class="co">#&gt; |   |   |   [6] season in fall, summer, winter: *</span></span>
-<span><span class="co">#&gt; |   |   [7] year in 1: *</span></span>
+<span><span class="co">#&gt; |   |   [4] year in 0: *</span></span>
+<span><span class="co">#&gt; |   |   [5] year in 1: *</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; * terminal nodes (subgroups)</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">groups</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Conformal tree with 4 subgroups:</span></span>
+<span><span class="co">#&gt; Conformal tree with 3 subgroups:</span></span>
 <span><span class="co">#&gt;     n   mean  width deviation</span></span>
 <span><span class="co">#&gt; 1 231  49.74  81.96      0.89</span></span>
-<span><span class="co">#&gt; 2  58 111.62  93.34      0.56</span></span>
-<span><span class="co">#&gt; 3 190 258.88 131.23      5.37</span></span>
-<span><span class="co">#&gt; 4 248 346.23 249.48      2.33</span></span>
+<span><span class="co">#&gt; 2 248 219.79 129.67     19.44</span></span>
+<span><span class="co">#&gt; 3 248 346.23 249.48      2.33</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Alpha:  0.1 Lambda:  0.5 Gamma:  0.01</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
