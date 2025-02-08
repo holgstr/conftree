@@ -58,6 +58,17 @@ wines <- wines[c(setdiff(names(wines), "quality"), "quality")]
 datasets <- list("abalone" = abalone, "bikes" = bikes, "diamonds" = diamonds, "elevators" = elevators, "miami" = miami, "wines" = wines)
 ```
 
+We standardize the target variables so results are more comparable across data sets.
+
+```{r}
+datasets <- list("abalone" = abalone, "bikes" = bikes, "diamonds" = diamonds, "elevators" = elevators, "miami" = miami, "wines" = wines)
+datasets <- lapply(datasets, function(df) {
+  last <- ncol(df)
+  df[[last]] <- (df[[last]] - mean(df[[last]], na.rm = TRUE)) / sd(df[[last]], na.rm = TRUE)
+  df
+})
+```
+
 # Experiments
 
 ## Setup
