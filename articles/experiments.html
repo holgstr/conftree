@@ -123,6 +123,15 @@ column in the data.</p>
 <span><span class="va">wines</span> <span class="op">&lt;-</span> <span class="va">wines</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">wines</span><span class="op">)</span>, <span class="st">"quality"</span><span class="op">)</span>, <span class="st">"quality"</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"abalone"</span> <span class="op">=</span> <span class="va">abalone</span>, <span class="st">"bikes"</span> <span class="op">=</span> <span class="va">bikes</span>, <span class="st">"diamonds"</span> <span class="op">=</span> <span class="va">diamonds</span>, <span class="st">"elevators"</span> <span class="op">=</span> <span class="va">elevators</span>, <span class="st">"miami"</span> <span class="op">=</span> <span class="va">miami</span>, <span class="st">"wines"</span> <span class="op">=</span> <span class="va">wines</span><span class="op">)</span></span></code></pre></div>
+<p>We standardize the target variables so results are more comparable
+across data sets.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"abalone"</span> <span class="op">=</span> <span class="va">abalone</span>, <span class="st">"bikes"</span> <span class="op">=</span> <span class="va">bikes</span>, <span class="st">"diamonds"</span> <span class="op">=</span> <span class="va">diamonds</span>, <span class="st">"elevators"</span> <span class="op">=</span> <span class="va">elevators</span>, <span class="st">"miami"</span> <span class="op">=</span> <span class="va">miami</span>, <span class="st">"wines"</span> <span class="op">=</span> <span class="va">wines</span><span class="op">)</span></span>
+<span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">datasets</span>, <span class="kw">function</span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">last</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span>  <span class="va">df</span><span class="op">[[</span><span class="va">last</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">df</span><span class="op">[[</span><span class="va">last</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">df</span><span class="op">[[</span><span class="va">last</span><span class="op">]</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html" class="external-link">sd</a></span><span class="op">(</span><span class="va">df</span><span class="op">[[</span><span class="va">last</span><span class="op">]</span><span class="op">]</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="va">df</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="experiments">Experiments<a class="anchor" aria-label="anchor" href="#experiments"></a>
@@ -151,7 +160,7 @@ theoretical requirements of the conformal guarantees, which asks
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>≥</mo><mfrac><mn>1</mn><mrow><msub><mi>n</mi><mi>l</mi></msub><mo>+</mo><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">\alpha \geq \frac{1}{n_{l}+1}</annotation></semantics></math>
 for a subgroup of size
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>l</mi></msub><annotation encoding="application/x-tex">n_l</annotation></semantics></math>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">process_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  </span>
 <span>  <span class="co">## Learner</span></span>
@@ -190,7 +199,7 @@ for a subgroup of size
 <p>We define functions to run the experiments and aggregate the results.
 For each of the four measures, we report means and standard deviations
 for R2P and R2P+, respectively.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">run_data</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">rep</span>, <span class="va">n_sample</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># Initialize result variables</span></span>
 <span>  <span class="va">n_groups_r2p</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
@@ -253,109 +262,109 @@ for R2P and R2P+, respectively.</p>
 <div class="section level3">
 <h3 id="run">Run<a class="anchor" aria-label="anchor" href="#run"></a>
 </h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span><span class="va">final_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">datasets</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span><span class="fu">agg_data</span><span class="op">(</span><span class="fu">run_data</span><span class="op">(</span><span class="va">x</span>, <span class="fl">500</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
 </h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">final_res</span></span>
 <span><span class="co">#&gt; $abalone</span></span>
 <span><span class="co">#&gt; $abalone$r2p</span></span>
-<span><span class="co">#&gt;               mean       sd</span></span>
-<span><span class="co">#&gt; n_groups  2.984000 1.220953</span></span>
-<span><span class="co">#&gt; avg_width 5.551533 1.204233</span></span>
-<span><span class="co">#&gt; var_ac    3.421474 2.258672</span></span>
-<span><span class="co">#&gt; var_in    7.440119 2.502079</span></span>
+<span><span class="co">#&gt;                mean        sd</span></span>
+<span><span class="co">#&gt; n_groups  2.9320000 1.1841370</span></span>
+<span><span class="co">#&gt; avg_width 1.7192092 0.3758183</span></span>
+<span><span class="co">#&gt; var_ac    0.3246851 0.2114961</span></span>
+<span><span class="co">#&gt; var_in    0.7200171 0.2330315</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $abalone$r2p_plus</span></span>
-<span><span class="co">#&gt;               mean        sd</span></span>
-<span><span class="co">#&gt; n_groups  4.036000 1.7368758</span></span>
-<span><span class="co">#&gt; avg_width 5.041334 0.9341293</span></span>
-<span><span class="co">#&gt; var_ac    4.052611 2.2871746</span></span>
-<span><span class="co">#&gt; var_in    6.617038 2.2746189</span></span>
+<span><span class="co">#&gt;                mean        sd</span></span>
+<span><span class="co">#&gt; n_groups  4.1040000 1.7073412</span></span>
+<span><span class="co">#&gt; avg_width 1.5541796 0.2754160</span></span>
+<span><span class="co">#&gt; var_ac    0.3935642 0.2171481</span></span>
+<span><span class="co">#&gt; var_in    0.6212842 0.2048562</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $bikes</span></span>
 <span><span class="co">#&gt; $bikes$r2p</span></span>
-<span><span class="co">#&gt;                 mean          sd</span></span>
-<span><span class="co">#&gt; n_groups      3.8700    1.502536</span></span>
-<span><span class="co">#&gt; avg_width   185.0592   38.136711</span></span>
-<span><span class="co">#&gt; var_ac    11229.8270 5953.912864</span></span>
-<span><span class="co">#&gt; var_in    13388.2490 6055.619242</span></span>
+<span><span class="co">#&gt;                mean        sd</span></span>
+<span><span class="co">#&gt; n_groups  3.8220000 1.5293770</span></span>
+<span><span class="co">#&gt; avg_width 1.1479217 0.2350975</span></span>
+<span><span class="co">#&gt; var_ac    0.4396868 0.2385617</span></span>
+<span><span class="co">#&gt; var_in    0.5108834 0.2329907</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $bikes$r2p_plus</span></span>
-<span><span class="co">#&gt;                 mean          sd</span></span>
-<span><span class="co">#&gt; n_groups      6.3640    1.928456</span></span>
-<span><span class="co">#&gt; avg_width   143.5786   22.105168</span></span>
-<span><span class="co">#&gt; var_ac    16537.8758 4954.407384</span></span>
-<span><span class="co">#&gt; var_in     7565.1171 2983.096008</span></span>
+<span><span class="co">#&gt;                mean        sd</span></span>
+<span><span class="co">#&gt; n_groups  6.5420000 1.9452001</span></span>
+<span><span class="co">#&gt; avg_width 0.8839908 0.1341617</span></span>
+<span><span class="co">#&gt; var_ac    0.6397187 0.1880607</span></span>
+<span><span class="co">#&gt; var_in    0.2838799 0.1090213</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diamonds</span></span>
 <span><span class="co">#&gt; $diamonds$r2p</span></span>
-<span><span class="co">#&gt;                   mean           sd</span></span>
-<span><span class="co">#&gt; n_groups         5.094 1.434322e+00</span></span>
-<span><span class="co">#&gt; avg_width     2739.016 9.452874e+02</span></span>
-<span><span class="co">#&gt; var_ac    13363004.932 6.911751e+06</span></span>
-<span><span class="co">#&gt; var_in     4342538.944 1.971144e+06</span></span>
+<span><span class="co">#&gt;                mean        sd</span></span>
+<span><span class="co">#&gt; n_groups  5.0740000 1.4030185</span></span>
+<span><span class="co">#&gt; avg_width 0.6886794 0.2402770</span></span>
+<span><span class="co">#&gt; var_ac    0.8467990 0.4450025</span></span>
+<span><span class="co">#&gt; var_in    0.2719968 0.1242952</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $diamonds$r2p_plus</span></span>
-<span><span class="co">#&gt;                   mean           sd</span></span>
-<span><span class="co">#&gt; n_groups         7.978 1.626902e+00</span></span>
-<span><span class="co">#&gt; avg_width     2497.378 6.789871e+02</span></span>
-<span><span class="co">#&gt; var_ac    15225083.062 6.538073e+06</span></span>
-<span><span class="co">#&gt; var_in     2992085.930 1.127263e+06</span></span>
+<span><span class="co">#&gt;                mean         sd</span></span>
+<span><span class="co">#&gt; n_groups  7.9900000 1.61961301</span></span>
+<span><span class="co">#&gt; avg_width 0.6229672 0.16552796</span></span>
+<span><span class="co">#&gt; var_ac    0.9429163 0.41577069</span></span>
+<span><span class="co">#&gt; var_in    0.1881956 0.07277692</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $elevators</span></span>
 <span><span class="co">#&gt; $elevators$r2p</span></span>
-<span><span class="co">#&gt;                   mean           sd</span></span>
-<span><span class="co">#&gt; n_groups  3.220000e+00 1.139384e+00</span></span>
-<span><span class="co">#&gt; avg_width 1.029241e-02 2.839237e-03</span></span>
-<span><span class="co">#&gt; var_ac    9.399720e-06 1.392493e-05</span></span>
-<span><span class="co">#&gt; var_in    3.857927e-05 1.420509e-05</span></span>
+<span><span class="co">#&gt;                mean        sd</span></span>
+<span><span class="co">#&gt; n_groups  3.1820000 1.1364237</span></span>
+<span><span class="co">#&gt; avg_width 1.5252150 0.4168255</span></span>
+<span><span class="co">#&gt; var_ac    0.2075417 0.3270168</span></span>
+<span><span class="co">#&gt; var_in    0.8487943 0.3133283</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $elevators$r2p_plus</span></span>
-<span><span class="co">#&gt;                   mean           sd</span></span>
-<span><span class="co">#&gt; n_groups  4.482000e+00 1.637999e+00</span></span>
-<span><span class="co">#&gt; avg_width 9.807843e-03 2.205374e-03</span></span>
-<span><span class="co">#&gt; var_ac    1.452498e-05 1.871628e-05</span></span>
-<span><span class="co">#&gt; var_in    3.533479e-05 1.465198e-05</span></span>
+<span><span class="co">#&gt;                mean        sd</span></span>
+<span><span class="co">#&gt; n_groups  4.4960000 1.7146031</span></span>
+<span><span class="co">#&gt; avg_width 1.4527899 0.3400333</span></span>
+<span><span class="co">#&gt; var_ac    0.3152598 0.4022665</span></span>
+<span><span class="co">#&gt; var_in    0.7816624 0.3358434</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $miami</span></span>
 <span><span class="co">#&gt; $miami$r2p</span></span>
-<span><span class="co">#&gt;                   mean           sd</span></span>
-<span><span class="co">#&gt; n_groups  3.220000e+00 1.254890e+00</span></span>
-<span><span class="co">#&gt; avg_width 3.024762e+05 9.011276e+04</span></span>
-<span><span class="co">#&gt; var_ac    1.897242e+10 2.829815e+10</span></span>
-<span><span class="co">#&gt; var_in    8.938808e+10 4.921858e+10</span></span>
+<span><span class="co">#&gt;                mean        sd</span></span>
+<span><span class="co">#&gt; n_groups  3.2000000 1.1742051</span></span>
+<span><span class="co">#&gt; avg_width 0.9518659 0.2809258</span></span>
+<span><span class="co">#&gt; var_ac    0.1777317 0.2689256</span></span>
+<span><span class="co">#&gt; var_in    0.8893836 0.4890409</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $miami$r2p_plus</span></span>
-<span><span class="co">#&gt;                   mean           sd</span></span>
-<span><span class="co">#&gt; n_groups  5.050000e+00 1.866136e+00</span></span>
-<span><span class="co">#&gt; avg_width 2.561305e+05 5.969747e+04</span></span>
-<span><span class="co">#&gt; var_ac    2.494681e+10 2.379236e+10</span></span>
-<span><span class="co">#&gt; var_in    7.133980e+10 3.691334e+10</span></span>
+<span><span class="co">#&gt;                mean        sd</span></span>
+<span><span class="co">#&gt; n_groups  4.8280000 1.8387981</span></span>
+<span><span class="co">#&gt; avg_width 0.8086003 0.1850674</span></span>
+<span><span class="co">#&gt; var_ac    0.2433055 0.2346503</span></span>
+<span><span class="co">#&gt; var_in    0.7231350 0.3757193</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $wines</span></span>
 <span><span class="co">#&gt; $wines$r2p</span></span>
-<span><span class="co">#&gt;                 mean         sd</span></span>
-<span><span class="co">#&gt; n_groups  3.08600000 1.21884172</span></span>
-<span><span class="co">#&gt; avg_width 1.78732581 0.34772081</span></span>
-<span><span class="co">#&gt; var_ac    0.07691911 0.07907306</span></span>
-<span><span class="co">#&gt; var_in    0.67550618 0.15823389</span></span>
+<span><span class="co">#&gt;                mean        sd</span></span>
+<span><span class="co">#&gt; n_groups  3.1240000 1.2774536</span></span>
+<span><span class="co">#&gt; avg_width 2.0571390 0.3907371</span></span>
+<span><span class="co">#&gt; var_ac    0.1037108 0.1071144</span></span>
+<span><span class="co">#&gt; var_in    0.8915611 0.2061902</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $wines$r2p_plus</span></span>
-<span><span class="co">#&gt;                mean         sd</span></span>
-<span><span class="co">#&gt; n_groups  4.2840000 1.87038517</span></span>
-<span><span class="co">#&gt; avg_width 1.7203876 0.25358830</span></span>
-<span><span class="co">#&gt; var_ac    0.1061634 0.09362968</span></span>
-<span><span class="co">#&gt; var_in    0.6484246 0.15905370</span></span></code></pre></div>
+<span><span class="co">#&gt;                mean        sd</span></span>
+<span><span class="co">#&gt; n_groups  4.0920000 1.8639970</span></span>
+<span><span class="co">#&gt; avg_width 1.9726951 0.2942497</span></span>
+<span><span class="co">#&gt; var_ac    0.1380350 0.1251651</span></span>
+<span><span class="co">#&gt; var_in    0.8452096 0.2142913</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
