@@ -53,7 +53,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>This <code>R</code> package finds robust subgroups in data with a single continuous response, suitable for either regression or treatment effect models. Subgroups are identified via recursive partitioning, resulting in an interpretable tree. Conformal prediction methods (SCR, CV+ and Jackknife+) are leveraged to simultaneously optimize inter-group heterogeneity and intra-group homogeneity. First, predictions are made using an arbitrary regression learner from the <a href="https://www.tidymodels.org/find/parsnip/" class="external-link">100+ algorithms</a> available in <code>tidymodels</code>. Then, the data is split recursively using the robust conformal criterion. In this way, <code>conftree</code> extends the R2P algorithm of <a href="https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html" class="external-link">Lee et al. (NeurIPS 2020)</a>.</p>
+<p>This <code>R</code> package finds subgroups in data with a single continuous response, suitable for either regression or treatment effect problems. Subgroups are identified via recursive partitioning, resulting in an interpretable tree. Conformal prediction methods (SCR, CV+ and Jackknife+) are leveraged to find homogeneous subgroups through robust uncertainty quantification. First, predictions are made using an arbitrary regression learner from the <a href="https://www.tidymodels.org/find/parsnip/" class="external-link">100+ algorithms</a> available in <code>tidymodels</code>. Then, the data is split recursively using the robust conformal criterion. The <code>conftree</code> package implements and extends the theory from <a href="https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html" class="external-link">Lee et al. (NeurIPS 2020)</a>.</p>
 <p><strong>Scope:</strong></p>
 <ul>
 <li>subgroups for regression problems with <code><a href="reference/r2p.html">r2p()</a></code>
@@ -74,7 +74,7 @@
 <div class="section level2">
 <h2 id="quickstart">Quickstart<a class="anchor" aria-label="anchor" href="#quickstart"></a>
 </h2>
-<p>Let’s find subgroups in the Washington bike share data. We use a random forest from <code>tidymodels</code> as <code>learner</code>, a 5% miscoverage rate as <code>alpha</code>, and 10 <code>cv_folds</code> for the CV+ to quantify the uncertainty in the resulting subgroups:</p>
+<p>Let’s find subgroups in the Washington bike share data. We use a random forest from <code>tidymodels</code> as <code>learner</code>, a 5% miscoverage rate as <code>alpha</code>, and 10 <code>cv_folds</code> for the CV+ to quantify the uncertainty in subgroups:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://holgstr.github.io/conftree/">conftree</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span>
@@ -94,7 +94,7 @@
 <span>  learner <span class="op">=</span> <span class="va">forest</span>,</span>
 <span>  cv_folds <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>  gamma <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  gamma <span class="op">=</span> <span class="fl">0.01</span>,</span>
 <span>  lambda <span class="op">=</span> <span class="fl">0.5</span>,</span>
 <span>  max_groups <span class="op">=</span> <span class="fl">4</span></span>
 <span><span class="op">)</span></span>
@@ -102,12 +102,12 @@
 <span><span class="co"># Display tree structure:</span></span>
 <span><span class="va">groups</span><span class="op">$</span><span class="va">tree</span></span>
 <span><span class="co">#&gt; [1] root</span></span>
-<span><span class="co">#&gt; |   [2] weekday in Sun: *</span></span>
-<span><span class="co">#&gt; |   [3] weekday in Mon, Tue, Wed, Thu, Fri, Sat</span></span>
-<span><span class="co">#&gt; |   |   [4] weekday in Sat: *</span></span>
-<span><span class="co">#&gt; |   |   [5] weekday in Sun, Mon, Tue, Wed, Thu, Fri</span></span>
-<span><span class="co">#&gt; |   |   |   [6] temp &lt;= 6.15: *</span></span>
-<span><span class="co">#&gt; |   |   |   [7] temp &gt; 6.15: *</span></span>
+<span><span class="co">#&gt; |   [2] weekday in Sun, Sat: *</span></span>
+<span><span class="co">#&gt; |   [3] weekday in Mon, Tue, Wed, Thu, Fri</span></span>
+<span><span class="co">#&gt; |   |   [4] weather in rain</span></span>
+<span><span class="co">#&gt; |   |   |   [5] year in 0: *</span></span>
+<span><span class="co">#&gt; |   |   |   [6] year in 1: *</span></span>
+<span><span class="co">#&gt; |   |   [7] weather in clear, misty: *</span></span>
 <span></span>
 <span><span class="co"># Plot:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">groups</span><span class="op">)</span></span></code></pre></div>
