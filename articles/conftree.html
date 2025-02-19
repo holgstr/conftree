@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>conftree • conftree</title>
+<title>Conformal Trees for Robust Subgroup Detection • conftree</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="conftree">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Conformal Trees for Robust Subgroup Detection">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -51,7 +51,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>conftree</h1>
+      <h1>Conformal Trees for Robust Subgroup Detection</h1>
             
       
 
@@ -60,21 +60,41 @@
 
     
     
+<p>Conformal Trees are a method for robust subgroup detection in data
+with a single continuous response, framed as either regression or
+heterogeneous treatment effect problems. First, the data-generating
+process is learned with an arbitrary regression learner from the 100+
+algorithms available in <a href="https://www.tidymodels.org/find/parsnip/" class="external-link">tidymodels</a>. Then,
+the data is split recursively using a robust criterion that quantifies
+the homogeneity in a group by leveraging conformal prediction methods.
+<code>conftree</code> implements and extends the theory in <a href="https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html" class="external-link">Lee
+et al. (NeurIPS 2020)</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://holgstr.github.io/conftree/">"conftree"</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="regression">Regression<a class="anchor" aria-label="anchor" href="#regression"></a>
 </h2>
+<p>For data with a single continuous outcome and an arbitrary number of
+numeric or categorical features, we want to identify subgroups where
+subjects within a group share similar features and outcomes, yet differ
+markedly from those in other groups.</p>
 <div class="section level3">
 <h3 id="data-bike-sharing-usage-in-washington-d-c-">Data: bike sharing usage in Washington, D.C.<a class="anchor" aria-label="anchor" href="#data-bike-sharing-usage-in-washington-d-c-"></a>
 </h3>
+<p>Consider data from the Washington, D.C. bike sharing system. It
+contains 727 observations, 10 features and a target variable
+<code>count</code> that specifies the total number of bikes lent out to
+users on a single given day.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">bikes</span>, package <span class="op">=</span> <span class="st">"conftree"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="select-learner">Select learner<a class="anchor" aria-label="anchor" href="#select-learner"></a>
 </h3>
+<p>Before we can start, initialize a regression learner from
+<code>tidymodels</code> that is used within the algorithm to model the
+data-generating process. Let us use a random forest as base learner.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://tidymodels.tidymodels.org" class="external-link">"tidymodels"</a></span><span class="op">)</span></span>
 <span><span class="va">forest</span> <span class="op">&lt;-</span> <span class="fu">rand_forest</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -84,6 +104,24 @@
 <div class="section level3">
 <h3 id="detect-subgroups">Detect subgroups<a class="anchor" aria-label="anchor" href="#detect-subgroups"></a>
 </h3>
+<p>Subgroups in regression data are detected with <code><a href="../reference/r2p.html">r2p()</a></code>. We
+need to specify the data set, the name of the target variable and the
+learner object. The argument <code>cv_folds</code> is connected to the
+type of uncertainty quantification used for subgroup detection. Setting
+<code>cv_folds = 1</code> runs split conformal prediction (<a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2017.1307116" class="external-link">Lei
+et al., 2018</a>) and fits one model to 50% of the data while using the
+remaining data to construct splits. If <code>cv_folds</code> is set to
+an integer of 2 or more, cross validation+ is used, if it is set to the
+number of observations in the data, jackknife+ is used (<a href="https://www.stat.cmu.edu/~ryantibs/papers/jackknife.pdf" class="external-link">Barber et
+al., 2021</a>). Setting <code>alpha = 0.1</code> implies a 90% coverage
+rate of the prediction intervals. The regularization parameter
+<code>gamma</code> can be compared to <code>cp</code> in CART and
+quantifies the minimum improvement in conformal homogeneity (here: 1%)
+required to warrant a split in any given subgroup. The balance parameter
+<code>lambda</code> can take values between 0 and 1 and governs the
+trade-off between interval width (high values) and average absolute
+deviation (low values). The number of maximum groups desired can be set
+with <code>max_groups</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/r2p.html">r2p</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">bikes</span>,</span>
@@ -99,6 +137,9 @@
 <div class="section level3">
 <h3 id="understand-results">Understand results<a class="anchor" aria-label="anchor" href="#understand-results"></a>
 </h3>
+<p>Printing the <code>conftree</code> object provides a short
+description of the decision tree, including features and feature values
+used for the splits. Nodes with an asterisk are the final subgroups.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">groups</span></span>
 <span><span class="co">#&gt; Conformal tree with 3 subgroups:</span></span>
@@ -109,6 +150,12 @@
 <span><span class="co">#&gt; |   |   [5] year in 1: *</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; * terminal nodes (subgroups)</span></span></code></pre></div>
+<p>We can get more insights by calling <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>, which
+lists the subgroups identified. A subgroup can be characterized by its
+center (<code>mean</code>), the average width of the conformal
+prediction interval (<code>width</code>) and the average absolute
+deviation of outcomes from the group center
+(<code>deviation</code>).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">groups</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Conformal tree with 3 subgroups:</span></span>
@@ -118,6 +165,15 @@
 <span><span class="co">#&gt; 3 248 346.23 249.48      2.33</span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Alpha:  0.1 Lambda:  0.5 Gamma:  0.01</span></span></code></pre></div>
+<p>It is always a good idea to plot results. In <code>conftree</code>,
+we provide a way to visualize the decision tree together with the
+summary statistics describing the subgroups, including boxplots of the
+outcome values within a given subgroup. As we can see, we detect
+substantial heterogeneity in the data, with a mean outcome of 49 in one
+subgroup and 335 in another. Notably, conformal prediction gives us a
+powerful tool to quantify the uncertainty in a subgroup, placing
+emphasis on within-group homogeneity and mitigating false discovery of
+subgroups in absence of true covariate effects.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">groups</span><span class="op">)</span></span></code></pre></div>
 <p><img src="conftree_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
@@ -126,9 +182,24 @@
 <div class="section level2">
 <h2 id="treatment-effects">Treatment Effects<a class="anchor" aria-label="anchor" href="#treatment-effects"></a>
 </h2>
+<p>We can also detect subgroups in treatment effect problems, where we
+are data with a single continuous outcome, one or more features, and an
+additional binary feature that is interpreted as treatment indicator,
+denoting if an individual belongs to a “treatment” or “control” group.
+Then, we are interested in detecting heterogeneity in the conditional
+average treatment effect (CATE), i.e.,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>𝔼</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mi>𝐗</mi><mo>=</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">]</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\tau(\mathbf{x}) = \mathbb{E}\left[Y(1)-Y(0) \, | \, \mathbf{X} = \mathbf{x}\right].</annotation></semantics></math>.</p>
 <div class="section level3">
 <h3 id="data-simulate-synthetic-data">Data: simulate synthetic data<a class="anchor" aria-label="anchor" href="#data-simulate-synthetic-data"></a>
 </h3>
+<p>We construct a synthetic example where true treatment effects are
+known a priori using the <code>htesim</code> package. The data contains
+500 observations and 4 features. Here, the true CATE function is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\tau(\mathbf{x}) = \frac{x_{1}+x_{2}}{2}</annotation></semantics></math>.
+In other words, the CATE does not depend on the other features
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mn>3</mn></mrow><annotation encoding="application/x-tex">x3</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mn>4</mn></mrow><annotation encoding="application/x-tex">x4</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/susanne-207/htesim" class="external-link">htesim</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span>
@@ -145,10 +216,27 @@
 <div class="section level3">
 <h3 id="select-learner-1">Select learner<a class="anchor" aria-label="anchor" href="#select-learner-1"></a>
 </h3>
+<p>In this example, let us try a simple linear regression learner as
+base learner. Internally, the CATE will be estimated as the difference
+of two models,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>τ</mi><mo accent="true">̂</mo></mover><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mover><mi>μ</mi><mo accent="true">̂</mo></mover><mn>1</mn></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><msup><mover><mi>μ</mi><mo accent="true">̂</mo></mover><mn>0</mn></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\hat{\tau}(\mathbf{x}) = \hat{\mu}^{1}(\mathbf{x}) - \hat{\mu}^{0}(\mathbf{x})</annotation></semantics></math>,
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mover><mi>μ</mi><mo accent="true">̂</mo></mover><mn>1</mn></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\hat{\mu}^{1}(\mathbf{x})</annotation></semantics></math>
+is trained on treated individuals and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mover><mi>μ</mi><mo accent="true">̂</mo></mover><mn>0</mn></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\hat{\mu}^{0}(\mathbf{x})</annotation></semantics></math>
+on untreated individuals.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">linear</span> <span class="op">&lt;-</span> <span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span></span></code></pre></div>
+<p>Subgroup detection for treatment effect problems with
+<code><a href="../reference/r2p_hte.html">r2p_hte()</a></code> is similar to the regression case. We need to
+provide a further argument <code>treatment</code> to specify the name of
+the treatment indicator variable. Here, we set
+<code>cv_folds = 500</code> to use jackknife+ for uncertainty
+quantification. This involves fitting 1000 linear models, 2 (treatment
+and control) for each of the 500 folds that represent the leave-one-out
+setting of the jackknife+.</p>
 </div>
 <div class="section level3">
 <h3 id="detect-subgroups-1">Detect subgroups<a class="anchor" aria-label="anchor" href="#detect-subgroups-1"></a>
@@ -169,6 +257,9 @@
 <div class="section level3">
 <h3 id="understand-results-1">Understand results<a class="anchor" aria-label="anchor" href="#understand-results-1"></a>
 </h3>
+<p>The plot for treatment effect problems is the same as for regression
+data, only in that the group center and related statistics are computed
+by using the CATE estimates of the model.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">groups_hte</span><span class="op">)</span></span></code></pre></div>
 <p><img src="conftree_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
