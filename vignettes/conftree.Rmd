@@ -11,6 +11,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 Conformal Trees are a method for robust subgroup detection in data with a single continuous response, framed as either regression or heterogeneous treatment effect problems. First, the data-generating process is learned with an arbitrary regression learner from the 100+ algorithms available in [tidymodels][1]. Then, the data is split recursively using a robust criterion that quantifies the homogeneity in a group by leveraging conformal prediction methods. `conftree` implements and extends the theory in [Lee et al. (NeurIPS 2020)][2]. 
