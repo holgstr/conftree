@@ -90,7 +90,7 @@ We construct a synthetic example where true treatment effects are known a priori
 
 ```{r}
 library(htesim)
-set.seed(1234)
+set.seed(12)
 dgp <- dgp(p = pF_exp_x1_x2,
            m = mF_x1,
            t = tF_div_x1_x2,

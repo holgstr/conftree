@@ -11,17 +11,17 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![R-CMD-check](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/holgstr/conftree/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-This `R` package finds robust subgroups in data with a single continuous
-response, suitable for either regression or treatment effect models.
+This `R` package finds subgroups in data with a single continuous
+response, suitable for either regression or treatment effect problems.
 Subgroups are identified via recursive partitioning, resulting in an
 interpretable tree. Conformal prediction methods (SCR, CV+ and
-Jackknife+) are leveraged to simultaneously optimize inter-group
-heterogeneity and intra-group homogeneity. First, predictions are made
-using an arbitrary regression learner from the [100+
+Jackknife+) are leveraged to find homogeneous subgroups through robust
+uncertainty quantification. First, predictions are made using an
+arbitrary regression learner from the [100+
 algorithms](https://www.tidymodels.org/find/parsnip/) available in
 `tidymodels`. Then, the data is split recursively using the robust
-conformal criterion. In this way, `conftree` extends the R2P algorithm
-of [Lee et al. (NeurIPS
+conformal criterion. The `conftree` package implements and extends the
+theory from [Lee et al. (NeurIPS
 2020)](https://proceedings.neurips.cc/paper/2020/hash/1819020b02e926785cf3be594d957696-Abstract.html).
 
 **Scope:**
@@ -44,8 +44,7 @@ remotes::install_github("holgstr/conftree")
 
 Let’s find subgroups in the Washington bike share data. We use a random
 forest from `tidymodels` as `learner`, a 5% miscoverage rate as `alpha`,
-and 10 `cv_folds` for the CV+ to quantify the uncertainty in the
-resulting subgroups:
+and 10 `cv_folds` for the CV+ to quantify the uncertainty in subgroups:
 
 ``` r
 library(conftree)
@@ -66,7 +65,7 @@ groups <- r2p(
   learner = forest,
   cv_folds = 10,
   alpha = 0.05,
-  gamma = 0.2,
+  gamma = 0.01,
   lambda = 0.5,
   max_groups = 4
 )
@@ -74,12 +73,12 @@ groups <- r2p(
 # Display tree structure:
 groups$tree
 #> [1] root
-#> |   [2] weekday in Sun: *
-#> |   [3] weekday in Mon, Tue, Wed, Thu, Fri, Sat
-#> |   |   [4] weekday in Sat: *
-#> |   |   [5] weekday in Sun, Mon, Tue, Wed, Thu, Fri
-#> |   |   |   [6] temp <= 6.15: *
-#> |   |   |   [7] temp > 6.15: *
+#> |   [2] weekday in Sun, Sat: *
+#> |   [3] weekday in Mon, Tue, Wed, Thu, Fri
+#> |   |   [4] weather in rain
+#> |   |   |   [5] year in 0: *
+#> |   |   |   [6] year in 1: *
+#> |   |   [7] weather in clear, misty: *
 
 # Plot:
 plot(groups)
