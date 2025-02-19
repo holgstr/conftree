@@ -62,7 +62,7 @@ groups <- r2p(
   alpha = 0.05,
   gamma = 0.01,
   lambda = 0.5,
-  max_groups = 4
+  max_groups = 3
 )
 
 # Display tree structure:

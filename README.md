@@ -67,7 +67,7 @@ groups <- r2p(
   alpha = 0.05,
   gamma = 0.01,
   lambda = 0.5,
-  max_groups = 4
+  max_groups = 3
 )
 
 # Display tree structure:
@@ -75,10 +75,8 @@ groups$tree
 #> [1] root
 #> |   [2] weekday in Sun, Sat: *
 #> |   [3] weekday in Mon, Tue, Wed, Thu, Fri
-#> |   |   [4] weather in rain
-#> |   |   |   [5] year in 0: *
-#> |   |   |   [6] year in 1: *
-#> |   |   [7] weather in clear, misty: *
+#> |   |   [4] weather in rain: *
+#> |   |   [5] weather in clear, misty: *
 
 # Plot:
 plot(groups)

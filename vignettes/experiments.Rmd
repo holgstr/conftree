@@ -180,7 +180,7 @@ agg_data <- function(results) {
 
 ```{r}
 set.seed(123)
-final_res <- lapply(datasets, function(x) {agg_data(run_data(x, 3, 100))})
+final_res <- lapply(datasets, function(x) {agg_data(run_data(x, 500, 100))})
 ```
 
 ## Results
