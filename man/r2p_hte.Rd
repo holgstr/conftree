@@ -48,22 +48,33 @@ Finding Subgroups in Treatment Effects with Conformal Trees
 }
 \examples{
 library(tidymodels)
-library(ranger)
-data(bikes)
-set.seed(1234)
-randforest <- rand_forest() \%>\%
-  set_mode("regression") \%>\%
-  set_engine("ranger")
+# Synthetic example data:
+library(htesim)
+set.seed(12)
+dgp <- dgp(p = pF_exp_x1_x2,
+          m = mF_x1,
+          t = tF_div_x1_x2,
+          model = "normal",
+          xmodel = "unif",
+          sd = 1)
+sim <- simulate(object = dgp,
+               nsim = 500L,
+               d = 4L)
+# Initialize learner:
+linear <- linear_reg() \%>\%
+ set_mode("regression") \%>\%
+ set_engine("lm")
+# Detect subgroups:
 groups <- r2p_hte(
-  data = bikes,
-  target = "count",
-  treatment = "year",
-  learner = randforest,
-  cv_folds = 10,
-  alpha = 0.05,
-  gamma = 0.2,
+  data = sim,
+  target = "y",
+  treatment = "trt",
+  learner = linear,
+  cv_folds = 500,
+  alpha = 0.1,
+  gamma = 0.01,
   lambda = 0.5,
-  max_groups = 10
+  max_groups = 8
 )
-groups$tree
+summary(groups)
 }

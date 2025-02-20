@@ -19,20 +19,22 @@
 #' library(ranger)
 #' data(bikes)
 #' set.seed(1234)
-#' randforest <- rand_forest() %>%
+#' # Initialize learner:
+#' forest <- rand_forest() %>%
 #'   set_mode("regression") %>%
 #'   set_engine("ranger")
+#' # Detect subgroups:
 #' groups <- r2p(
 #'   data = bikes,
 #'   target = "count",
-#'   learner = randforest,
+#'   learner = forest,
 #'   cv_folds = 10,
-#'   alpha = 0.05,
-#'   gamma = 0.2,
+#'   alpha = 0.1,
+#'   gamma = 0.01,
 #'   lambda = 0.5,
-#'   max_groups = 10
+#'   max_groups = 2
 #' )
-#' groups$tree
+#' groups
 r2p <- function(
     data, target, learner, cv_folds = 1, alpha = 0.1, gamma = 0.01,
     lambda = 0.5, max_groups = 5) {
