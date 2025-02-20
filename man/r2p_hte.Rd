@@ -9,11 +9,11 @@ r2p_hte(
   target,
   treatment,
   learner,
-  cv_folds = 10,
-  alpha = 0.05,
-  gamma = 0.1,
+  cv_folds = 1,
+  alpha = 0.1,
+  gamma = 0.01,
   lambda = 0.5,
-  max_groups = 10
+  max_groups = 5
 )
 }
 \arguments{
