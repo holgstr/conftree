@@ -82,11 +82,11 @@ plot(groups)
 
 # Treatment Effects
 
-We can also detect subgroups in treatment effect problems, where we are data with a single continuous outcome, one or more features, and an additional binary feature that is interpreted as treatment indicator, denoting if an individual belongs to a "treatment" or "control" group. Then, we are interested in detecting heterogeneity in the conditional average treatment effect (CATE), i.e., $\tau(\mathbf{x}) = \mathbb{E}\left[Y(1)-Y(0) \, | \, \mathbf{X} = \mathbf{x}\right].$. 
+We can also detect subgroups in treatment effect problems for data with a single continuous outcome, one or more features, and an additional binary feature that is interpreted as treatment indicator, denoting if an individual belongs to a "treatment" or "control" group. We are interested in detecting heterogeneity in the conditional average treatment effect (CATE), i.e., $\tau(\mathbf{x}) = \mathbb{E}\left[Y(1)-Y(0) \, | \, \mathbf{X} = \mathbf{x}\right]$. 
 
 ## Data: simulate synthetic data
 
-We construct a synthetic example where true treatment effects are known a priori using the `htesim` package. The data contains 500 observations and 4 features. Here, the true CATE function is $\tau(\mathbf{x}) = \frac{x_{1}+x_{2}}{2}$. In other words, the CATE does not depend on the other features $x3$ and $x4$.
+We construct a synthetic example where true treatment effects are known a priori using the `htesim` package. The data contains 500 observations and 4 features. Here, the true CATE function is $\tau(\mathbf{x}) = \frac{x_{1}+x_{2}}{2}$. In other words, the CATE does not depend on the other features $x_3$ and $x_4$.
 
 ```{r}
 library(htesim)

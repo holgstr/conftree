@@ -26,8 +26,8 @@ theory from [Lee et al. (NeurIPS
 
 **Scope:**
 
-- subgroups for regression problems with `r2p()`
-- subgroups for treatment effects with `r2p_hte()`
+- Subgroups for regression problems with `r2p()`
+- Subgroups for treatment effects with `r2p_hte()`
 
 ## Installation
 
