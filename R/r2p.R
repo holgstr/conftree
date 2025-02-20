@@ -34,8 +34,8 @@
 #' )
 #' groups$tree
 r2p <- function(
-    data, target, learner, cv_folds = 10, alpha = 0.05, gamma = 0.1,
-    lambda = 0.5, max_groups = 10) {
+    data, target, learner, cv_folds = 1, alpha = 0.1, gamma = 0.01,
+    lambda = 0.5, max_groups = 5) {
   # Reorder columns to ensure correct column identification for partysplits.
   data <- data[, c(setdiff(names(data), target), target)]
   valid_set <- get_valid_set(data = data, target = target, learner = learner, cv_folds = cv_folds)

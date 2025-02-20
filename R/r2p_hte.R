@@ -38,8 +38,8 @@
 #' )
 #' groups$tree
 r2p_hte <- function(
-    data, target, treatment, learner, cv_folds = 10, alpha = 0.05, gamma = 0.1,
-    lambda = 0.5, max_groups = 10) {
+    data, target, treatment, learner, cv_folds = 1, alpha = 0.1, gamma = 0.01,
+    lambda = 0.5, max_groups = 5) {
   # Convert treatment indicator to factor.
   data[[treatment]] <- as.factor(data[[treatment]])
   # Reorder columns to ensure correct column identification for partysplits.
