@@ -182,13 +182,13 @@ subgroups in absence of true covariate effects.</p>
 <div class="section level2">
 <h2 id="treatment-effects">Treatment Effects<a class="anchor" aria-label="anchor" href="#treatment-effects"></a>
 </h2>
-<p>We can also detect subgroups in treatment effect problems, where we
-are data with a single continuous outcome, one or more features, and an
+<p>We can also detect subgroups in treatment effect problems for data
+with a single continuous outcome, one or more features, and an
 additional binary feature that is interpreted as treatment indicator,
 denoting if an individual belongs to a “treatment” or “control” group.
-Then, we are interested in detecting heterogeneity in the conditional
-average treatment effect (CATE), i.e.,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>𝔼</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mi>𝐗</mi><mo>=</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">]</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\tau(\mathbf{x}) = \mathbb{E}\left[Y(1)-Y(0) \, | \, \mathbf{X} = \mathbf{x}\right].</annotation></semantics></math>.</p>
+We are interested in detecting heterogeneity in the conditional average
+treatment effect (CATE), i.e.,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>𝔼</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>Y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mi>𝐗</mi><mo>=</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\tau(\mathbf{x}) = \mathbb{E}\left[Y(1)-Y(0) \, | \, \mathbf{X} = \mathbf{x}\right]</annotation></semantics></math>.</p>
 <div class="section level3">
 <h3 id="data-simulate-synthetic-data">Data: simulate synthetic data<a class="anchor" aria-label="anchor" href="#data-simulate-synthetic-data"></a>
 </h3>
@@ -197,9 +197,9 @@ known a priori using the <code>htesim</code> package. The data contains
 500 observations and 4 features. Here, the true CATE function is
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐱</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">\tau(\mathbf{x}) = \frac{x_{1}+x_{2}}{2}</annotation></semantics></math>.
 In other words, the CATE does not depend on the other features
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mn>3</mn></mrow><annotation encoding="application/x-tex">x3</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mn>3</mn></msub><annotation encoding="application/x-tex">x_3</annotation></semantics></math>
 and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mn>4</mn></mrow><annotation encoding="application/x-tex">x4</annotation></semantics></math>.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mn>4</mn></msub><annotation encoding="application/x-tex">x_4</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/susanne-207/htesim" class="external-link">htesim</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span></span>
