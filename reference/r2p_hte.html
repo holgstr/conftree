@@ -45,11 +45,11 @@
 <span>  <span class="va">target</span>,</span>
 <span>  <span class="va">treatment</span>,</span>
 <span>  <span class="va">learner</span>,</span>
-<span>  cv_folds <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>  gamma <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  cv_folds <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  gamma <span class="op">=</span> <span class="fl">0.01</span>,</span>
 <span>  lambda <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>  max_groups <span class="op">=</span> <span class="fl">10</span></span>
+<span>  max_groups <span class="op">=</span> <span class="fl">5</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -106,25 +106,42 @@ to the average absolute deviation (i.e. interval width vs. average absolute devi
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org" class="external-link">tidymodels</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://imbs-hl.github.io/ranger/" class="external-link">ranger</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">bikes</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">randforest</span> <span class="op">&lt;-</span> <span class="fu">rand_forest</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
-<span class="r-in"><span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
-<span class="r-in"><span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"ranger"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Synthetic example data:</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/susanne-207/htesim" class="external-link">htesim</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dgp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/htesim/man/dgp.html" class="external-link">dgp</a></span><span class="op">(</span>p <span class="op">=</span> <span class="va">pF_exp_x1_x2</span>,</span></span>
+<span class="r-in"><span>          m <span class="op">=</span> <span class="va">mF_x1</span>,</span></span>
+<span class="r-in"><span>          t <span class="op">=</span> <span class="va">tF_div_x1_x2</span>,</span></span>
+<span class="r-in"><span>          model <span class="op">=</span> <span class="st">"normal"</span>,</span></span>
+<span class="r-in"><span>          xmodel <span class="op">=</span> <span class="st">"unif"</span>,</span></span>
+<span class="r-in"><span>          sd <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/simulate.html" class="external-link">simulate</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">dgp</span>,</span></span>
+<span class="r-in"><span>               nsim <span class="op">=</span> <span class="fl">500L</span>,</span></span>
+<span class="r-in"><span>               d <span class="op">=</span> <span class="fl">4L</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Initialize learner:</span></span></span>
+<span class="r-in"><span><span class="va">linear</span> <span class="op">&lt;-</span> <span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
+<span class="r-in"><span> <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span></span></span>
+<span class="r-in"><span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Detect subgroups:</span></span></span>
 <span class="r-in"><span><span class="va">groups</span> <span class="op">&lt;-</span> <span class="fu">r2p_hte</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="va">bikes</span>,</span></span>
-<span class="r-in"><span>  target <span class="op">=</span> <span class="st">"count"</span>,</span></span>
-<span class="r-in"><span>  treatment <span class="op">=</span> <span class="st">"year"</span>,</span></span>
-<span class="r-in"><span>  learner <span class="op">=</span> <span class="va">randforest</span>,</span></span>
-<span class="r-in"><span>  cv_folds <span class="op">=</span> <span class="fl">10</span>,</span></span>
-<span class="r-in"><span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span></span>
-<span class="r-in"><span>  gamma <span class="op">=</span> <span class="fl">0.2</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">sim</span>,</span></span>
+<span class="r-in"><span>  target <span class="op">=</span> <span class="st">"y"</span>,</span></span>
+<span class="r-in"><span>  treatment <span class="op">=</span> <span class="st">"trt"</span>,</span></span>
+<span class="r-in"><span>  learner <span class="op">=</span> <span class="va">linear</span>,</span></span>
+<span class="r-in"><span>  cv_folds <span class="op">=</span> <span class="fl">500</span>,</span></span>
+<span class="r-in"><span>  alpha <span class="op">=</span> <span class="fl">0.1</span>,</span></span>
+<span class="r-in"><span>  gamma <span class="op">=</span> <span class="fl">0.01</span>,</span></span>
 <span class="r-in"><span>  lambda <span class="op">=</span> <span class="fl">0.5</span>,</span></span>
-<span class="r-in"><span>  max_groups <span class="op">=</span> <span class="fl">10</span></span></span>
+<span class="r-in"><span>  max_groups <span class="op">=</span> <span class="fl">8</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">groups</span><span class="op">$</span><span class="va">tree</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] root: * </span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">groups</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Conformal tree with 3 subgroups:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     n mean width deviation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 258 0.25  8.47         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  79 0.60  6.80         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 163 0.66  9.29         0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Alpha:  0.1 Lambda:  0.5 Gamma:  0.01 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
