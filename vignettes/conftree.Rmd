@@ -82,7 +82,7 @@ plot(groups)
 
 # Treatment Effects
 
-We can also detect subgroups in treatment effect problems for data with a single continuous outcome, one or more features, and an additional binary feature that is interpreted as treatment indicator, denoting if an individual belongs to a "treatment" or "control" group. We are interested in detecting heterogeneity in the conditional average treatment effect (CATE), i.e., $\tau(\mathbf{x}) = \mathbb{E}\left[Y(1)-Y(0) \, | \, \mathbf{X} = \mathbf{x}\right]$. 
+We can also detect subgroups in treatment effect problems for data with a single continuous outcome, one or more features, and an additional binary feature that is interpreted as treatment indicator, denoting if an individual belongs to the "treatment" or "control" group. We are interested in detecting heterogeneity in the conditional average treatment effect (CATE), i.e., $\tau(\mathbf{x}) = \mathbb{E}\left[Y(1)-Y(0) \, | \, \mathbf{X} = \mathbf{x}\right]$. 
 
 ## Data: simulate synthetic data
 
